@@ -41,7 +41,7 @@ const LoginPage: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-300 text-gray-600 text-center py-4">
+       <footer className="bg-gray-300 text-gray-600 text-center py-4">
         <p>&copy; 2024 Vehicle Rental Management System. All rights reserved.</p>
       </footer>
     </div>
