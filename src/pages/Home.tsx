@@ -1,0 +1,9 @@
+import React from 'react';
+import LandingPage from '../components/LandingPage';
+//  '../components/Home/LandingPage';
+
+const HomePage: React.FC = () => {
+  return <LandingPage />;
+};
+
+export default HomePage;
