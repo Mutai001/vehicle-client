@@ -1,37 +1,6 @@
-// // AdminDashboard.tsx
-// import React from 'react';
-// import Navbar from '../Common/Navbar';
-// import Footer from '../Common/Footer';
-
-// const AdminDashboard: React.FC = () => {
-//   return (
-//     <>
-//     <div className="bg-gray-100 min-h-screen">
-//            <Navbar />
-//       {/* Main Content */}
-//       <main className="container mx-auto py-8 px-4">
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//           {/* Dashboard widgets */}
-//           <div className="bg-white p-6 rounded-lg shadow-md">
-//             <h2 className="text-xl font-bold mb-4">Total Bookings</h2>
-//             <p className="text-lg text-gray-800">100</p>
-//           </div>
-//           <div className="bg-white p-6 rounded-lg shadow-md">
-//             <h2 className="text-xl font-bold mb-4">Revenue Generated</h2>
-//             <p className="text-lg text-gray-800">$10,000</p>
-//           </div>
-//         </div>
-//       </main>
-//     </div>
-//         <Footer/>
-//     </>
-//   );
-// };
-
-// export default AdminDashboard;
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/images/logo.jpeg';
+import Logo from '../../assets/images/logo-c.png';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,15 +10,12 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-gray-800 text-white px-4 py-3 shadow-md">
+    <nav className="bg-gray-600 text-white px-4 py-3 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
-        {/* Logo Section */}
-        <Link to="/" className="text-2xl font-bold flex items-center space-x-2">
-          <img src={Logo} alt="Cye Vehicles" className="w-8 h-8" />
-          <span>Cye Vehicles</span>
-        </Link>
-
-        {/* Links Section */}
+       <img src={Logo} alt=""  className="w-25 h-25"/>
+        <Link to="/" className="text-2xl font-bold ">Car Hire</Link>
+        
+       
         <div className="hidden md:flex space-x-6">
           <Link to="/" className="hover:text-gray-400">Home</Link>
           <Link to="/login" className="hover:text-gray-400">Login</Link>
@@ -58,7 +24,7 @@ const Navbar: React.FC = () => {
           <Link to="/vehicles" className="hover:text-gray-400">Vehicles</Link>
           <Link to="/contact" className="hover:text-gray-400">Contact</Link>
         </div>
-
+        
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <button onClick={toggleMenu} className="text-gray-400 focus:outline-none focus:text-white">
@@ -68,7 +34,7 @@ const Navbar: React.FC = () => {
           </button>
         </div>
       </div>
-
+      
       {/* Mobile Menu Links */}
       {isOpen && (
         <div className="md:hidden flex flex-col space-y-2 px-4 py-2 bg-gray-800">

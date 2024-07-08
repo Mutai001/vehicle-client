@@ -1,12 +1,16 @@
 // HomePage.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Footer from './Common/Footer';
+import Navbar from './Common/Navbar';
+// import Logo from '../assets/images/logo.jpeg'
 
 const HomePage: React.FC = () => {
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <>
+        <div className="bg-gray-100 min-h-screen">
       {/* Header */}
-      <header className="bg-blue-500 text-white p-4 flex justify-between items-center">
+      {/* <header className="bg-blue-500 text-white p-4 flex justify-between items-center">
         <div className="text-xl font-bold">Vehicle Rental Management System</div>
         <nav className="space-x-4">
           <Link to="/login" className="text-white hover:underline">Login</Link>
@@ -14,7 +18,9 @@ const HomePage: React.FC = () => {
           <Link to="/admin" className="text-white hover:underline">Admin</Link>
           <Link to="/user" className="text-white hover:underline">User</Link>
         </nav>
-      </header>
+      </header> */}
+      {/* <Header /> */}
+      <Navbar/>
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4">
@@ -38,10 +44,12 @@ const HomePage: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-300 text-gray-600 text-center py-4">
-        <p>&copy; 2024 Vehicle Rental Management System. All rights reserved.</p>
-      </footer>
+      
+          <Footer />
+
     </div>
+    </>
+    
   );
 };
 

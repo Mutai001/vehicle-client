@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import Navbar from '../Common/Navbar';
+import Footer from '../Common/Footer';
 
 const schema = z.object({
   email: z.string().email(),
@@ -26,9 +28,10 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
+    <>
     <div className="bg-gray-100 min-h-screen">
       {/* Header */}
-      <header className="bg-blue-500 text-white p-4">
+      {/* <header className="bg-blue-500 text-white p-4">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold">Vehicle Rental Management System</h1>
           <nav className="space-x-4">
@@ -39,7 +42,8 @@ const RegisterPage: React.FC = () => {
             <Link to="/register" className="text-white hover:underline">Register</Link>
           </nav>
         </div>
-      </header>
+      </header> */}
+      <Navbar />
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4 flex justify-center items-center">
@@ -70,10 +74,12 @@ const RegisterPage: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-300 text-gray-600 text-center py-4">
+      {/* <footer className="bg-gray-300 text-gray-600 text-center py-4">
         <p>&copy; 2024 Vehicle Rental Management System. All rights reserved.</p>
-      </footer>
+      </footer> */}
     </div>
+    <Footer/>
+    </>
   );
 };
 
