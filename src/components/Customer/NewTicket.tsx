@@ -1,12 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const NewTicket: React.FC = () => {
+const NewTicketLink: React.FC = () => {
   return (
-    <div className="p-4">
-      <h2>Create a New Ticket</h2>
-      <p>Create a new ticket content here.</p>
-    </div>
+    <Link to="/user/new-ticket" className="text-white hover:underline">
+      New Ticket
+    </Link>
   );
 };
 
-export default NewTicket;
+export default NewTicketLink;

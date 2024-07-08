@@ -1,14 +1,12 @@
 import React from 'react';
 import UserIcon from '../../assets/images/user-icon.png';
 import { Link } from 'react-router-dom';
-// import Navbar from '../Common/Navbar';
 import Footer from '../Common/Footer';
 
 const UserDashboard: React.FC = () => {
   return (
     <>
       <div className="bg-gray-100 min-h-screen">
-        {/* <Navbar /> */}
         
         {/* Header */}
         <header className="bg-gray-800 text-white p-4 flex justify-between items-center">

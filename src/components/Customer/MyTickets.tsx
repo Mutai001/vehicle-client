@@ -1,12 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const MyTickets: React.FC = () => {
+const MyTicketsLink: React.FC = () => {
   return (
-    <div className="p-4">
-      <h2>My Tickets</h2>
-      <p>My tickets content here.</p>
-    </div>
+    <Link to="/user/my-tickets" className="text-white hover:underline">
+      My Tickets
+    </Link>
   );
 };
 
-export default MyTickets;
+export default MyTicketsLink;

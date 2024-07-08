@@ -1,12 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const BookVehicle: React.FC = () => {
+const BookVehicleLink: React.FC = () => {
   return (
-    <div className="p-4">
-      <h2>Book a Vehicle</h2>
-      <p>Book a vehicle content here.</p>
-    </div>
+    <Link to="/user/book-vehicle" className="text-white hover:underline">
+      Book a Vehicle
+    </Link>
   );
 };
 
-export default BookVehicle;
+export default BookVehicleLink;

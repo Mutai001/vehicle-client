@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Footer from './Common/Footer';
-import Navbar from './Common/Navbar';
+// import Navbar from './Common/Navbar';
 // import Logo from '../assets/images/logo.jpeg'
 
 const HomePage: React.FC = () => {
@@ -10,17 +10,17 @@ const HomePage: React.FC = () => {
     <>
         <div className="bg-gray-100 min-h-screen">
       {/* Header */}
-      {/* <header className="bg-blue-500 text-white p-4 flex justify-between items-center">
-        <div className="text-xl font-bold">Vehicle Rental Management System</div>
+      <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
+        <div className="text-xl font-bold">🚗Vehicle Rental Serices</div>
         <nav className="space-x-4">
           <Link to="/login" className="text-white hover:underline">Login</Link>
           <Link to="/register" className="text-white hover:underline">Register</Link>
           <Link to="/admin" className="text-white hover:underline">Admin</Link>
           <Link to="/user" className="text-white hover:underline">User</Link>
         </nav>
-      </header> */}
-      {/* <Header /> */}
-      <Navbar/>
+      </header>
+     
+    
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4">
@@ -43,11 +43,8 @@ const HomePage: React.FC = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      
-          <Footer />
-
     </div>
+    <Footer />
     </>
     
   );
