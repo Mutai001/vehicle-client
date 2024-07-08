@@ -12,19 +12,18 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-gray-600 text-white px-4 py-3 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
-       <img src={Logo} alt=""  className="w-25 h-25"/>
-        <Link to="/" className="text-2xl font-bold ">Car Hire</Link>
-        
-       
+        <Link to="/" className="flex items-center">
+          <img src={Logo} alt="Logo" className="w-10 h-10 mr-2" />
+          <span className="text-lg font-bold">Car Hire</span>
+        </Link>
+
         <div className="hidden md:flex space-x-6">
           <Link to="/" className="hover:text-gray-400">Home</Link>
-          <Link to="/login" className="hover:text-gray-400">Login</Link>
-          <Link to="/register" className="hover:text-gray-400">Register</Link>
           <Link to="/services" className="hover:text-gray-400">Services</Link>
-          <Link to="/vehicles" className="hover:text-gray-400">Vehicles</Link>
+          <Link to="/FeaturedVehicles" className="hover:text-gray-400">Vehicles</Link>
           <Link to="/contact" className="hover:text-gray-400">Contact</Link>
         </div>
-        
+
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <button onClick={toggleMenu} className="text-gray-400 focus:outline-none focus:text-white">
@@ -34,13 +33,11 @@ const Navbar: React.FC = () => {
           </button>
         </div>
       </div>
-      
+
       {/* Mobile Menu Links */}
       {isOpen && (
         <div className="md:hidden flex flex-col space-y-2 px-4 py-2 bg-gray-800">
           <Link to="/" className="hover:text-gray-400">Home</Link>
-          <Link to="/login" className="hover:text-gray-400">Login</Link>
-          <Link to="/register" className="hover:text-gray-400">Register</Link>
           <Link to="/services" className="hover:text-gray-400">Services</Link>
           <Link to="/vehicles" className="hover:text-gray-400">Vehicles</Link>
           <Link to="/contact" className="hover:text-gray-400">Contact</Link>
