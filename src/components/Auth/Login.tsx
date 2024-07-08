@@ -1,6 +1,6 @@
 // LoginPage.tsx
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Navbar from '../Common/Navbar';
 import Footer from '../Common/Footer';
 
@@ -8,19 +8,7 @@ const LoginPage: React.FC = () => {
   return (
     <>
     <div className="bg-gray-100 min-h-screen">
-      {/* Header */}
-      {/* <header className="bg-blue-500 text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Vehicle Rental Management System</h1>
-          <nav className="space-x-4">
-            <Link to="/" className="text-white hover:underline">Home</Link>
-            <Link to="/admin" className="text-white hover:underline">Admin Dashboard</Link>
-            <Link to="/user" className="text-white hover:underline">User Dashboard</Link>
-            <Link to="/login" className="text-white hover:underline">Login</Link>
-            <Link to="/register" className="text-white hover:underline">Register</Link>
-          </nav>
-        </div>
-      </header> */}
+  
       <Navbar />
 
       {/* Main Content */}
