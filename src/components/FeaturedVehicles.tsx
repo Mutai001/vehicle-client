@@ -1,12 +1,14 @@
 import React from 'react';
 import VehicleCard from './VehicleCard'; // Assuming VehicleCard component for displaying each vehicle
-
+// import { object } from 'zod';
+import {picOne, picFive, picFour,picThree,picTwo,picSix} from './images';
 const FeaturedVehicles: React.FC = () => {
   // Example data for featured vehicles
   const featuredVehicles = [
     {
       id: 1,
-      imageUrl: './images/car1.jpg',
+      imageUrl: picOne,
+      //  '/images/car1.jpg',
       make: 'Toyota',
       model: 'Camry',
       year: 2022,
@@ -15,7 +17,8 @@ const FeaturedVehicles: React.FC = () => {
     },
     {
       id: 2,
-      imageUrl: '/images/car2.jpg',
+      imageUrl: picTwo,
+      // '/images/car2.jpg',
       make: 'Ford',
       model: 'F-150',
       year: 2023,
@@ -24,7 +27,8 @@ const FeaturedVehicles: React.FC = () => {
     },
     {
       id: 3,
-      imageUrl: '/images/car3.jpg',
+      imageUrl: picThree,
+      // '/images/car3.jpg',
       make: 'Honda',
       model: 'CR-V',
       year: 2022,
@@ -33,7 +37,8 @@ const FeaturedVehicles: React.FC = () => {
     },
     {
       id: 4,
-      imageUrl: '/images/car4.jpg',
+      imageUrl: picFour,
+      // '/images/car4.jpg',
       make: 'BMW',
       model: 'X5',
       year: 2023,
@@ -42,7 +47,8 @@ const FeaturedVehicles: React.FC = () => {
     },
     {
       id: 5,
-      imageUrl: '/images/car5.jpg',
+      imageUrl: picFive,
+      // '/images/car5.jpg',
       make: 'Tesla',
       model: 'Model S',
       year: 2023,
@@ -51,7 +57,8 @@ const FeaturedVehicles: React.FC = () => {
     },
      {
       id: 6,
-      imageUrl: '/images/car5.jpg',
+      imageUrl: picSix, 
+      // '/images/car5.jpg',
       make: 'Ferrari',
       model: '296 GTS',
       year: 2023,

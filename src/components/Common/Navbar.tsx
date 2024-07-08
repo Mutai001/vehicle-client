@@ -19,11 +19,11 @@ const Navbar: React.FC = () => {
 
         <div className="hidden md:flex space-x-6">
           <Link to="/" className="hover:text-gray-400">Home</Link>
-          <Link to="/services" className="hover:text-gray-400">Services</Link>
-          <Link to="/FeaturedVehicles" className="hover:text-gray-400">Vehicles</Link>
-          <Link to="/contact" className="hover:text-gray-400">Contact</Link>
+          {/* <Link to="/services" className="hover:text-gray-400">Services</Link> */}
+          {/* <Link to="/FeaturedVehicles" className="hover:text-gray-400">Vehicles</Link> */}
+          {/* <Link to="/contact" className="hover:text-gray-400">Contact</Link> */}
         </div>
-
+        
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <button onClick={toggleMenu} className="text-gray-400 focus:outline-none focus:text-white">

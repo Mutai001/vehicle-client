@@ -18,11 +18,11 @@ const LoginPage: React.FC = () => {
           <form className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-gray-600">Email Address</label>
-              <input type="email" id="email" name="email" className="form-input mt-1 block w-full" />
+              <input type="email" id="email" name="email" className="form-input mt-1 block w-full bg-gray-300" />
             </div>
             <div>
               <label htmlFor="password" className="block text-gray-600">Password</label>
-              <input type="password" id="password" name="password" className="form-input mt-1 block w-full" />
+              <input type="password" id="password" name="password" className="form-input mt-1 block w-full  bg-gray-300" />
             </div>
             <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Login</button>
           </form>

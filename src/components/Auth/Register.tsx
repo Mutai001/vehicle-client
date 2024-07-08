@@ -52,12 +52,12 @@ const RegisterPage: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-gray-600">Email Address</label>
-              <input type="email" id="email" {...register('email')} className="form-input mt-1 block w-full" />
+              <input type="email" id="email" {...register('email')} className="form-input mt-1 block w-full  bg-gray-300" />
               {errors.email && <span className="text-red-500">{errors.email.message}</span>}
             </div>
             <div>
               <label htmlFor="password" className="block text-gray-600">Password</label>
-              <input type="password" id="password" {...register('password')} className="form-input mt-1 block w-full" />
+              <input type="password" id="password" {...register('password')} className="form-input mt-1 block w-full  bg-gray-300" />
               {errors.password && <span className="text-red-500">{errors.password.message}</span>}
             </div>
             <div>
