@@ -1,51 +1,36 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import Navbar from '../Common/Navbar'; // Adjust the import path as necessary
+import Sidebar from '../Common/Sidebar'; // Adjust the import path as necessary
+import AdminOverview from './AdminOverview'; // New component
+import ManageVehicles from './ManageVehicles'; // New component
+import ManageUsers from './ManageUsers'; // New component
+import Reports from './Reports'; // New component
+import LocationsAndBranches from './LocationsBranches'; // New component
+import SupportTickets from './SupportTickets'; // New component
+import FleetManagement from './FleetManagement'; // New component
 
-const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
+const AdminDashboard: React.FC = () => {
   return (
-    <nav className="bg-gray-800 text-white px-4 py-3 shadow-md">
-      <div className="container mx-auto flex items-center justify-between">
-       
+    <div className="flex min-h-screen">
+      <Sidebar />
 
-        {/* Links Section */}
-        <div className="hidden md:flex space-x-6">
-          <Link to="/" className="hover:text-gray-400">Home</Link>
-          <Link to="/login" className="hover:text-gray-400">Login</Link>
-          <Link to="/register" className="hover:text-gray-400">Register</Link>
-          <Link to="/services" className="hover:text-gray-400">Services</Link>
-          <Link to="/vehicles" className="hover:text-gray-400">Vehicles</Link>
-          <Link to="/contact" className="hover:text-gray-400">Contact</Link>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center">
-          <button onClick={toggleMenu} className="text-gray-400 focus:outline-none focus:text-white">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-          </button>
-        </div>
+      <div className="flex-grow bg-gray-100">
+        <Navbar />
+        <main className="p-6">
+          <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <AdminOverview />
+            <ManageVehicles />
+            <ManageUsers />
+            <Reports />
+            <LocationsAndBranches />
+            <SupportTickets />
+            <FleetManagement />
+          </div>
+        </main>
       </div>
-
-      {/* Mobile Menu Links */}
-      {isOpen && (
-        <div className="md:hidden flex flex-col space-y-2 px-4 py-2 bg-gray-800">
-          <Link to="/" className="hover:text-gray-400">Home</Link>
-          <Link to="/login" className="hover:text-gray-400">Login</Link>
-          <Link to="/register" className="hover:text-gray-400">Register</Link>
-          <Link to="/services" className="hover:text-gray-400">Services</Link>
-          <Link to="/vehicles" className="hover:text-gray-400">Vehicles</Link>
-          <Link to="/contact" className="hover:text-gray-400">Contact</Link>
-        </div>
-      )}
-    </nav>
+    </div>
   );
 };
 
-export default Navbar;
+export default AdminDashboard;
