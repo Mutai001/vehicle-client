@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from '../components/Common/Sidebar';
+import Sidebar from '../components/Customer/Sidebar';
 import UserDashboardContent from '../components/Customer/Dashboard';
 
 const UserDashboard: React.FC = () => {

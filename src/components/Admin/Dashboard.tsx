@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../Common/Navbar'; // Adjust the import path as necessary
-import Sidebar from '../Common/Sidebar'; // Adjust the import path as necessary
+import AdminSidebar from './sidebar'; // Adjust the import path as necessary
 import AdminOverview from './AdminOverview'; // New component
 import ManageVehicles from './ManageVehicles'; // New component
 import ManageUsers from './ManageUsers'; // New component
@@ -12,7 +12,7 @@ import FleetManagement from './FleetManagement'; // New component
 const AdminDashboard: React.FC = () => {
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <AdminSidebar />
 
       <div className="flex-grow bg-gray-100">
         <Navbar />
