@@ -10,22 +10,33 @@ import BookedVehicles from './components/Customer/BookedVehicles';
 import MyTickets from './components/Customer/MyTickets';
 import NewTicket from './components/Customer/NewTicket';
 import LogoutLink from './components/Customer/Logout';
+import FleetManagement from './components/Admin/FleetManagement';
+import ManageVehicles from './components/Admin/ManageVehicles';
+import ManageUsers from './components/Admin/ManageUsers';
+import Reports from './components/Admin/Reports';
+import Settings from './components/Admin/Settings';
 
 const App: React.FC = () => {
   return (
     <Routes>
-      <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/user" element={<UserDashboard />} />
-      <Route path="/login" element={<LoginPage />} />
+       <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/user" element={<UserDashboard />} />
+       <Route path="/login" element={<LoginPage />} />
        <Route path="/logout" element={<LogoutLink />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/" element={<HomePage />} />
-      <Route path="*" element={<NotFound />} />
-      <Route path="/user/dashboard" Component={UserDashboard} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/user/dashboard" Component={UserDashboard} />
         <Route path="/user/book-vehicle" Component={BookVehicle} />
         <Route path="/user/booked-vehicles" Component={BookedVehicles} />
         <Route path="/user/my-tickets" Component={MyTickets} />
         <Route path="/user/new-ticket" Component={NewTicket} />
+        <Route path="/admin/dashboard" Component={AdminDashboard} />
+        <Route path="/admin/manage-vehicles" Component={ManageVehicles} />
+        <Route path="/admin/manage-users" Component={ManageUsers} />
+        <Route path="/admin/assessment-reports" Component={Reports} />
+        <Route path="/admin/manage-fleet" Component={FleetManagement} />
+        <Route path="/admin/setting" Component={Settings} />
     </Routes>
   );
 };
