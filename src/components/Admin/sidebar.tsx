@@ -1,6 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import PeopleIcon from '@mui/icons-material/People';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import SupportIcon from '@mui/icons-material/Support';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const AdminSidebar: React.FC = () => {
   return (
@@ -9,49 +17,49 @@ const AdminSidebar: React.FC = () => {
         <ul className="space-y-2">
           <li>
             <Link to="/admin/dashboard" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-              {/* <span className="material-icons">dashboard</span> */}
+              <DashboardIcon />
               <span className="ml-2">Dashboard Overview</span>
             </Link>
           </li>
           <li>
             <Link to="/admin/manage-vehicles" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-              {/* <span className="material-icons">directions_car</span> */}
+              <DirectionsCarIcon />
               <span className="ml-2">Manage Vehicles</span>
             </Link>
           </li>
           <li>
             <Link to="/admin/manage-users" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-              {/* <span className="material-icons">people</span> */}
+              <PeopleIcon />
               <span className="ml-2">Manage Users</span>
             </Link>
           </li>
           <li>
             <Link to="/admin/reports" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-              {/* <span className="material-icons">assessment</span> */}
+              <AssessmentIcon />
               <span className="ml-2">Reports</span>
             </Link>
           </li>
           <li>
             <Link to="/admin/locations" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-              {/* <span className="material-icons">location_on</span> */}
+              <LocationOnIcon />
               <span className="ml-2">Location and Branches</span>
             </Link>
           </li>
           <li>
             <Link to="/admin/support-tickets" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-              {/* <span className="material-icons">support</span> */}
+              <SupportIcon />
               <span className="ml-2">Customer Support Tickets</span>
             </Link>
           </li>
           <li>
             <Link to="/admin/fleet-management" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-              {/* <span className="material-icons">local_shipping</span> */}
+              <LocalShippingIcon />
               <span className="ml-2">Fleet Management</span>
             </Link>
           </li>
           <li>
             <Link to="/admin/settings" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-              {/* <span className="material-icons">settings</span> */}
+              <SettingsIcon />
               <span className="ml-2">Settings</span>
             </Link>
           </li>
@@ -60,7 +68,7 @@ const AdminSidebar: React.FC = () => {
       
       <div className="pt-4 border-t border-gray-600">
         <Link to="/logout" className="flex items-center px-4 py-2 rounded hover:bg-gray-700">
-          {/* <span className="material-icons">logout</span> */}
+          <LogoutIcon />
           <span className="ml-2">Logout</span>
         </Link>
       </div>
