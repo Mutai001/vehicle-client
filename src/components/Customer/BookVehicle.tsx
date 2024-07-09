@@ -25,6 +25,55 @@ const BookVehicle: React.FC = () => {
       price: 120,
       available: true,
     },
+    {
+      id: 1,
+      vehicleName: 'Toyota Camry',
+      type: 'Sedan',
+      price: 80,
+      available: true,
+    },
+    {
+      id: 2,
+      vehicleName: 'Honda CR-V',
+      type: 'SUV',
+      price: 100,
+      available: false,
+    },
+    {
+      id: 3,
+      vehicleName: 'Ford Mustang',
+      type: 'Sports Car',
+      price: 120,
+      available: true,
+    },
+    {
+      id: 2,
+      vehicleName: 'Honda CR-V',
+      type: 'SUV',
+      price: 100,
+      available: false,
+    },
+    {
+      id: 3,
+      vehicleName: 'Ford Mustang',
+      type: 'Sports Car',
+      price: 120,
+      available: true,
+    },
+    {
+      id: 1,
+      vehicleName: 'Toyota Camry',
+      type: 'Sedan',
+      price: 80,
+      available: true,
+    },
+    {
+      id: 2,
+      vehicleName: 'Honda CR-V',
+      type: 'SUV',
+      price: 100,
+      available: false,
+    },
     // Add more vehicles as needed
   ];
 
