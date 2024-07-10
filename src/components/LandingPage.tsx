@@ -1,14 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Container, Box, Grid, Paper } from '@mui/material';
-import { CarRental, Login, PersonAdd, AdminPanelSettings, Person } from '@mui/icons-material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Container,
+  Box,
+  Grid,
+  Paper,
+  TextField,
+  IconButton,
+} from '@mui/material';
+import {
+  CarRental,
+  Login,
+  PersonAdd,
+  AdminPanelSettings,
+  Person,
+  DirectionsCar,
+  BookOnline,
+  SupportAgent,
+  LocationOn,
+  Email,
+  Phone,
+  Send,
+} from '@mui/icons-material';
 import Footer from './Common/Footer';
-import FeaturedVehicles from './FeaturedVehicles'; // Import the FeaturedVehicles component
-import CarImage from '../assets/images/hero-image.png'; // Example image import
-import OnlineSVG from '../assets/online.svg'; // Example SVG import
-import ServicesSVG from '../assets/services.svg'; // Example SVG import
-import ContactSVG from '../assets/contact.svg'; // Example SVG import
-import GetInTouchSVG from '../assets/get-in-touch.svg'; // Example SVG import
+import FeaturedVehicles from './FeaturedVehicles';
 import HeroImage from '../assets/images/Car1.png'; // Example hero image import
 
 const HomePage: React.FC = () => {
@@ -18,7 +37,7 @@ const HomePage: React.FC = () => {
         {/* Header */}
         <AppBar position="static" style={{ backgroundColor: '#424242' }}>
           <Toolbar>
-            <CarRental fontSize="large" />
+            <CarRental fontSize="large" style={{ color: 'red' }} />
             <Typography variant="h6" style={{ flexGrow: 1, marginLeft: 8 }}>
               Vehicle Rental Services
             </Typography>
@@ -40,14 +59,16 @@ const HomePage: React.FC = () => {
             alignItems: 'center',
             color: 'white',
             textAlign: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            animation: 'fadeIn 2s',
+            position: 'relative',
           }}
         >
           <Container>
-            <Typography variant="h2" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
+            <Typography variant="h2" style={{ fontWeight: 'bold', marginBottom: '16px', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
               Welcome to Vehicle Rental Management System
             </Typography>
-            <Typography variant="h5" style={{ marginBottom: '32px' }}>
+            <Typography variant="h5" style={{ marginBottom: '32px', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
               Your ultimate destination for renting vehicles
             </Typography>
             <Button
@@ -56,11 +77,21 @@ const HomePage: React.FC = () => {
               variant="contained"
               color="primary"
               size="large"
+              style={{ animation: 'pulse 2s infinite' }}
             >
               Get Started
             </Button>
           </Container>
         </Box>
+
+        {/* Navigation Bar */}
+        <AppBar position="static" color="default" style={{ marginTop: '16px' }}>
+          <Toolbar>
+            <Button color="inherit" component={Link} to="#featured-vehicles">Featured Vehicles</Button>
+            <Button color="inherit" component={Link} to="#services">Services</Button>
+            <Button color="inherit" component={Link} to="#contact-us">Contact Us</Button>
+          </Toolbar>
+        </AppBar>
 
         {/* Main Content */}
         <Container style={{ padding: '32px 0' }}>
@@ -78,16 +109,12 @@ const HomePage: React.FC = () => {
                     Get Started
                   </Button>
                 </Box>
-                <Box style={{ marginLeft: '16px', maxWidth: '200px' }}>
-                  <img src={CarImage} alt="Car" style={{ width: '100%' }} />
-                </Box>
+                <DirectionsCar fontSize="large" style={{ marginLeft: '16px', color: '#424242' }} />
               </Paper>
             </Grid>
             <Grid item xs={12} md={6}>
               <Paper style={{ padding: '16px', display: 'flex', alignItems: 'center' }}>
-                <Box style={{ marginRight: '16px', maxWidth: '200px' }}>
-                  <img src={OnlineSVG} alt="Online Booking" style={{ width: '100%' }} />
-                </Box>
+                <BookOnline fontSize="large" style={{ marginRight: '16px', color: '#424242' }} />
                 <Box style={{ flex: 1 }}>
                   <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
                     Online Booking System
@@ -106,12 +133,10 @@ const HomePage: React.FC = () => {
           {/* Featured Vehicles Section */}
           <FeaturedVehicles />
 
-          <Grid container spacing={4} style={{ marginBottom: '48px' }}>
+          <Grid container spacing={4} id="services" style={{ marginBottom: '48px' }}>
             <Grid item xs={12}>
               <Paper style={{ padding: '16px', textAlign: 'center' }}>
-                <Box style={{ maxWidth: '200px', margin: '0 auto' }}>
-                  <img src={ServicesSVG} alt="Our Services" style={{ width: '100%' }} />
-                </Box>
+                <SupportAgent fontSize="large" style={{ color: '#424242', marginBottom: '16px' }} />
                 <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
                   Our Services
                 </Typography>
@@ -151,12 +176,10 @@ const HomePage: React.FC = () => {
             </Grid>
           </Grid>
 
-          <Grid container spacing={4} style={{ marginBottom: '48px' }}>
+          <Grid container spacing={4} id="contact-us" style={{ marginBottom: '48px' }}>
             <Grid item xs={12}>
               <Paper style={{ padding: '16px', textAlign: 'center' }}>
-                <Box style={{ maxWidth: '200px', margin: '0 auto' }}>
-                  <img src={ContactSVG} alt="Contact Us" style={{ width: '100%' }} />
-                </Box>
+                <LocationOn fontSize="large" style={{ color: '#424242', marginBottom: '16px' }} />
                 <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
                   Contact Us
                 </Typography>
@@ -186,21 +209,54 @@ const HomePage: React.FC = () => {
             </Grid>
           </Grid>
 
+          {/* Get In Touch Section */}
           <Grid container spacing={4} style={{ marginBottom: '48px' }}>
             <Grid item xs={12}>
               <Paper style={{ padding: '16px', textAlign: 'center' }}>
-                <Box style={{ maxWidth: '200px', margin: '0 auto' }}>
-                  <img src={GetInTouchSVG} alt="Get In Touch" style={{ width: '100%' }} />
-                </Box>
                 <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
                   Get In Touch
                 </Typography>
-                <Typography variant="body1" style={{ marginBottom: '16px' }}>
+                <Typography variant="body1" style={{ marginBottom: '32px' }}>
                   Have questions or need assistance? We're here to help.
                 </Typography>
-                <Button component={Link} to="/contact" variant="contained" color="primary">
-                  Contact Us
-                </Button>
+                <form noValidate autoComplete="off">
+                  <Grid container spacing={4}>
+                    <Grid item xs={12} md={6}>
+                      <TextField
+                        fullWidth
+                        label="Name"
+                        variant="outlined"
+                        margin="normal"
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <TextField
+                        fullWidth
+                        label="Email"
+                        variant="outlined"
+                        margin="normal"
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Message"
+                        variant="outlined"
+                        margin="normal"
+                        multiline
+                        rows={4}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button variant="contained" color="primary" startIcon={<Send />}>
+                        Send Message
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </form>
               </Paper>
             </Grid>
           </Grid>
