@@ -10,6 +10,9 @@ import {
   Grid,
   Paper,
   TextField,
+  IconButton,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import {
   CarRental,
@@ -28,6 +31,7 @@ import Footer from './Common/Footer'; // Import your Footer component here
 import HeroImage from '../assets/images/Car1.png'; // Example hero image import
 import HeroImage2 from '../assets/images/car2.png'; // Another hero image import
 import HeroImage3 from '../assets/images/car3.png'; // Another hero image import
+import MapImage from '../assets/images/map.png'; // Example map image import
 
 const HomePage: React.FC = () => {
   const featuredVehiclesRef = useRef<HTMLDivElement>(null);
@@ -59,14 +63,25 @@ const HomePage: React.FC = () => {
     }
   };
 
+  // For dropdown menu
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh', fontFamily: 'Roboto, sans-serif' }}>
         {/* Header */}
         <AppBar position="static" style={{ backgroundColor: '#424242' }}>
           <Toolbar>
-            <CarRental fontSize="large" style={{ color: 'red' }} />
-            <Typography variant="h6" style={{ flexGrow: 1, marginLeft: 8 }}>
+            <IconButton component={Link} to="/" edge="start" color="inherit" aria-label="home">
+              <CarRental fontSize="large" style={{ color: '#ffc107' }} />
+            </IconButton>
+            <Typography variant="h6" style={{ flexGrow: 1, marginLeft: 8, color: '#ffffff' }}>
               Vehicle Rental Services
             </Typography>
             <Button color="inherit" onClick={scrollToFeaturedVehicles}>
@@ -82,27 +97,30 @@ const HomePage: React.FC = () => {
               Get In Touch
             </Button>
 
-            {/* Admin Menu */}
+            {/* Combined User and Admin Menu */}
             <Button
               color="inherit"
-              startIcon={<AdminPanelSettings />}
               endIcon={<ArrowDropDown />}
-              component={Link}
-              to="/admin"
+              onClick={handleMenuClick}
+              aria-controls="user-admin-menu"
+              aria-haspopup="true"
             >
-              Admin
+              User & Admin
             </Button>
-
-            {/* User Menu */}
-            <Button
-              color="inherit"
-              startIcon={<Person />}
-              endIcon={<ArrowDropDown />}
-              component={Link}
-              to="/user"
+            <Menu
+              id="user-admin-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
             >
-              User
-            </Button>
+              <MenuItem component={Link} to="/user" onClick={handleClose}>
+                User
+              </MenuItem>
+              <MenuItem component={Link} to="/admin" onClick={handleClose}>
+                Admin
+              </MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
 
@@ -356,6 +374,8 @@ const HomePage: React.FC = () => {
                       <Typography variant="body1">
                         Our office is located at 123 Rental St, Car City.
                       </Typography>
+                      {/* Example map image */}
+                      <img src={MapImage} alt="Map" style={{ width: '100%', marginTop: '8px' }} />
                     </Paper>
                   </Grid>
                 </Grid>
