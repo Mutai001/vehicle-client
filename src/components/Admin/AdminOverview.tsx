@@ -9,6 +9,18 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Avatar,
+  Container,
+  Paper
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 ChartJS.register(
   CategoryScale,
@@ -20,21 +32,23 @@ ChartJS.register(
 );
 
 const AdminOverview: React.FC = () => {
+  const theme = useTheme();
+  
   const data = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
     datasets: [
       {
         label: 'Total Bookings',
         data: [65, 59, 80, 81, 56, 55],
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: theme.palette.primary.light,
+        borderColor: theme.palette.primary.main,
         borderWidth: 1,
       },
       {
         label: 'Revenue Generated',
         data: [28, 48, 40, 19, 86, 27],
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: theme.palette.secondary.light,
+        borderColor: theme.palette.secondary.main,
         borderWidth: 1,
       },
     ],
@@ -54,12 +68,63 @@ const AdminOverview: React.FC = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-2">Dashboard Overview</h2>
-      <img src="path/to/admin-image.jpg" alt="Admin Overview" className="w-full h-32 object-cover rounded mb-2" />
-      <p className="text-gray-700 mb-4">Summary of total bookings, revenue generated, and other key metrics using bar, scatter, or any other charts.</p>
-      <Bar data={data} options={options} />
-    </div>
+    <Container maxWidth="lg">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Dashboard Overview
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  <Avatar sx={{ backgroundColor: theme.palette.primary.main }}>
+                    <DirectionsCarIcon />
+                  </Avatar>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="h6" component="h2">
+                    Total Bookings
+                  </Typography>
+                  <Typography color="textSecondary">
+                    Overview of total bookings for the selected period.
+                  </Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  <Avatar sx={{ backgroundColor: theme.palette.secondary.main }}>
+                    <MonetizationOnIcon />
+                  </Avatar>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="h6" component="h2">
+                    Revenue Generated
+                  </Typography>
+                  <Typography color="textSecondary">
+                    Overview of revenue generated for the selected period.
+                  </Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" component="h2" gutterBottom>
+              Bookings and Revenue Chart
+            </Typography>
+            <Bar data={data} options={options} />
+          </Paper>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

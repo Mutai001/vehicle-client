@@ -1,10 +1,18 @@
 import React from 'react';
+import AdminSidebar from '../Admin/sidebar'; // Assuming this is the correct path to your AdminSidebar component
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   Tooltip,
   Legend,
 } from 'chart.js';
+import {
+  Container,
+  Grid,
+  Paper,
+  Typography,
+} from '@mui/material';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'; // Importing DirectionsCarIcon from Material UI icons
 
 ChartJS.register(Tooltip, Legend);
 
@@ -67,11 +75,26 @@ const ManageVehicles: React.FC = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-2">Manage Vehicles</h2>
-      <img src="path/to/vehicle-image.jpg" alt="Manage Vehicles" className="w-full h-32 object-cover rounded mb-2" />
-      <p className="text-gray-700 mb-4">CRUD operations for adding, editing, and deleting vehicles.</p>
-      <Bar data={data} options={options} />
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <AdminSidebar /> {/* Include AdminSidebar component */}
+      <Container maxWidth="lg" style={{ flexGrow: 1, paddingTop: '20px' }}>
+        <Grid container spacing={4} alignItems="flex-start">
+          <Grid item xs={12} md={9}>
+            <Paper className="bg-white p-4 rounded-lg shadow-md">
+              <Typography variant="h5" className="font-bold mb-2">
+                <DirectionsCarIcon fontSize="large" style={{ marginRight: '10px' }} />
+                Manage Vehicles
+              </Typography>
+              <Typography variant="body1" className="text-gray-700 mb-4">
+                CRUD operations for adding, editing, and deleting vehicles.
+              </Typography>
+              <div style={{ height: '400px' }}> {/* Adjust height as necessary */}
+                <Bar data={data} options={options} />
+              </div>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
     </div>
   );
 };
