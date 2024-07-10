@@ -32,7 +32,7 @@ const Sidebar: React.FC = () => {
           <span>New Ticket</span>
         </Link>
       </nav>
-      <div className="mt-auto">
+      <div className="mt-auto border-t border-gray-600">
         <Link to="/logout" className="flex items-center space-x-2 text-white hover:bg-gray-600 p-2 rounded">
           <LogoutIcon />
           <span>Logout</span>

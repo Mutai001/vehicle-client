@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, Container, Box, Grid, Paper } from '@mui/material';
+import { CarRental, Login, PersonAdd, AdminPanelSettings, Person } from '@mui/icons-material';
 import Footer from './Common/Footer';
 import FeaturedVehicles from './FeaturedVehicles'; // Import the FeaturedVehicles component
 import CarImage from '../assets/images/hero-image.png'; // Example image import
@@ -12,117 +14,198 @@ import HeroImage from '../assets/images/Car1.png'; // Example hero image import
 const HomePage: React.FC = () => {
   return (
     <>
-      <div className="bg-gray-100 min-h-screen">
+      <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh', fontFamily: 'Roboto, sans-serif' }}>
         {/* Header */}
-        <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
-          <div className="text-xl font-bold">🚗 Vehicle Rental Services</div>
-          <nav className="space-x-4">
-            <Link to="/login" className="text-white hover:underline">Login</Link>
-            <Link to="/register" className="text-white hover:underline">Register</Link>
-            <Link to="/admin" className="text-white hover:underline">Admin</Link>
-            <Link to="/user" className="text-white hover:underline">User</Link>
-          </nav>
-        </header>
+        <AppBar position="static" style={{ backgroundColor: '#424242' }}>
+          <Toolbar>
+            <CarRental fontSize="large" />
+            <Typography variant="h6" style={{ flexGrow: 1, marginLeft: 8 }}>
+              Vehicle Rental Services
+            </Typography>
+            <Button color="inherit" component={Link} to="/login" startIcon={<Login />}>Login</Button>
+            <Button color="inherit" component={Link} to="/register" startIcon={<PersonAdd />}>Register</Button>
+            <Button color="inherit" component={Link} to="/admin" startIcon={<AdminPanelSettings />}>Admin</Button>
+            <Button color="inherit" component={Link} to="/user" startIcon={<Person />}>User</Button>
+          </Toolbar>
+        </AppBar>
 
         {/* Hero Section */}
-        <section className="bg-cover bg-center h-96 flex items-center" style={{ backgroundImage: `url(${HeroImage})`}}>
-          <div className="container mx-auto text-white text-center">
-            <h1 className="text-5xl font-bold mb-4">Welcome to Vehicle Rental Management System</h1>
-            <p className="text-2xl mb-8">Your ultimate destination for renting vehicles</p>
-            <Link to="/user" className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg text-xl">Get Started</Link>
-          </div>
-        </section>
+        <Box
+          style={{
+            backgroundImage: `url(${HeroImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            height: '500px',
+            display: 'flex',
+            alignItems: 'center',
+            color: 'white',
+            textAlign: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Container>
+            <Typography variant="h2" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
+              Welcome to Vehicle Rental Management System
+            </Typography>
+            <Typography variant="h5" style={{ marginBottom: '32px' }}>
+              Your ultimate destination for renting vehicles
+            </Typography>
+            <Button
+              component={Link}
+              to="/user"
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              Get Started
+            </Button>
+          </Container>
+        </Box>
 
         {/* Main Content */}
-        <main className="container mx-auto py-8 px-4">
-          <section className="mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold mb-4">Book Your Vehicle</h2>
-                  <p className="text-lg text-gray-800">
+        <Container style={{ padding: '32px 0' }}>
+          <Grid container spacing={4} style={{ marginBottom: '48px' }}>
+            <Grid item xs={12} md={6}>
+              <Paper style={{ padding: '16px', display: 'flex', alignItems: 'center' }}>
+                <Box style={{ flex: 1 }}>
+                  <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
+                    Book Your Vehicle
+                  </Typography>
+                  <Typography variant="body1" style={{ marginBottom: '16px' }}>
                     Find and book your desired vehicle with ease.
-                  </p>
-                  <Link to="/user" className="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">Get Started</Link>
-                </div>
-                <img src={CarImage} alt="Car" className="md:ml-8 max-w-xs md:max-w-none" style={{ maxWidth: '200px' }} />
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-                <img src={OnlineSVG} alt="Online Booking" className="md:mr-8 max-w-xs md:max-w-none" style={{ maxWidth: '200px' }} />
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold mb-4">Online Booking System</h2>
-                  <p className="text-lg text-gray-800">
+                  </Typography>
+                  <Button component={Link} to="/user" variant="contained" color="primary">
+                    Get Started
+                  </Button>
+                </Box>
+                <Box style={{ marginLeft: '16px', maxWidth: '200px' }}>
+                  <img src={CarImage} alt="Car" style={{ width: '100%' }} />
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Paper style={{ padding: '16px', display: 'flex', alignItems: 'center' }}>
+                <Box style={{ marginRight: '16px', maxWidth: '200px' }}>
+                  <img src={OnlineSVG} alt="Online Booking" style={{ width: '100%' }} />
+                </Box>
+                <Box style={{ flex: 1 }}>
+                  <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
+                    Online Booking System
+                  </Typography>
+                  <Typography variant="body1" style={{ marginBottom: '16px' }}>
                     Manage your bookings online from anywhere, anytime.
-                  </p>
-                  <Link to="/user" className="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">Learn More</Link>
-                </div>
-              </div>
-            </div>
-          </section>
+                  </Typography>
+                  <Button component={Link} to="/user" variant="contained" color="primary">
+                    Learn More
+                  </Button>
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
 
           {/* Featured Vehicles Section */}
           <FeaturedVehicles />
 
-          <section className="mb-12">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <img src={ServicesSVG} alt="Our Services" className="mb-6 mx-auto max-w-xs md:max-w-none" style={{ maxWidth: '200px' }} />
-              <h2 className="text-3xl font-bold mb-4 text-center">Our Services</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-gray-200 p-4 rounded-lg shadow-md">
-                  <h3 className="text-xl font-bold mb-2">Vehicle Selection</h3>
-                  <p className="text-gray-800">
-                    Browse a wide range of vehicles categorized by type, make, and model.
-                  </p>
-                </div>
-                <div className="bg-gray-200 p-4 rounded-lg shadow-md">
-                  <h3 className="text-xl font-bold mb-2">Booking System</h3>
-                  <p className="text-gray-800">
-                    Easily book vehicles based on your preferences and schedule.
-                  </p>
-                </div>
-                <div className="bg-gray-200 p-4 rounded-lg shadow-md">
-                  <h3 className="text-xl font-bold mb-2">Customer Support</h3>
-                  <p className="text-gray-800">
-                    Access dedicated customer support for any inquiries or assistance needed.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
+          <Grid container spacing={4} style={{ marginBottom: '48px' }}>
+            <Grid item xs={12}>
+              <Paper style={{ padding: '16px', textAlign: 'center' }}>
+                <Box style={{ maxWidth: '200px', margin: '0 auto' }}>
+                  <img src={ServicesSVG} alt="Our Services" style={{ width: '100%' }} />
+                </Box>
+                <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
+                  Our Services
+                </Typography>
+                <Grid container spacing={4}>
+                  <Grid item xs={12} md={4}>
+                    <Paper style={{ padding: '16px', backgroundColor: '#eeeeee' }}>
+                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+                        Vehicle Selection
+                      </Typography>
+                      <Typography variant="body1">
+                        Browse a wide range of vehicles categorized by type, make, and model.
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <Paper style={{ padding: '16px', backgroundColor: '#eeeeee' }}>
+                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+                        Booking System
+                      </Typography>
+                      <Typography variant="body1">
+                        Easily book vehicles based on your preferences and schedule.
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <Paper style={{ padding: '16px', backgroundColor: '#eeeeee' }}>
+                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+                        Customer Support
+                      </Typography>
+                      <Typography variant="body1">
+                        Access dedicated customer support for any inquiries or assistance needed.
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+          </Grid>
 
-          <section className="mb-12">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <img src={ContactSVG} alt="Contact Us" className="mb-6 mx-auto max-w-xs md:max-w-none" style={{ maxWidth: '200px' }} />
-              <h2 className="text-3xl font-bold mb-4 text-center">Contact Us</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-gray-200 p-4 rounded-lg shadow-md">
-                  <h3 className="text-xl font-bold mb-2">Location</h3>
-                  <p className="text-gray-800">
-                    123 Vehicle Rental Street, City, Country
-                  </p>
-                </div>
-                <div className="bg-gray-200 p-4 rounded-lg shadow-md">
-                  <h3 className="text-xl font-bold mb-2">Email</h3>
-                  <p className="text-gray-800">
-                    info@vehiclerental.com
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
+          <Grid container spacing={4} style={{ marginBottom: '48px' }}>
+            <Grid item xs={12}>
+              <Paper style={{ padding: '16px', textAlign: 'center' }}>
+                <Box style={{ maxWidth: '200px', margin: '0 auto' }}>
+                  <img src={ContactSVG} alt="Contact Us" style={{ width: '100%' }} />
+                </Box>
+                <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
+                  Contact Us
+                </Typography>
+                <Grid container spacing={4}>
+                  <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: '16px', backgroundColor: '#eeeeee' }}>
+                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+                        Location
+                      </Typography>
+                      <Typography variant="body1">
+                        123 Vehicle Rental Street, City, Country
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: '16px', backgroundColor: '#eeeeee' }}>
+                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+                        Email
+                      </Typography>
+                      <Typography variant="body1">
+                        info@vehiclerental.com
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+          </Grid>
 
-          <section className="mb-12">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <img src={GetInTouchSVG} alt="Get In Touch" className="mb-6 mx-auto max-w-xs md:max-w-none" style={{ maxWidth: '200px' }} />
-              <h2 className="text-3xl font-bold mb-4 text-center">Get In Touch</h2>
-              <p className="text-lg text-gray-800 text-center">
-                Have questions or need assistance? We're here to help.
-              </p>
-              <Link to="/contact" className="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">Contact Us</Link>
-            </div>
-          </section>
+          <Grid container spacing={4} style={{ marginBottom: '48px' }}>
+            <Grid item xs={12}>
+              <Paper style={{ padding: '16px', textAlign: 'center' }}>
+                <Box style={{ maxWidth: '200px', margin: '0 auto' }}>
+                  <img src={GetInTouchSVG} alt="Get In Touch" style={{ width: '100%' }} />
+                </Box>
+                <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
+                  Get In Touch
+                </Typography>
+                <Typography variant="body1" style={{ marginBottom: '16px' }}>
+                  Have questions or need assistance? We're here to help.
+                </Typography>
+                <Button component={Link} to="/contact" variant="contained" color="primary">
+                  Contact Us
+                </Button>
+              </Paper>
+            </Grid>
+          </Grid>
 
-        </main>
+        </Container>
 
       </div>
       <Footer />
