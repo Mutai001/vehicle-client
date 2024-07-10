@@ -5,6 +5,12 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import {
+  Container,
+  Paper,
+  Typography,
+} from '@mui/material';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 
 ChartJS.register(Tooltip, Legend);
 
@@ -59,13 +65,21 @@ const LocationsAndBranches: React.FC = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-2">Location and Branches</h2>
-      <img src="path/to/locations-image.jpg" alt="Locations and Branches" className="w-full h-32 object-cover rounded mb-2" />
-      <p className="text-gray-700 mb-4">Manage rental locations and branches.</p>
-      <p>Manage locations and branches content here.</p>
-      <Pie data={data} options={options} />
-    </div>
+    <Container maxWidth="md">
+      <Paper sx={{ p: 3, mt: 3 }}>
+        <Typography variant="h5" component="h2" gutterBottom>
+          <StorefrontIcon fontSize="large" style={{ marginRight: '10px' }} />
+          Locations and Branches
+        </Typography>
+        <Typography variant="body1" color="textSecondary" gutterBottom>
+          Manage rental locations and branches.
+        </Typography>
+        <Typography variant="body2" color="textSecondary">
+          Manage locations and branches content here.
+        </Typography>
+        <Pie data={data} options={options} />
+      </Paper>
+    </Container>
   );
 };
 
