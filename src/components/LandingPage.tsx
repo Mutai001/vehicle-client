@@ -16,8 +16,6 @@ import {
 } from '@mui/material';
 import {
   CarRental,
-  AdminPanelSettings,
-  Person,
   DirectionsCar,
   BookOnline,
   SupportAgent,
@@ -169,7 +167,7 @@ const HomePage: React.FC = () => {
             </Typography>
             <Button
               component={Link}
-              to="/user"
+              to="/register"
               variant="contained"
               color="primary"
               size="large"
@@ -204,7 +202,7 @@ const HomePage: React.FC = () => {
                   <Typography variant="body1" style={{ marginBottom: '16px' }}>
                     Find and book your desired vehicle with ease.
                   </Typography>
-                  <Button component={Link} to="/user" variant="contained" color="primary">
+                  <Button component={Link} to="/register" variant="contained" color="primary">
                     Get Started
                   </Button>
                 </Box>
@@ -231,7 +229,7 @@ const HomePage: React.FC = () => {
                   <Typography variant="body1" style={{ marginBottom: '16px' }}>
                     Manage your bookings online from anywhere, anytime.
                   </Typography>
-                  <Button component={Link} to="/user" variant="contained" color="primary">
+                  <Button component={Link} to="/register" variant="contained" color="primary">
                     Learn More
                   </Button>
                 </Box>
@@ -271,29 +269,10 @@ const HomePage: React.FC = () => {
                       }}
                     >
                       <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
-                        Vehicle Selection
+                        Vehicle Rentals
                       </Typography>
-                      <Typography variant="body1">
-                        Browse a wide range of vehicles categorized by type, make, and model.
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <Paper
-                      sx={{
-                        padding: '16px',
-                        backgroundColor: '#eeeeee',
-                        transition: 'transform 0.2s',
-                        '&:hover': {
-                          transform: 'scale(1.05)',
-                        },
-                      }}
-                    >
-                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
-                        Booking System
-                      </Typography>
-                      <Typography variant="body1">
-                        Easily book vehicles based on your preferences and schedule.
+                      <Typography variant="body1" style={{ marginBottom: '8px' }}>
+                        Wide range of vehicles to choose from for your needs.
                       </Typography>
                     </Paper>
                   </Grid>
@@ -311,8 +290,27 @@ const HomePage: React.FC = () => {
                       <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
                         Customer Support
                       </Typography>
-                      <Typography variant="body1">
-                        Access dedicated customer support for any inquiries or assistance needed.
+                      <Typography variant="body1" style={{ marginBottom: '8px' }}>
+                        24/7 customer support to assist you with your queries.
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <Paper
+                      sx={{
+                        padding: '16px',
+                        backgroundColor: '#eeeeee',
+                        transition: 'transform 0.2s',
+                        '&:hover': {
+                          transform: 'scale(1.05)',
+                        },
+                      }}
+                    >
+                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+                        Locations
+                      </Typography>
+                      <Typography variant="body1" style={{ marginBottom: '8px' }}>
+                        Multiple locations to serve you better.
                       </Typography>
                     </Paper>
                   </Grid>
@@ -321,8 +319,8 @@ const HomePage: React.FC = () => {
             </Grid>
           </Grid>
 
-          <Grid container spacing={4} ref={contactUsRef} style={{ marginBottom: '48px' }}>
-            <Grid item xs={12}>
+          <Grid container spacing={4} ref={contactUsRef}>
+            <Grid item xs={12} md={6}>
               <Paper
                 sx={{
                   padding: '16px',
@@ -335,56 +333,24 @@ const HomePage: React.FC = () => {
               >
                 <LocationOn fontSize="large" style={{ color: '#424242', marginBottom: '16px' }} />
                 <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                  Contact Us
+                  Our Locations
                 </Typography>
-                <Grid container spacing={4}>
-                  <Grid item xs={12} md={6}>
-                    <Paper
-                      sx={{
-                        padding: '16px',
-                        backgroundColor: '#eeeeee',
-                        transition: 'transform 0.2s',
-                        '&:hover': {
-                          transform: 'scale(1.05)',
-                        },
-                      }}
-                    >
-                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
-                        Email Us
-                      </Typography>
-                      <Typography variant="body1">
-                        You can email us at support@vehiclerentals.com for any inquiries.
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Paper
-                      sx={{
-                        padding: '16px',
-                        backgroundColor: '#eeeeee',
-                        transition: 'transform 0.2s',
-                        '&:hover': {
-                          transform: 'scale(1.05)',
-                        },
-                      }}
-                    >
-                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '8px' }}>
-                        Visit Us
-                      </Typography>
-                      <Typography variant="body1">
-                        Our office is located at 123 Rental St, Car City.
-                      </Typography>
-                      {/* Example map image */}
-                      <img src={MapImage} alt="Map" style={{ width: '100%', marginTop: '8px' }} />
-                    </Paper>
-                  </Grid>
-                </Grid>
+                <img
+                  src={MapImage}
+                  alt="Our Locations"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '8px',
+                    transition: 'opacity 0.5s',
+                  }}
+                />
+                <Typography variant="body1" style={{ marginTop: '16px' }}>
+                  Find us at multiple locations across the city.
+                </Typography>
               </Paper>
             </Grid>
-          </Grid>
-
-          <Grid container spacing={4} ref={getInTouchRef}>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
               <Paper
                 sx={{
                   padding: '16px',
@@ -397,51 +363,89 @@ const HomePage: React.FC = () => {
               >
                 <Email fontSize="large" style={{ color: '#424242', marginBottom: '16px' }} />
                 <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                  Get In Touch
+                  Contact Us
                 </Typography>
-                <Grid container spacing={4}>
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      label="Your Name"
-                      variant="outlined"
-                      style={{ marginBottom: '16px' }}
-                    />
-                    <TextField
-                      fullWidth
-                      label="Your Email"
-                      variant="outlined"
-                      style={{ marginBottom: '16px' }}
-                    />
-                    <TextField
-                      fullWidth
-                      label="Subject"
-                      variant="outlined"
-                      style={{ marginBottom: '16px' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      label="Message"
-                      variant="outlined"
-                      multiline
-                      rows={4}
-                      style={{ marginBottom: '16px' }}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      startIcon={<Send />}
-                      style={{ width: '100%', transition: 'transform 0.2s' }}
-                    >
-                      Send Message
-                    </Button>
-                  </Grid>
-                </Grid>
+                <Box component="form" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <TextField
+                    label="Your Name"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    sx={{ backgroundColor: 'white', borderRadius: '4px' }}
+                  />
+                  <TextField
+                    label="Your Email"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    sx={{ backgroundColor: 'white', borderRadius: '4px' }}
+                  />
+                  <TextField
+                    label="Message"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    multiline
+                    rows={4}
+                    sx={{ backgroundColor: 'white', borderRadius: '4px' }}
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    endIcon={<Send />}
+                    sx={{ marginTop: '16px' }}
+                  >
+                    Send Message
+                  </Button>
+                </Box>
               </Paper>
             </Grid>
           </Grid>
+        </Container>
+
+        {/* Get In Touch Section */}
+        <Container ref={getInTouchRef} style={{ padding: '32px 0', backgroundColor: '#eeeeee' }}>
+          <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px', textAlign: 'center' }}>
+            Get In Touch
+          </Typography>
+          <Typography variant="body1" style={{ marginBottom: '16px', textAlign: 'center' }}>
+            Have any questions or need support? Reach out to us.
+          </Typography>
+          <Box component="form" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <TextField
+              label="Your Name"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              sx={{ maxWidth: '600px', width: '100%', backgroundColor: 'white', borderRadius: '4px' }}
+            />
+            <TextField
+              label="Your Email"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              sx={{ maxWidth: '600px', width: '100%', backgroundColor: 'white', borderRadius: '4px' }}
+            />
+            <TextField
+              label="Message"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              multiline
+              rows={4}
+              sx={{ maxWidth: '600px', width: '100%', backgroundColor: 'white', borderRadius: '4px' }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              endIcon={<Send />}
+              sx={{ marginTop: '16px' }}
+            >
+              Send Message
+            </Button>
+          </Box>
         </Container>
 
         {/* Footer */}
