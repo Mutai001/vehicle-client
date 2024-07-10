@@ -2,10 +2,6 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
   Tooltip,
   Legend,
 } from 'chart.js';
@@ -23,10 +19,6 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
   Tooltip,
   Legend
 );
@@ -68,8 +60,8 @@ const AdminOverview: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="lg">
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Container maxWidth="md"> {/* Adjusted maxWidth to 'md' for a smaller width */}
+      <Typography variant="h5" component="h1" gutterBottom>
         Dashboard Overview
       </Typography>
       <Grid container spacing={3}>
