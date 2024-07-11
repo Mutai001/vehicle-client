@@ -1,43 +1,12 @@
 import React from 'react';
-import {
-  Typography,
-  Grid,
-  Container,
-  Paper,
-  IconButton,
-  Tooltip,
-} from '@mui/material';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import BuildIcon from '@mui/icons-material/Build';
 
 const FleetManagement: React.FC = () => {
   return (
-    <Container maxWidth="md">
-      <Paper sx={{ p: 3, mt: 3 }}>
-        <Typography variant="h5" component="h2" gutterBottom>
-          Fleet Management
-        </Typography>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item>
-            <IconButton>
-              <DirectionsCarIcon fontSize="large" />
-            </IconButton>
-          </Grid>
-          <Grid item xs>
-            <Typography variant="body1" color="textSecondary">
-              View and manage fleet details, including acquisition and maintenance.
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Tooltip title="Manage Fleet">
-              <IconButton>
-                <BuildIcon fontSize="large" />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </Paper>
-    </Container>
+    <div className="bg-white p-4 rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-2">Fleet Management</h2>
+      <img src="path/to/fleet-image.jpg" alt="Fleet Management" className="w-full h-32 object-cover rounded mb-2" />
+      <p className="text-gray-700">View and manage fleet details, including acquisition and maintenance.</p>
+    </div>
   );
 };
 

@@ -9,19 +9,59 @@ const NewTicket: React.FC = () => {
     description: '',
     priority: 'Low',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Function to handle form submission
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Implement form submission logic (e.g., send data to backend, show success message, etc.)
-    console.log(formData);
-    alert('Ticket submitted successfully!');
-    // Reset form fields
-    setFormData({
-      subject: '',
-      description: '',
-      priority: 'Low',
-    });
+    setLoading(true);
+    setError(null);
+
+    // Sample user_id, replace with actual user_id in a real application
+    const user_id = 2;
+
+    const ticketData = {
+      user_id,
+      subject: formData.subject,
+      description: formData.description,
+      status: 'Open',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch('http://localhost:8000/api/customer-support-tickets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ticketData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit ticket');
+      }
+
+      const data = await response.json();
+      console.log(data);
+      alert('Ticket submitted successfully!');
+      
+      // Reset form fields
+      setFormData({
+        subject: '',
+        description: '',
+        priority: 'Low',
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Function to handle form field changes
@@ -84,9 +124,11 @@ const NewTicket: React.FC = () => {
                   <button
                     type="submit"
                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    disabled={loading}
                   >
-                    Submit Ticket
+                    {loading ? 'Submitting...' : 'Submit Ticket'}
                   </button>
+                  {error && <p className="text-red-500 mt-2">{error}</p>}
                 </div>
               </form>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
+import AdminSidebar from '../Admin/sidebar';
 import {
   Chart as ChartJS,
   Tooltip,
@@ -60,9 +61,10 @@ const AdminOverview: React.FC = () => {
   };
 
   return (
+    <>
+    <AdminSidebar/>
     <Container maxWidth="md"> {/* Adjusted maxWidth to 'md' for a smaller width */}
       <Typography variant="h5" component="h1" gutterBottom>
-        Dashboard Overview
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
@@ -117,6 +119,7 @@ const AdminOverview: React.FC = () => {
         </Grid>
       </Grid>
     </Container>
+    </>
   );
 };
 
