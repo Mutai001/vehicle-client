@@ -3,11 +3,11 @@ import { TextField, Button, Typography, Container, Grid, Box, InputAdornment, Li
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Email, Lock } from '@mui/icons-material';
+import { Lock, CheckCircleOutline } from '@mui/icons-material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 const schema = yup.object().shape({
-  email: yup.string().email('Invalid email format').required('Email is required'),
+  username: yup.string().required('Username is required'),
   password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
 });
 
@@ -21,7 +21,7 @@ const Login = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('http://localhost:8000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -31,12 +31,11 @@ const Login = () => {
       const result = await response.json();
       if (response.ok) {
         setSnackbar({ open: true, message: 'Login successful!', severity: 'success' });
-
-        // Assuming the backend response contains a 'role' field
+        // Example navigation based on role
         if (result.role === 'admin') {
           navigate('/admin-dashboard');
         } else {
-          navigate('/user-dashboard');
+          navigate('/user');
         }
       } else {
         setSnackbar({ open: true, message: result.message || 'Login failed!', severity: 'error' });
@@ -61,7 +60,7 @@ const Login = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Controller
-                name="email"
+                name="username"
                 control={control}
                 render={({ field }) => (
                   <TextField
@@ -69,18 +68,18 @@ const Login = () => {
                     variant="outlined"
                     required
                     fullWidth
-                    id="email"
-                    label="Email Address"
+                    id="username"
+                    label="Username"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <Email />
+                          <Lock />
                         </InputAdornment>
                       ),
                     }}
                     autoFocus
-                    error={!!errors.email}
-                    helperText={errors.email ? errors.email.message : ''}
+                    error={!!errors.username}
+                    helperText={errors.username ? errors.username.message : ''}
                   />
                 )}
               />
@@ -132,7 +131,14 @@ const Login = () => {
       </Box>
       <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity === 'success' ? 'success' : 'error'} sx={{ width: '100%' }}>
-          {snackbar.message}
+          <Grid container alignItems="center" spacing={2}>
+            <Grid item>
+              <CheckCircleOutline fontSize="large" style={{ color: snackbar.severity === 'success' ? 'green' : 'red' }} />
+            </Grid>
+            <Grid item xs>
+              {snackbar.message}
+            </Grid>
+          </Grid>
         </Alert>
       </Snackbar>
     </Container>

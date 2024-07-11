@@ -5,26 +5,46 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { AccountCircle, Email, Phone, Home, Lock } from '@mui/icons-material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+
+interface FormData {
+  fullName: string;
+  email: string;
+  contactPhone: string;
+  address: string;
+  password: string;
+  username: string;
+  role?: string; // Allow role to be optional or specified
+}
 
 const schema = yup.object().shape({
   fullName: yup.string().required('Full name is required'),
   email: yup.string().email('Invalid email format').required('Email is required'),
   contactPhone: yup.string().required('Contact phone is required'),
   address: yup.string().required('Address is required'),
-  password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
+  password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
+  username: yup.string().required('Username is required')
 });
 
 const Registration = () => {
   const navigate = useNavigate();
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
+    if (!data.role) {
+      data.role = 'user'; // Set default role if not specified
+    }
+
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch('http://localhost:8000/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -46,6 +66,16 @@ const Registration = () => {
 
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleGoogleSuccess = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+    console.log('Google login success:', response);
+    // Handle Google login success (send response token to your backend to create/sign in the user)
+  };
+
+  const handleGoogleFailure = (response: any) => {
+    console.error('Google login failure:', response);
+    setSnackbar({ open: true, message: 'Google login failed!', severity: 'error' });
   };
 
   return (
@@ -159,6 +189,31 @@ const Registration = () => {
             </Grid>
             <Grid item xs={12}>
               <Controller
+                name="username"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircle />
+                        </InputAdornment>
+                      ),
+                    }}
+                    error={!!errors.username}
+                    helperText={errors.username ? errors.username.message : ''}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
                 name="password"
                 control={control}
                 render={({ field }) => (
@@ -200,6 +255,15 @@ const Registration = () => {
               </Link>
             </Grid>
           </Grid>
+          <Box mt={2}>
+            <GoogleLogin
+              clientId="YOUR_GOOGLE_CLIENT_ID"
+              buttonText="Sign up with Google"
+              onSuccess={handleGoogleSuccess}
+              onFailure={handleGoogleFailure}
+              cookiePolicy={'single_host_origin'}
+            />
+          </Box>
         </Box>
       </Box>
       <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
