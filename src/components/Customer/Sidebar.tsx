@@ -6,6 +6,7 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PaymentIcon from '@mui/icons-material/Payment'; // Import the Payment icon
 
 const Sidebar: React.FC = () => {
   return (
@@ -30,6 +31,10 @@ const Sidebar: React.FC = () => {
         <Link to="/user/new-ticket" className="flex items-center space-x-2 text-white hover:bg-gray-600 p-2 rounded">
           <AddCircleOutlineIcon />
           <span>New Ticket</span>
+        </Link>
+        <Link to="/user/payments" className="flex items-center space-x-2 text-white hover:bg-gray-600 p-2 rounded">
+          <PaymentIcon />
+          <span>Payments</span>
         </Link>
       </nav>
       <div className="mt-auto border-t border-gray-600">
