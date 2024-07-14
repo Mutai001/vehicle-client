@@ -23,7 +23,6 @@ import {
   SupportAgent,
   LocationOn,
   Email,
-  Send,
   ArrowDropDown,
   Menu as MenuIcon, // Import Menu icon for navigation
 } from '@mui/icons-material';
