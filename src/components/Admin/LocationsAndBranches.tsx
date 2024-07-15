@@ -1,75 +1,120 @@
-import React from 'react';
-import { Pie } from 'react-chartjs-2';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import AdminSidebar from './sidebar';
 import {
-  Chart as ChartJS,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+  Container,
+  Grid,
+  Typography,
+  CircularProgress,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  ThemeProvider,
+  createTheme,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles'; // Import makeStyles from @mui/styles
+import { Theme } from '@mui/system';
+import {
+  Phone as PhoneIcon,
+  LocationCity as LocationCityIcon,
+} from '@mui/icons-material';
 
-ChartJS.register(Tooltip, Legend);
+// Define your theme
+const theme = createTheme();
+
+// Define makeStyles function with proper typing
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    display: 'flex',
+    padding: theme.spacing(4),
+  },
+  content: {
+    flexGrow: 1,
+  },
+  card: {
+    marginBottom: theme.spacing(2),
+    height: '100%',
+  },
+  cardContent: {
+    flex: '1 0 auto',
+  },
+}));
+
+interface Location {
+  location_id: number;
+  name: string;
+  address: string;
+  contact_phone: string;
+  branch_count: number;
+}
 
 const LocationsAndBranches: React.FC = () => {
-  const data = {
-    labels: ['Location A', 'Location B', 'Location C', 'Location D', 'Location E'],
-    datasets: [
-      {
-        label: '# of Branches',
-        data: [3, 5, 2, 4, 1],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
+  const classes = useStyles(); // Use useStyles properly here
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetchLocations();
+  }, []);
+
+  const fetchLocations = async () => {
+    try {
+      const response = await axios.get<Location[]>('http://localhost:8000/api/locations');
+      setLocations(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching locations:', error);
+      setLoading(false);
+    }
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      tooltip: {
-        callbacks: {
-          label: function (context: any) {
-            let label = context.label || '';
-
-            if (label) {
-              label += ': ';
-            }
-            if (context.raw !== null) {
-              label += context.raw;
-            }
-            return label;
-          },
-        },
-      },
-    },
-  };
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
-    <>
-    <AdminSidebar/>
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-2">Location and Branches</h2>
-      <img src="path/to/locations-image.jpg" alt="Locations and Branches" className="w-full h-32 object-cover rounded mb-2" />
-      <p className="text-gray-700 mb-4">Manage rental locations and branches.</p>
-      <p>Manage locations and branches content here.</p>
-      <Pie data={data} options={options} />
-    </div>
-    </>
+    <ThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <AdminSidebar />
+        <Container className={classes.content}>
+          <Typography variant="h4" gutterBottom>
+            Locations and Branches
+          </Typography>
+          <Grid container spacing={3}>
+            {locations.map((location) => (
+              <Grid item xs={12} md={6} key={location.location_id}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography component="h5" variant="h5">
+                      {location.name}
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      <LocationCityIcon fontSize="small" /> {location.address}
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      <PhoneIcon fontSize="small" /> {location.contact_phone}
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      Branches: {location.branch_count}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      View Details
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </div>
+    </ThemeProvider>
   );
 };
 

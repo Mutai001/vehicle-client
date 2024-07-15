@@ -17,6 +17,8 @@ import ManageVehicles from './components/Admin/ManageVehicles';
 import ManageUsers from './components/Admin/ManageUsers';
 import Reports from './components/Admin/Reports';
 import Settings from './components/Admin/Settings';
+import SupportTickets from './components/Admin/SupportTickets';
+import LocationsAndBranches from './components/Admin/LocationsAndBranches';
 
 const App: React.FC = () => {
   return (
@@ -40,7 +42,9 @@ const App: React.FC = () => {
         <Route path="/admin/manage-users" Component={ManageUsers} />
         <Route path="/admin/assessment-reports" Component={Reports} />
         <Route path="/admin/manage-fleet" Component={FleetManagement} />
-        <Route path="/admin/setting" Component={Settings} />
+        <Route path="/admin/locations-branches" Component={LocationsAndBranches} />
+        <Route path="/admin/support-tickets" Component={SupportTickets} />
+        <Route path="/admin/settings" Component={Settings} />
     </Routes>
   );
 };

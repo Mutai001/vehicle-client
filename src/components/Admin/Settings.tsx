@@ -1,7 +1,12 @@
 import React from 'react';
+import AdminSidebar from './sidebar';
 
 const Settings: React.FC = () => {
   return (
+    <>
+        <div className="flex">
+
+    <AdminSidebar />
     <div className="container mx-auto py-8">
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Settings</h2>
@@ -43,6 +48,8 @@ const Settings: React.FC = () => {
         </div>
       </div>
     </div>
+  </div>
+    </>
   );
 };
 
