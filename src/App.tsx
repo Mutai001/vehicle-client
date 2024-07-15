@@ -10,6 +10,8 @@ import BookedVehicles from './components/Customer/BookedVehicles';
 import MyTickets from './components/Customer/MyTickets';
 import NewTicket from './components/Customer/NewTicket';
 import LogoutLink from './components/Customer/Logout';
+// import NotFound from './pages/NotFound';
+import PaymentPage from './components/Customer/Payment';
 import FleetManagement from './components/Admin/FleetManagement';
 import ManageVehicles from './components/Admin/ManageVehicles';
 import ManageUsers from './components/Admin/ManageUsers';
@@ -20,12 +22,14 @@ const App: React.FC = () => {
   return (
     <Routes>
        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/user" element={<UserDashboard />} />
+      <Route path="/user" element={<UserDashboard />} />
        <Route path="/login" element={<LoginPage />} />
        <Route path="/logout" element={<LogoutLink />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/user/notfound" Component={NotFound} />
+        <Route path="/user/payment" Component={PaymentPage} />
         <Route path="/user/dashboard" Component={UserDashboard} />
         <Route path="/user/book-vehicle" Component={BookVehicle} />
         <Route path="/user/booked-vehicles" Component={BookedVehicles} />
