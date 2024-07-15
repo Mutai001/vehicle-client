@@ -39,7 +39,7 @@ const ManageVehicles: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/cars');
+        const response = await fetch('http://localhost:8000/api/vehicles');
         const data = await response.json();
         setVehicles(data);
         setLoading(false);
@@ -84,78 +84,86 @@ const ManageVehicles: React.FC = () => {
         <div style={{ display: 'flex', height: '100vh' }}>
 
       <AdminSidebar />
-      <Container maxWidth="md" sx={{ mt: 4 }}>
-        <Typography
-          variant="h4"
-          component="h1"
-          gutterBottom
-          sx={{
-            position: 'sticky',
-            top: 0,
-            backgroundColor: theme.palette.background.default,
-            zIndex: 1000,
-            pb: 2,
-            pt: 2,
-            mt: 2
-          }}
-        >
-          Manage Vehicles
-        </Typography>
-        <Grid container spacing={3}>
-          {vehicles.map((vehicle) => (
-            <Grid item xs={12} md={6} key={vehicle.id}>
-              <Card>
-                <CardContent>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                      <Avatar sx={{ backgroundColor: theme.palette.primary.main }}>
-                        <DirectionsCarIcon />
-                      </Avatar>
+      <div className="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen p-8">
+        <Container maxWidth="md" sx={{ mt: 4 }}>
+          <div
+            className="bg-cover bg-center py-8 rounded-lg shadow-md text-center text-white"
+            style={{
+              backgroundImage: 'url(path/to/your/header-background.jpg)',
+            }}
+          >
+            <Typography
+              variant="h4"
+              component="h1"
+              sx={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 1000,
+                pb: 2,
+                pt: 2,
+                mt: 2,
+              }}
+            >
+              Manage Vehicles
+            </Typography>
+          </div>
+          <Grid container spacing={3} className="mt-8">
+            {vehicles.map((vehicle) => (
+              <Grid item xs={12} md={6} key={vehicle.id}>
+                <Card className="transition-transform transform hover:scale-105">
+                  <CardContent>
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item>
+                        <Avatar sx={{ backgroundColor: theme.palette.primary.main }}>
+                          <DirectionsCarIcon />
+                        </Avatar>
+                      </Grid>
+                      <Grid item xs>
+                        <Typography variant="h6" component="h2">
+                          {vehicle.type}
+                        </Typography>
+                        <Typography color="textSecondary">
+                          Count: {vehicle.count}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          startIcon={<EditIcon />}
+                          onClick={() => handleOpen(vehicle)}
+                        >
+                          Edit
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          startIcon={<DeleteIcon />}
+                          onClick={() => handleDelete(vehicle.id)}
+                        >
+                          Delete
+                        </Button>
+                      </Grid>
                     </Grid>
-                    <Grid item xs>
-                      <Typography variant="h6" component="h2">
-                        {vehicle.type}
-                      </Typography>
-                      <Typography color="textSecondary">
-                        Count: {vehicle.count}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<EditIcon />}
-                        onClick={() => handleOpen(vehicle)}
-                      >
-                        Edit
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<DeleteIcon />}
-                        onClick={() => handleDelete(vehicle.id)}
-                      >
-                        Delete
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddCircleIcon />}
-          onClick={() => handleOpen()}
-          sx={{ marginTop: theme.spacing(3) }}
-        >
-          Add Vehicle
-        </Button>
-      </Container>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddCircleIcon />}
+            onClick={() => handleOpen()}
+            sx={{ marginTop: theme.spacing(3) }}
+            className="bg-gradient-to-r from-green-400 to-blue-500 text-white"
+          >
+            Add Vehicle
+          </Button>
+        </Container>
+      </div>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{currentVehicle ? 'Edit Vehicle' : 'Add Vehicle'}</DialogTitle>
@@ -188,9 +196,8 @@ const ManageVehicles: React.FC = () => {
           <Button onClick={handleSubmit}>{currentVehicle ? 'Update' : 'Add'}</Button>
         </DialogActions>
       </Dialog>
-    </div>
+      </div>
     </>
-
   );
 };
 
