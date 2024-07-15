@@ -10,34 +10,26 @@ import {
   CardContent,
   CardActions,
   Button,
-  ThemeProvider,
-  createTheme,
-} from '@mui/material';
-import { makeStyles } from '@mui/styles'; // Import makeStyles from @mui/styles
-import { Theme } from '@mui/system';
-import {
-  Phone as PhoneIcon,
-  LocationCity as LocationCityIcon,
-} from '@mui/icons-material';
-
-// Define your theme
-const theme = createTheme();
+  makeStyles,
+} from '@material-ui/core';
 
 // Define makeStyles function with proper typing
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((_theme) => ({
   root: {
     display: 'flex',
-    padding: theme.spacing(4),
+    padding: '2rem',
   },
   content: {
     flexGrow: 1,
   },
   card: {
-    marginBottom: theme.spacing(2),
-    height: '100%',
+    marginBottom: '1rem',
+    padding: '1rem',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    borderRadius: '0.5rem',
   },
-  cardContent: {
-    flex: '1 0 auto',
+  title: {
+    marginBottom: '1rem',
   },
 }));
 
@@ -50,7 +42,7 @@ interface Location {
 }
 
 const LocationsAndBranches: React.FC = () => {
-  const classes = useStyles(); // Use useStyles properly here
+  const classes = useStyles();
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -78,43 +70,41 @@ const LocationsAndBranches: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <AdminSidebar />
-        <Container className={classes.content}>
-          <Typography variant="h4" gutterBottom>
-            Locations and Branches
-          </Typography>
-          <Grid container spacing={3}>
-            {locations.map((location) => (
-              <Grid item xs={12} md={6} key={location.location_id}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography component="h5" variant="h5">
-                      {location.name}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                      <LocationCityIcon fontSize="small" /> {location.address}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                      <PhoneIcon fontSize="small" /> {location.contact_phone}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                      Branches: {location.branch_count}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="primary">
-                      View Details
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </div>
-    </ThemeProvider>
+    <div className={classes.root}>
+      <AdminSidebar />
+      <Container className={classes.content}>
+        <Typography variant="h4" className={classes.title}>
+          Locations and Branches
+        </Typography>
+        <Grid container spacing={3}>
+          {locations.map((location) => (
+            <Grid item xs={12} md={6} lg={4} key={location.location_id}>
+              <Card className={classes.card}>
+                <CardContent>
+                  <Typography variant="h6">
+                    {location.name}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    {location.address}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    {location.contact_phone}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    Branches: {location.branch_count}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    View Details
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </div>
   );
 };
 

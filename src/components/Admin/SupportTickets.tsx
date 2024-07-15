@@ -6,10 +6,15 @@ import {
   CardContent,
   Typography,
   Button,
-  makeStyles,
-  Theme,
-  createStyles,
+  ThemeProvider,
+  createTheme,
 } from '@mui/material';
+import { makeStyles, createStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
+import AdminSidebar from './sidebar';
+
+// Define your MUI theme
+const theme = createTheme();
 
 // Define styles using makeStyles with proper typings
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,6 +49,9 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       padding: theme.spacing(2),
     },
+    ticketDate: {
+      color: theme.palette.text.secondary,
+    },
     viewDetailsButton: {
       color: theme.palette.primary.main,
       textTransform: 'none',
@@ -53,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const SupportTickets: React.FC = () => {
-  const classes = useStyles(); // Use useStyles to apply styles
+  const classes = useStyles();
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -86,12 +94,15 @@ const SupportTickets: React.FC = () => {
   }
 
   return (
+    <>
+    <div className="container flex">
+          <AdminSidebar />
     <div className={classes.root}>
       <Typography variant="h5" component="h2" gutterBottom>
         Customer Support Tickets
       </Typography>
       {tickets.map((ticket) => (
-        <Card key={ticket.id} className={classes.ticketContainer}>
+        <Card key={ticket.ticket_id} className={classes.ticketContainer}>
           <CardContent>
             <img src={ticket.image_url} alt="Customer Support" className={classes.ticketImage} />
             <Typography variant="h6" className={classes.ticketTitle}>
@@ -103,7 +114,7 @@ const SupportTickets: React.FC = () => {
           </CardContent>
           <div className={classes.ticketDetails}>
             <Typography variant="body2" className={classes.ticketDate}>
-              {ticket.created_at}
+              {new Date(ticket.created_at).toLocaleString()}
             </Typography>
             <Button variant="text" className={classes.viewDetailsButton}>
               View Details
@@ -112,7 +123,16 @@ const SupportTickets: React.FC = () => {
         </Card>
       ))}
     </div>
+    </div>
+    </>
+
   );
 };
 
-export default SupportTickets;
+const SupportTicketsContainer: React.FC = () => (
+  <ThemeProvider theme={theme}>
+    <SupportTickets />
+  </ThemeProvider>
+);
+
+export default SupportTicketsContainer;
