@@ -1,111 +1,167 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Typography, Card, CardContent, Button } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button, Modal, Backdrop, Fade, Divider } from '@mui/material';
+import { SaveAlt as SaveAltIcon } from '@mui/icons-material';
 import axios from 'axios';
+import Footer from '../Common/Footer';
+import AdminSidebar from './sidebar';
+import Header from '../Common/Header';
 
 const Reports: React.FC = () => {
-  const [bookingSummaries, setBookingSummaries] = useState<any[]>([]);
-  const [revenueReports, setRevenueReports] = useState<any[]>([]);
-  const [vehicleUtilization, setVehicleUtilization] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [payments, setPayments] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [locations, setLocations] = useState<any[]>([]);
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [modalData, setModalData] = useState<any[]>([]);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    const fetchReports = async () => {
+    const fetchData = async () => {
       try {
-        const bookingSummariesResponse = await axios.get('http://localhost:8000/api/bookings');
-        // ('http://localhost:8000/api/reports/booking-summaries');
-        setBookingSummaries(bookingSummariesResponse.data);
+        const paymentsResponse = await axios.get('http://localhost:8000/api/payments');
+        setPayments(paymentsResponse.data);
 
-        const revenueReportsResponse = await axios.get('http://localhost:8000/api/reports/payments');
-        // ('http://localhost:8000/api/reports/revenue-reports');
-        setRevenueReports(revenueReportsResponse.data);
+        const bookingsResponse = await axios.get('http://localhost:8000/api/bookings');
+        setBookings(bookingsResponse.data);
 
-        const vehicleUtilizationResponse = await axios.get('http://localhost:8000/api/users');
-        // ('http://localhost:8000/api/reports/vehicle-utilization');
-        setVehicleUtilization(vehicleUtilizationResponse.data);
+        const usersResponse = await axios.get('http://localhost:8000/api/users');
+        setUsers(usersResponse.data);
 
-        setLoading(false);
+        const locationsResponse = await axios.get('http://localhost:8000/api/locations');
+        setLocations(locationsResponse.data);
+
+        const ticketsResponse = await axios.get('http://localhost:8000/api/customer-support-tickets');
+        setTickets(ticketsResponse.data);
       } catch (error) {
-        console.error('Error fetching reports:', error);
-        setError('Failed to fetch reports');
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchReports();
+    fetchData();
   }, []);
 
-  if (loading) {
-    return <Typography variant="h5">Loading...</Typography>;
-  }
-
-  if (error) {
-    return <Typography variant="h5">Error: {error}</Typography>;
-  }
-
-  const handleDownloadReport = (reportType: string) => {
-    // Placeholder for download functionality
-    console.log(`Downloading ${reportType} report...`);
+  const handleDownloadReports = () => {
+    // Logic to download reports (mocked for example)
+    alert('Downloading reports...');
   };
 
+  const handleOpenModal = (data: any[]) => {
+    setModalData(data);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  // Calculate total counts for each category
+  const totalPayments = payments.length;
+  const totalBookings = bookings.length;
+  const totalUsers = users.length;
+  const totalLocations = locations.length;
+  const totalTickets = tickets.length;
+
   return (
-    <Box className="bg-white p-4 rounded-lg shadow-md">
-      <Typography variant="h5" className="font-bold mb-4">
-        Reports
-      </Typography>
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={4}>
-          <Card className="bg-gray-100">
-            <CardContent>
-              <Typography variant="h6" className="mb-2">
-                Booking Summaries
+    <>
+      <Header />
+      <div className="flex">
+        <AdminSidebar />
+        <Box className="bg-white p-4 rounded-lg shadow-md">
+          <Typography variant="h2" className="text-xl font-bold mb-2">
+            Reports
+          </Typography>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={6}>
+              <Card onClick={() => handleOpenModal(payments)}>
+                <CardContent>
+                  <Typography variant="h5" gutterBottom>
+                    Payments Report ({totalPayments} payments)
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card onClick={() => handleOpenModal(bookings)}>
+                <CardContent>
+                  <Typography variant="h5" gutterBottom>
+                    Bookings Report ({totalBookings} bookings)
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card onClick={() => handleOpenModal(users)}>
+                <CardContent>
+                  <Typography variant="h5" gutterBottom>
+                    Users Report ({totalUsers} users)
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card onClick={() => handleOpenModal(locations)}>
+                <CardContent>
+                  <Typography variant="h5" gutterBottom>
+                    Locations Report ({totalLocations} locations)
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card onClick={() => handleOpenModal(tickets)}>
+                <CardContent>
+                  <Typography variant="h5" gutterBottom>
+                    Customer Support Tickets Report ({totalTickets} tickets)
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+          <Box mt={4} textAlign="right">
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<SaveAltIcon />}
+              onClick={handleDownloadReports}
+            >
+              Download Reports
+            </Button>
+          </Box>
+        </Box>
+        <Modal
+          open={openModal}
+          onClose={handleCloseModal}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openModal}>
+            <Box className="modal-paper">
+              <Typography variant="h3" className="text-xl font-bold mb-2">
+                Detailed Report
               </Typography>
-              {bookingSummaries.map((summary, index) => (
-                <Typography key={index} className="text-gray-700">
-                  {summary.date}: {summary.count} bookings
-                </Typography>
-              ))}
-              <Button variant="contained" color="primary" className="mt-4" onClick={() => handleDownloadReport('booking-summaries')}>
-                Download
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Card className="bg-gray-100">
-            <CardContent>
-              <Typography variant="h6" className="mb-2">
-                Revenue Reports
-              </Typography>
-              {revenueReports.map((report, index) => (
-                <Typography key={index} className="text-gray-700">
-                  {report.month}: ${report.revenue}
-                </Typography>
-              ))}
-              <Button variant="contained" color="primary" className="mt-4" onClick={() => handleDownloadReport('revenue-reports')}>
-                Download
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Card className="bg-gray-100">
-            <CardContent>
-              <Typography variant="h6" className="mb-2">
-                Vehicle Utilization Statistics
-              </Typography>
-              {vehicleUtilization.map((utilization, index) => (
-                <Typography key={index} className="text-gray-700">
-                  {utilization.vehicle}: {utilization.utilization}%
-                </Typography>
-              ))}
-              <Button variant="contained" color="primary" className="mt-4" onClick={() => handleDownloadReport('vehicle-utilization')}>
-                Download
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+              <Box p={2} className="bg-white rounded-lg shadow-md">
+                {modalData.map((item: any, index: number) => (
+                  <Box key={index} mb={2}>
+                    <Typography variant="body1">
+                      {Object.entries(item).map(([key, value]) => (
+                        <div key={key}>
+                          <strong>{key}:</strong> {value as React.ReactNode}
+                        </div>
+                      ))}
+                    </Typography>
+                    {index !== modalData.length - 1 && <Divider />}
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
+      </div>
+      <Footer />
+    </>
   );
 };
 

@@ -20,6 +20,7 @@ import Settings from './components/Admin/Settings';
 import SupportTickets from './components/Admin/SupportTickets';
 import LocationsAndBranches from './components/Admin/LocationsAndBranches';
 import Dashboard from './components/Customer/Dashboard';
+import AdminOverview from './components/Admin/AdminOverview';
 
 const App: React.FC = () => {
   return (
@@ -38,7 +39,7 @@ const App: React.FC = () => {
         <Route path="/user/booked-vehicles" Component={BookedVehicles} />
         <Route path="/user/my-tickets" Component={MyTickets} />
         <Route path="/user/new-ticket" Component={NewTicket} />
-        <Route path="/admin/dashboard" Component={AdminDashboard} />
+        <Route path="/admin/dashboard" Component={AdminOverview} />
         <Route path="/admin/manage-vehicles" Component={ManageVehicles} />
         <Route path="/admin/manage-users" Component={ManageUsers} />
         <Route path="/admin/assessment-reports" Component={Reports} />
