@@ -19,6 +19,7 @@ import Reports from './components/Admin/Reports';
 import Settings from './components/Admin/Settings';
 import SupportTickets from './components/Admin/SupportTickets';
 import LocationsAndBranches from './components/Admin/LocationsAndBranches';
+import Dashboard from './components/Customer/Dashboard';
 
 const App: React.FC = () => {
   return (
@@ -32,7 +33,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFound />} />
         <Route path="/user/notfound" Component={NotFound} />
         <Route path="/user/payments" Component={PaymentPage} />
-        <Route path="/user/dashboard" Component={UserDashboard} />
+        <Route path="/user/dashboard" Component={Dashboard} />
         <Route path="/user/book-vehicle" Component={BookVehicle} />
         <Route path="/user/booked-vehicles" Component={BookedVehicles} />
         <Route path="/user/my-tickets" Component={MyTickets} />
