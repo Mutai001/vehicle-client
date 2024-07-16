@@ -12,8 +12,16 @@ import {
   CardContent,
   CardActions,
   Button,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
   makeStyles,
 } from '@material-ui/core';
+import { Add, Edit, Delete } from '@mui/icons-material';
 
 // Define makeStyles function with proper typing
 const useStyles = makeStyles((_theme) => ({
@@ -47,6 +55,9 @@ const LocationsAndBranches: React.FC = () => {
   const classes = useStyles();
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [currentLocation, setCurrentLocation] = useState<Partial<Location>>({});
+  const [dialogType, setDialogType] = useState<'create' | 'edit'>('create');
 
   useEffect(() => {
     fetchLocations();
@@ -63,6 +74,44 @@ const LocationsAndBranches: React.FC = () => {
     }
   };
 
+  const handleOpenDialog = (type: 'create' | 'edit', location?: Location) => {
+    setDialogType(type);
+    if (location) {
+      setCurrentLocation(location);
+    } else {
+      setCurrentLocation({});
+    }
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setCurrentLocation({});
+  };
+
+  const handleSave = async () => {
+    try {
+      if (dialogType === 'create') {
+        await axios.post('http://localhost:8000/api/locations', currentLocation);
+      } else {
+        await axios.put(`http://localhost:8000/api/locations/${currentLocation.location_id}`, currentLocation);
+      }
+      fetchLocations();
+      handleCloseDialog();
+    } catch (error) {
+      console.error('Error saving location:', error);
+    }
+  };
+
+  const handleDelete = async (location_id: number) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/locations/${location_id}`);
+      fetchLocations();
+    } catch (error) {
+      console.error('Error deleting location:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -73,45 +122,95 @@ const LocationsAndBranches: React.FC = () => {
 
   return (
     <>
-    <Header />
-    <div className="flex">  
-          <AdminSidebar />
-    <div className={classes.root}>
-      <Container className={classes.content}>
-        <Typography variant="h4" className={classes.title}>
-          Locations and Branches
-        </Typography>
-        <Grid container spacing={3}>
-          {locations.map((location) => (
-            <Grid item xs={12} md={6} lg={4} key={location.location_id}>
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography variant="h6">
-                    {location.name}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    {location.address}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    {location.contact_phone}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    Branches: {location.branch_count}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    View Details
-                  </Button>
-                </CardActions>
-              </Card>
+      <Header />
+      <div className="flex">
+        <AdminSidebar />
+        <div className={classes.root}>
+          <Container className={classes.content}>
+            <Typography variant="h4" className={classes.title}>
+              Locations and Branches
+            </Typography>
+            <Button variant="contained" color="primary" startIcon={<Add />} onClick={() => handleOpenDialog('create')}>
+              Add Location
+            </Button>
+            <Grid container spacing={3}>
+              {locations.map((location) => (
+                <Grid item xs={12} md={6} lg={4} key={location.location_id}>
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <Typography variant="h6">{location.name}</Typography>
+                      <Typography color="textSecondary">{location.address}</Typography>
+                      <Typography color="textSecondary">{location.contact_phone}</Typography>
+                      <Typography color="textSecondary">Branches: {location.branch_count}</Typography>
+                    </CardContent>
+                    <CardActions>
+                      <IconButton color="primary" onClick={() => handleOpenDialog('edit', location)}>
+                        <Edit />
+                      </IconButton>
+                      <IconButton color="secondary" onClick={() => handleDelete(location.location_id)}>
+                        <Delete />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </div>
-    </div>
-    <Footer />
+          </Container>
+        </div>
+      </div>
+      <Footer />
+
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>{dialogType === 'create' ? 'Add Location' : 'Edit Location'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {dialogType === 'create'
+              ? 'Fill in the details to add a new location.'
+              : 'Update the details of the location.'}
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Name"
+            type="text"
+            fullWidth
+            value={currentLocation.name || ''}
+            onChange={(e) => setCurrentLocation({ ...currentLocation, name: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Address"
+            type="text"
+            fullWidth
+            value={currentLocation.address || ''}
+            onChange={(e) => setCurrentLocation({ ...currentLocation, address: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Contact Phone"
+            type="text"
+            fullWidth
+            value={currentLocation.contact_phone || ''}
+            onChange={(e) => setCurrentLocation({ ...currentLocation, contact_phone: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Branch Count"
+            type="number"
+            fullWidth
+            value={currentLocation.branch_count || ''}
+            onChange={(e) => setCurrentLocation({ ...currentLocation, branch_count: parseInt(e.target.value, 10) })}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSave} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
