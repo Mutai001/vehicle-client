@@ -1,24 +1,106 @@
-import React from 'react';
-import UserProfile from './UserProfile';
-// import Navbar from '../Common/Navbar';
+import React, { useEffect, useState } from 'react';
+import { Box, Grid, Typography, Card, CardContent, Button } from '@mui/material';
+import { AccountCircle, DirectionsCar, Payment } from '@mui/icons-material';
+import axios from 'axios';
+// import Header from '../Common/Header';
+import Footer from '../Common/Footer';
+
 
 const UserDashboard: React.FC = () => {
+  const [userData, setUserData] = useState<any>({
+    user_id: '',
+    full_name: '',
+    email: '',
+    contact_phone: '',
+    address: '',
+    role: '',
+    created_at: '',
+    updated_at: ''
+  });
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [payments, setPayments] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch user data
+        const userResponse = await axios.get('http://localhost:8000/api/users/1');
+        setUserData(userResponse.data); // Ensure response data structure matches the expected JSON format
+
+        // Fetch bookings data
+        const bookingsResponse = await axios.get('http://localhost:8000/api/bookings');
+        setBookings(bookingsResponse.data);
+
+        // Fetch payments data
+        const paymentsResponse = await axios.get('http://localhost:8000/api/payments');
+        setPayments(paymentsResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
-    <div className="flex flex-col min-h-screen">
-      <div className="flex flex-1">
-        <div className="flex-grow bg-gray-100 p-4">
-          <main className="container mx-auto py-8">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4">Profile Details:</h2>
-              <p className="text-lg text-gray-800">Name:</p>
-              <p className="text-lg text-gray-800">Email:</p>
-            </div>
-          </main>
-        </div>
-        <UserProfile/>
-      </div>
+    {/* <Header /> */}
+    <div className="flex">
+    <Box className="py-8">
+      <Typography variant="h4" className="text-center mb-8">
+        User Dashboard
+      </Typography>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={4}>
+          <Card className="bg-gray-100">
+            <CardContent>
+              <AccountCircle fontSize="large" className="text-blue-500" />
+              <Typography variant="h6" className="mt-2">
+                User Profile
+              </Typography>
+              <Typography>Name: {userData.full_name}</Typography>
+              <Typography>Email: {userData.email}</Typography>
+              <Typography>Phone: {userData.contact_phone}</Typography>
+              <Typography>Address: {userData.address}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card className="bg-gray-100">
+            <CardContent>
+              <DirectionsCar fontSize="large" className="text-green-500" />
+              <Typography variant="h6" className="mt-2">
+                Recent Bookings
+              </Typography>
+              {bookings.slice(0, 2).map((booking, index) => (
+                <Typography key={index}>Booking #{index + 1}: {booking.vehicle}</Typography>
+              ))}
+              <Button variant="contained" color="primary" className="mt-4">
+                View All
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card className="bg-gray-100">
+            <CardContent>
+              <Payment fontSize="large" className="text-red-500" />
+              <Typography variant="h6" className="mt-2">
+                Payment History
+              </Typography>
+              {payments.slice(0, 2).map((payment, index) => (
+                <Typography key={index}>Payment #{index + 1}: ${payment.amount}</Typography>
+              ))}
+              <Button variant="contained" color="primary" className="mt-4">
+                View All
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
     </div>
+    <Footer />
     </>
   );
 };
