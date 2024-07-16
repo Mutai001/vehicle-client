@@ -1,143 +1,117 @@
 import React, { useState } from 'react';
-import { Card, CardContent, Typography, Button, TextField, Grid, Box } from '@mui/material';
-import { CreditCard, Payment, LocalAtm } from '@mui/icons-material';
-// import PayPal from '@mui/icons-material/PayPal';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import Sidebar from './Sidebar';
+import Footer from '../Common/Footer';
+import Header from '../Common/Header';
 
 const stripePromise = loadStripe('your-stripe-public-key');
 
-const PaymentPage: React.FC = () => {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
+const PaymentForm: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const [amount, setAmount] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handlePaymentMethodChange = (method: string) => {
-    setSelectedPaymentMethod(method);
-  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-  const handleStripePayment = async () => {
-    if (!stripe || !elements) return;
+    if (!stripe || !elements) {
+      return;
+    }
 
+    setIsLoading(true);
     const cardElement = elements.getElement(CardElement);
+
     if (cardElement) {
       const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: 'card',
         card: cardElement,
       });
 
-      if (!error && paymentMethod) {
-        // Handle successful payment method creation
-        console.log(paymentMethod);
-      } else {
-        console.error(error);
+      if (error) {
+        setErrorMessage(error.message || null);
+        setIsLoading(false);
+      } else if (paymentMethod) {
+        const paymentData = {
+          booking_id: 1, // Replace with actual booking_id
+          amount: parseFloat(amount),
+          payment_status: 'Pending',
+          payment_date: new Date().toISOString().split('T')[0],
+          payment_method: 'Card',
+          transaction_id: paymentMethod.id,
+        };
+
+        try {
+          const response = await fetch('http://localhost:8000/api/payments', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(paymentData),
+          });
+
+          if (response.ok) {
+            setIsSuccess(true);
+            setErrorMessage(null);
+          } else {
+            const data = await response.json();
+            setErrorMessage(data.message || 'Failed to process payment.');
+          }
+        } catch (err) {
+          setErrorMessage('Failed to process payment.');
+        } finally {
+          setIsLoading(false);
+        }
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-4xl">
-        <CardContent>
-          <Typography variant="h4" className="mb-4 text-center">
-            Choose Your Payment Method
-          </Typography>
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={6}>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<CreditCard />}
-                className={`mb-4 ${selectedPaymentMethod === 'stripe' ? 'bg-blue-600' : ''}`}
-                onClick={() => handlePaymentMethodChange('stripe')}
-              >
-                Pay with Stripe
-              </Button>
-              {selectedPaymentMethod === 'stripe' && (
-                <Box className="mt-4 p-4 bg-gray-200 rounded">
-                  <Elements stripe={stripePromise}>
-                    <CardElement className="p-2 border border-gray-300 rounded" />
-                  </Elements>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className="mt-4"
-                    onClick={handleStripePayment}
-                  >
-                    Pay Now
-                  </Button>
-                </Box>
-              )}
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<Payment />}
-                className={`mb-4 ${selectedPaymentMethod === 'paypal' ? 'bg-blue-600' : ''}`}
-                onClick={() => handlePaymentMethodChange('paypal')}
-              >
-                Pay with PayPal
-              </Button>
-              {selectedPaymentMethod === 'paypal' && (
-                <Box className="mt-4 p-4 bg-gray-200 rounded">
-                  {/* Integrate PayPal Button */}
-                  <div>PayPal Payment Form</div>
-                </Box>
-              )}
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<Payment />}
-                className={`mb-4 ${selectedPaymentMethod === 'visa' ? 'bg-blue-600' : ''}`}
-                onClick={() => handlePaymentMethodChange('visa')}
-              >
-                Pay with Visa
-              </Button>
-              {selectedPaymentMethod === 'visa' && (
-                <Box className="mt-4 p-4 bg-gray-200 rounded">
-                  {/* Integrate Visa Payment */}
-                  <div>Visa Payment Form</div>
-                </Box>
-              )}
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<LocalAtm />}
-                className={`mb-4 ${selectedPaymentMethod === 'mpesa' ? 'bg-blue-600' : ''}`}
-                onClick={() => handlePaymentMethodChange('mpesa')}
-              >
-                Pay with Mpesa
-              </Button>
-              {selectedPaymentMethod === 'mpesa' && (
-                <Box className="mt-4 p-4 bg-gray-200 rounded">
-                  {/* Integrate Mpesa Payment */}
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Mpesa Phone Number"
-                    className="mb-4"
-                  />
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={() => console.log('Mpesa Payment')}
-                  >
-                    Pay Now
-                  </Button>
-                </Box>
-              )}
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="number"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        placeholder="Amount"
+        className="border p-2 rounded-md mb-4 w-full"
+        required
+      />
+      <CardElement className="border p-2 rounded-md mb-4" />
+      <button
+        type="submit"
+        disabled={!stripe || isLoading}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {isLoading ? 'Processing...' : 'Pay'}
+      </button>
+      {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
+      {isSuccess && <p className="text-green-500 mt-2">Payment successful!</p>}
+    </form>
+  );
+};
+
+const PaymentPage: React.FC = () => {
+  return (
+    <>
+    <Header/>
+    <div className="flex">
+      <Sidebar />
+      <div className="flex-grow bg-gray-100 min-h-screen">
+        <main className="container mx-auto py-8 px-4">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-bold mb-4">Payment Page</h2>
+            <Elements stripe={stripePromise}>
+              <PaymentForm />
+            </Elements>
+          </div>
+        </main>
+      </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

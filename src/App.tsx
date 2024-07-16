@@ -31,7 +31,7 @@ const App: React.FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/user/notfound" Component={NotFound} />
-        <Route path="/user/payment" Component={PaymentPage} />
+        <Route path="/user/payments" Component={PaymentPage} />
         <Route path="/user/dashboard" Component={UserDashboard} />
         <Route path="/user/book-vehicle" Component={BookVehicle} />
         <Route path="/user/booked-vehicles" Component={BookedVehicles} />
@@ -41,7 +41,7 @@ const App: React.FC = () => {
         <Route path="/admin/manage-vehicles" Component={ManageVehicles} />
         <Route path="/admin/manage-users" Component={ManageUsers} />
         <Route path="/admin/assessment-reports" Component={Reports} />
-        <Route path="/admin/manage-fleet" Component={FleetManagement} />
+        <Route path="/admin/manage-fleet" element={<FleetManagement/>} />
         <Route path="/admin/locations-branches" Component={LocationsAndBranches} />
         <Route path="/admin/support-tickets" Component={SupportTickets} />
         <Route path="/admin/settings" Component={Settings} />
@@ -50,10 +50,14 @@ const App: React.FC = () => {
 };
 
 const NotFound: React.FC = () => (
+  <>
+  {/* <NotFound /> */}
   <div>
     <h2>404 Page Not Found</h2>
     <p>The page you are looking for does not exist.</p>
   </div>
+  </>
+  
 );
 
 export default App;
