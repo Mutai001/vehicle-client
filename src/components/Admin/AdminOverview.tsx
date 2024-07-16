@@ -14,6 +14,10 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import Header from '../Common/Header';
+import Sidebar from './sidebar';
+import Footer from '../Common/Footer';
+
 
 const AdminOverview: React.FC = () => {
   const theme = useTheme();
@@ -67,6 +71,9 @@ const AdminOverview: React.FC = () => {
 
   return (
     <>
+      <Header />
+      <div className="flex">
+        <Sidebar />
       <Container maxWidth="md">
         <Typography variant="h4" component="h1" gutterBottom>
           Admin Dashboard Overview
@@ -200,6 +207,8 @@ const AdminOverview: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
+      </div>
+      <Footer />
     </>
   );
 };
