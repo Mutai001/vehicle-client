@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminSidebar from './sidebar';
+import Header from '../Common/Header';
+import Footer from '../Common/Footer';
 import {
   Container,
   Grid,
@@ -70,8 +72,11 @@ const LocationsAndBranches: React.FC = () => {
   }
 
   return (
+    <>
+    <Header />
+    <div className="flex">  
+          <AdminSidebar />
     <div className={classes.root}>
-      <AdminSidebar />
       <Container className={classes.content}>
         <Typography variant="h4" className={classes.title}>
           Locations and Branches
@@ -105,6 +110,9 @@ const LocationsAndBranches: React.FC = () => {
         </Grid>
       </Container>
     </div>
+    </div>
+    <Footer />
+    </>
   );
 };
 

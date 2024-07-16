@@ -42,10 +42,11 @@ const App: React.FC = () => {
         <Route path="/admin/manage-vehicles" Component={ManageVehicles} />
         <Route path="/admin/manage-users" Component={ManageUsers} />
         <Route path="/admin/assessment-reports" Component={Reports} />
-        <Route path="/admin/manage-fleet" element={<FleetManagement/>} />
-        <Route path="/admin/locations-branches" Component={LocationsAndBranches} />
+        <Route path="/admin/fleet-management" Component={FleetManagement} />
+        <Route path="/admin/locations" Component={LocationsAndBranches} />
         <Route path="/admin/support-tickets" Component={SupportTickets} />
         <Route path="/admin/settings" Component={Settings} />
+        <Route path="/admin/reports" Component={Reports} />
     </Routes>
   );
 };
