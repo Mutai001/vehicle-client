@@ -189,7 +189,6 @@ interface PaymentFormProps {
 const PaymentForm: React.FC<PaymentFormProps> = ({ vehicle, completeBooking }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const [amount, setAmount] = useState(vehicle.rental_rate);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -219,7 +218,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ vehicle, completeBooking }) =
         if (booking_id) {
           const paymentData: PaymentData = {
             booking_id,
-            amount,
+            amount: vehicle.rental_rate,
             payment_status: 'Completed',
             payment_date: new Date().toISOString().split('T')[0],
             payment_method: 'Card',
