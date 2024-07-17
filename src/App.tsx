@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import AdminDashboard from './pages/AdminDashboard';
-import UserDashboard from './pages/UserDashboard';
+// import AdminDashboard from './pages/AdminDashboard';
+// import UserDashboard from './pages/UserDashboard';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import HomePage from './pages/Home';
@@ -25,8 +25,8 @@ import AdminOverview from './components/Admin/AdminOverview';
 const App: React.FC = () => {
   return (
     <Routes>
-       <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/user" element={<UserDashboard />} />
+       <Route path="/admin" Component={AdminOverview}  />
+      <Route path="/user" Component={Dashboard} />
        <Route path="/login" element={<LoginPage />} />
        <Route path="/logout" element={<LogoutLink />} />
         <Route path="/register" element={<RegisterPage />} />

@@ -3,7 +3,7 @@ import { Box, Grid, Typography, Card, CardContent, Button } from '@mui/material'
 import { AccountCircle, DirectionsCar, Payment } from '@mui/icons-material';
 import axios from 'axios';
 import Footer from '../Common/Footer';
-import Header from './Header'
+import Header from '../Common/Header';
 import Sidebar from './Sidebar';
 
 const UserDashboard: React.FC = () => {
@@ -25,7 +25,7 @@ const UserDashboard: React.FC = () => {
       try {
         // Fetch user data
         const userResponse = await axios.get('http://localhost:8000/api/users/1');
-        setUserData(userResponse.data);
+        setUserData(userResponse.data); // Ensure response data structure matches the expected JSON format
 
         // Fetch bookings data
         const bookingsResponse = await axios.get('http://localhost:8000/api/bookings');
@@ -47,14 +47,14 @@ const UserDashboard: React.FC = () => {
       <Header />
       <div className="flex">
         <Sidebar />
-        <div className="flex-grow bg-gray-100 min-h-screen p-8">
-          <Box>
+        <div className="flex-grow bg-gray-100 min-h-screen">
+          <Box className="py-8">
             <Typography variant="h4" className="text-center mb-8">
               User Dashboard
             </Typography>
             <Grid container spacing={4}>
               <Grid item xs={12} md={4}>
-                <Card className="bg-white">
+                <Card className="bg-gray-100">
                   <CardContent>
                     <AccountCircle fontSize="large" className="text-blue-500" />
                     <Typography variant="h6" className="mt-2">
@@ -68,7 +68,7 @@ const UserDashboard: React.FC = () => {
                 </Card>
               </Grid>
               <Grid item xs={12} md={4}>
-                <Card className="bg-white">
+                <Card className="bg-gray-100">
                   <CardContent>
                     <DirectionsCar fontSize="large" className="text-green-500" />
                     <Typography variant="h6" className="mt-2">
@@ -84,7 +84,7 @@ const UserDashboard: React.FC = () => {
                 </Card>
               </Grid>
               <Grid item xs={12} md={4}>
-                <Card className="bg-white">
+                <Card className="bg-gray-100">
                   <CardContent>
                     <Payment fontSize="large" className="text-red-500" />
                     <Typography variant="h6" className="mt-2">

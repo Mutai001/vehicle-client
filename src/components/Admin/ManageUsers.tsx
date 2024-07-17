@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../Admin/sidebar';
+import Header from '../Common/Header';
+import Footer from '../Common/Footer';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import {
@@ -201,6 +203,8 @@ const ManageUsers: React.FC = () => {
   }
 
   return (
+    <>
+    <Header />
     <div style={{ display: 'flex', height: '100vh' }}>
       <AdminSidebar /> {/* Include AdminSidebar component */}
       <Container maxWidth="lg" style={{ flexGrow: 1, paddingTop: '20px' }}>
@@ -363,6 +367,8 @@ const ManageUsers: React.FC = () => {
         </Dialog>
       </Container>
     </div>
+    <Footer />
+  </>
   );
 };
 
