@@ -13,8 +13,9 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  useMediaQuery, // Import useMediaQuery
+  useMediaQuery,
   useTheme,
+  Fab,
 } from '@mui/material';
 import {
   CarRental,
@@ -24,18 +25,19 @@ import {
   LocationOn,
   Email,
   ArrowDropDown,
-  Menu as MenuIcon, // Import Menu icon for navigation
+  Menu as MenuIcon,
+  ArrowUpward,
 } from '@mui/icons-material';
-import FeaturedVehicles from './FeaturedVehicles'; // Import your FeaturedVehicles component here
-import Footer from './Common/Footer'; // Import your Footer component here
-import HeroImage from '../assets/images/Car1.png'; // Example hero image import
-import HeroImage2 from '../assets/images/car2.png'; // Another hero image import
-import HeroImage3 from '../assets/images/car3.png'; // Another hero image import
-import MapImage from '../assets/images/map.png'; // Example map image import
+import FeaturedVehicles from './FeaturedVehicles';
+import Footer from './Common/Footer';
+import HeroImage from '../assets/images/Car1.png';
+import HeroImage2 from '../assets/images/car2.png';
+import HeroImage3 from '../assets/images/car3.png';
+import MapImage from '../assets/images/map.png';
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Check if the view is mobile
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const featuredVehiclesRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
@@ -66,7 +68,10 @@ const HomePage: React.FC = () => {
     }
   };
 
-  // For dropdown menu
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -89,6 +94,9 @@ const HomePage: React.FC = () => {
             </Typography>
             {!isMobile && (
               <>
+                <Button color="inherit" onClick={scrollToTop}>
+                  Home
+                </Button>
                 <Button color="inherit" onClick={scrollToFeaturedVehicles}>
                   Featured Vehicles
                 </Button>
@@ -102,7 +110,6 @@ const HomePage: React.FC = () => {
                   Get In Touch
                 </Button>
 
-                {/* Combined User and Admin Menu */}
                 <Button
                   color="inherit"
                   endIcon={<ArrowDropDown />}
@@ -158,7 +165,7 @@ const HomePage: React.FC = () => {
             animation: 'fadeIn 2s',
             opacity: 0.9,
             '&:hover': {
-              opacity: 1, // Example hover effect
+              opacity: 1,
             },
           }}
         >
@@ -225,7 +232,7 @@ const HomePage: React.FC = () => {
                     Get Started
                   </Button>
                 </Box>
-                <DirectionsCar fontSize="large" style={{ marginLeft: '16px', color: '#424242' }} />
+                <DirectionsCar fontSize="large" style={{ marginLeft: '16px', color: '#FF5733' }} />
               </Paper>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -240,7 +247,7 @@ const HomePage: React.FC = () => {
                   },
                 }}
               >
-                <BookOnline fontSize="large" style={{ marginRight: '16px', color: '#424242' }} />
+                <BookOnline fontSize="large" style={{ marginRight: '16px', color: '#C70039' }} />
                 <Box style={{ flex: 1 }}>
                   <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
                     Online Booking System
@@ -256,7 +263,6 @@ const HomePage: React.FC = () => {
             </Grid>
           </Grid>
 
-          {/* Featured Vehicles Section */}
           <FeaturedVehicles />
 
           <Grid container spacing={4} ref={servicesRef} style={{ marginBottom: '48px' }}>
@@ -275,16 +281,16 @@ const HomePage: React.FC = () => {
                   Our Services
                 </Typography>
                 <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                  We offer a wide range of services to meet your vehicle rental needs.
+                  We offer a variety of services to cater to your needs.
                 </Typography>
-                <Button component={Link} to="/register" variant="contained" color="primary">
-                  View Services
+                <Button component={Link} to="/services" variant="contained" color="primary">
+                  Explore Services
                 </Button>
               </Paper>
             </Grid>
           </Grid>
 
-          <Grid container spacing={4} ref={contactUsRef} style={{ marginBottom: '48px' }}>
+          <Grid container spacing={4} style={{ marginBottom: '48px' }} ref={contactUsRef}>
             <Grid item xs={12} md={6}>
               <Paper
                 sx={{
@@ -297,18 +303,18 @@ const HomePage: React.FC = () => {
                   },
                 }}
               >
-                <SupportAgent fontSize="large" style={{ marginRight: '16px', color: '#424242' }} />
                 <Box style={{ flex: 1 }}>
                   <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                    24/7 Customer Support
+                    Customer Support
                   </Typography>
                   <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                    Our team is here to help you at any time of the day.
+                    Have any questions? Get in touch with our support team.
                   </Typography>
-                  <Button component={Link} to="/register" variant="contained" color="primary">
-                    Contact Us
+                  <Button component={Link} to="/customer-support" variant="contained" color="primary">
+                    Contact Support
                   </Button>
                 </Box>
+                <SupportAgent fontSize="large" style={{ marginLeft: '16px', color: '#FFC300' }} />
               </Paper>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -323,23 +329,23 @@ const HomePage: React.FC = () => {
                   },
                 }}
               >
-                <LocationOn fontSize="large" style={{ marginRight: '16px', color: '#424242' }} />
+                <LocationOn fontSize="large" style={{ marginRight: '16px', color: '#DAF7A6' }} />
                 <Box style={{ flex: 1 }}>
                   <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                    Locations
+                    Our Locations
                   </Typography>
                   <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                    We have multiple locations to serve you better.
+                    Find our rental locations nearest to you.
                   </Typography>
-                  <Button component={Link} to="/register" variant="contained" color="primary">
-                    Find Us
+                  <Button component={Link} to="/locations" variant="contained" color="primary">
+                    View Locations
                   </Button>
                 </Box>
               </Paper>
             </Grid>
           </Grid>
 
-          <Grid container spacing={4} ref={getInTouchRef} style={{ marginBottom: '48px' }}>
+          <Grid container spacing={4} style={{ marginBottom: '48px' }} ref={getInTouchRef}>
             <Grid item xs={12}>
               <Paper
                 sx={{
@@ -354,78 +360,44 @@ const HomePage: React.FC = () => {
                 <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
                   Get In Touch
                 </Typography>
-                <Box component="form" sx={{ mt: 1 }}>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="name"
-                    label="Name"
-                    name="name"
-                    autoComplete="name"
-                    autoFocus
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    name="email"
-                    autoComplete="email"
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="message"
-                    label="Message"
-                    type="text"
-                    id="message"
-                    multiline
-                    rows={4}
-                  />
-                  <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
-                    Send Message
-                  </Button>
-                </Box>
-              </Paper>
-            </Grid>
-          </Grid>
-
-          {/* Contact Section */}
-          <Grid container spacing={4} style={{ marginBottom: '48px' }}>
-            <Grid item xs={12}>
-              <Paper
-                sx={{
-                  padding: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              >
-                <Box style={{ flex: 1 }}>
-                  <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                    Contact Us
-                  </Typography>
-                  <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                    Reach out to us for any queries or support.
-                  </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Email fontSize="large" style={{ marginRight: '8px', color: '#424242' }} />
-                    <Typography variant="body1">support@vehiclerental.com</Typography>
-                  </Box>
-                </Box>
-                <img src={MapImage} alt="Map" style={{ width: '200px', marginLeft: '16px' }} />
+                <Typography variant="body1" style={{ marginBottom: '16px' }}>
+                  We'd love to hear from you! Drop us a message.
+                </Typography>
+                <TextField
+                  variant="outlined"
+                  placeholder="Your Email"
+                  fullWidth
+                  margin="normal"
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton edge="end" color="primary">
+                        <Email />
+                      </IconButton>
+                    ),
+                  }}
+                />
               </Paper>
             </Grid>
           </Grid>
         </Container>
+
+        {/* Footer */}
+        <Footer />
       </div>
-      <Footer />
+
+      {/* Scroll to Top Button */}
+      <Fab
+        color="primary"
+        aria-label="scroll back to top"
+        onClick={scrollToTop}
+        style={{
+          position: 'fixed',
+          bottom: '2rem',
+          right: '2rem',
+        }}
+      >
+        <ArrowUpward />
+      </Fab>
     </>
   );
 };
