@@ -5,7 +5,7 @@ import Footer from '../Common/Footer';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe('your-stripe-public-key');
+const stripePromise = loadStripe('pk_test_51PbJox2KMNFPNnEGF0rcBxjD8rRZCyPhy7tOlnDDQUerAnMSstet7bBcg0mgZrXrUhprYbDSbA4Bnm37F1fIsuJn00NUmJnlOy');
 
 interface Vehicle {
   vehicle_id: number;

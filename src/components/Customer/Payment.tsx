@@ -116,3 +116,48 @@ const PaymentPage: React.FC = () => {
 };
 
 export default PaymentPage;
+
+
+
+
+
+// src/components/PaymentForm.tsx
+// import React, { useState } from 'react';
+// import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+
+// const PaymentForm: React.FC = () => {
+//     const stripe = useStripe();
+//     const elements = useElements();
+//     const [loading, setLoading] = useState(false);
+
+//     const handleSubmit = async (event: React.FormEvent) => {
+//         event.preventDefault();
+//         setLoading(true);
+
+//         const { error, paymentIntent } = await stripe!.confirmCardPayment('client-secret-from-backend', {
+//             payment_method: {
+//                 card: elements!.getElement(CardElement)!,
+//             },
+//         });
+
+//         setLoading(false);
+
+//         if (error) {
+//             console.error('Payment failed:', error.message);
+//         } else if (paymentIntent) {
+//             console.log('Payment succeeded:', paymentIntent.id);
+//         }
+//     };
+
+//     return (
+//         <form onSubmit={handleSubmit}>
+//             <CardElement />
+//             <button type="submit" disabled={!stripe || !elements || loading}>
+//                 {loading ? 'Processing...' : 'Pay'}
+//             </button>
+//         </form>
+//     );
+// };
+
+// export default PaymentForm;
+
