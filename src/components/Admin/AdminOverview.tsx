@@ -14,7 +14,8 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import Header from '../Common/Header';
+// import Header from '../Common/Header';
+import AdminHeader from './AdminHeader';
 import Sidebar from './sidebar';
 import Footer from '../Common/Footer';
 
@@ -71,7 +72,9 @@ const AdminOverview: React.FC = () => {
 
   return (
     <>
-      <Header />
+      <AdminHeader onToggleSidebar={function (): void {
+        throw new Error('Function not implemented.');
+      } } isSidebarCollapsed={false} />
       <div className="flex">
         <Sidebar />
       <Container maxWidth="md">
