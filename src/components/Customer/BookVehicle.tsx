@@ -36,7 +36,7 @@ interface BookingData {
   location_id: number;
   booking_date: string;
   return_date: string;
-  total_amount: string;
+  amount: string;
   booking_status: string;
 }
 
@@ -60,7 +60,7 @@ const BookVehicle: React.FC = () => {
 
   useEffect(() => {
     const fetchVehicles = async () => {
-      setLoading(true); // Set loading to true before fetching
+      setLoading(true);
       try {
         const response = await fetch('http://localhost:8000/api/vehicles');
         if (!response.ok) {
@@ -75,12 +75,12 @@ const BookVehicle: React.FC = () => {
           setError('An unknown error occurred');
         }
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
 
     const fetchSpecifications = async () => {
-      setLoading(true); // Set loading to true before fetching
+      setLoading(true);
       try {
         const response = await fetch('http://localhost:8000/api/vehicle-specifications');
         if (!response.ok) {
@@ -95,7 +95,7 @@ const BookVehicle: React.FC = () => {
           setError('An unknown error occurred');
         }
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
 
@@ -113,12 +113,12 @@ const BookVehicle: React.FC = () => {
 
   const completeBooking = async (vehicle: Vehicle) => {
     const bookingData: BookingData = {
-      user_id: 1, // Replace with actual user_id
+      user_id: 1,
       vehicle_id: vehicle.vehicle_id,
-      location_id: 1, // Replace with actual location_id
+      location_id: 1,
       booking_date: new Date().toISOString().split('T')[0],
       return_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      total_amount: vehicle.rental_rate,
+     amount: vehicle.rental_rate,
       booking_status: 'Confirmed',
     };
 
@@ -235,9 +235,9 @@ interface PaymentFormProps {
 const PaymentForm: React.FC<PaymentFormProps> = ({ vehicle, completeBooking }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -246,17 +246,18 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ vehicle, completeBooking }) =
       return;
     }
 
-    setIsLoading(true);
     const cardElement = elements.getElement(CardElement);
 
     if (cardElement) {
+      setIsLoading(true);
+
       const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: 'card',
         card: cardElement,
       });
 
       if (error) {
-        setErrorMessage(error.message || null);
+        setErrorMessage(error.message || 'An error occurred');
         setIsLoading(false);
       } else {
         const booking_id = await completeBooking(vehicle);
@@ -281,8 +282,23 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ vehicle, completeBooking }) =
             body: JSON.stringify(paymentData),
           });
 
-          if (response.ok) {
-            setIsSuccess(true);
+          const paymentIntentResponse = await response.json();
+          const { clientSecret } = paymentIntentResponse;
+
+          if (clientSecret) {
+            const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+              payment_method: {
+                card: cardElement,
+              },
+            });
+
+            if (stripeError) {
+              setErrorMessage(stripeError.message || 'An error occurred');
+            } else if (paymentIntent?.status === 'succeeded') {
+              setIsSuccess(true);
+            } else {
+              setErrorMessage('Payment failed');
+            }
           } else {
             setErrorMessage('Payment failed');
           }

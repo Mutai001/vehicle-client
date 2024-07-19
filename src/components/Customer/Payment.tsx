@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 import Footer from '../Common/Footer';
 import Header from '../Common/Header';
 
-const stripePromise = loadStripe('your-stripe-public-key');
+const stripePromise = loadStripe('pk_test_51PbJox2KMNFPNnEGF0rcBxjD8rRZCyPhy7tOlnDDQUerAnMSstet7bBcg0mgZrXrUhprYbDSbA4Bnm37F1fIsuJn00NUmJnlOy');
 
 const PaymentForm: React.FC = () => {
   const stripe = useStripe();
