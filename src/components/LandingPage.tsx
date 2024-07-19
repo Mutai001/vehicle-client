@@ -33,7 +33,6 @@ import Footer from './Common/Footer';
 import HeroImage from '../assets/images/Car1.png';
 import HeroImage2 from '../assets/images/car2.png';
 import HeroImage3 from '../assets/images/car3.png';
-import MapImage from '../assets/images/map.png';
 
 const HomePage: React.FC = () => {
   const theme = useTheme();

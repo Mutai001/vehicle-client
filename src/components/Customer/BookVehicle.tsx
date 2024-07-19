@@ -42,7 +42,7 @@ interface BookingData {
 
 interface PaymentData {
   booking_id: number;
-  amount: string;
+  amount: number;
   payment_status: string;
   payment_date: string;
   payment_method: string;
@@ -258,62 +258,53 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ vehicle, completeBooking }) =
       if (error) {
         setErrorMessage(error.message || null);
         setIsLoading(false);
-      } else if (paymentMethod) {
+      } else {
         const booking_id = await completeBooking(vehicle);
 
         if (booking_id) {
           const paymentData: PaymentData = {
-            booking_id,
-            amount: vehicle.rental_rate,
+            booking_id: booking_id,
+            amount: parseFloat(vehicle.rental_rate),
             payment_status: 'Completed',
-            payment_date: new Date().toISOString().split('T')[0],
-            payment_method: 'Card',
-            transaction_id: paymentMethod.id,
+            payment_date: new Date().toISOString(),
+            payment_method: paymentMethod?.id || '',
+            transaction_id: paymentMethod?.id || '',
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           };
 
-          try {
-            const response = await fetch('http://localhost:8000/api/payments', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(paymentData),
-            });
+          const response = await fetch('http://localhost:8000/api/payments', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(paymentData),
+          });
 
-            if (!response.ok) {
-              throw new Error('Failed to process payment');
-            }
-
+          if (response.ok) {
             setIsSuccess(true);
-            setErrorMessage(null);
-          } catch (err) {
-            if (err instanceof Error) {
-              setErrorMessage(err.message);
-            } else {
-              setErrorMessage('An unknown error occurred');
-            }
-          } finally {
-            setIsLoading(false);
+          } else {
+            setErrorMessage('Payment failed');
           }
         }
+        setIsLoading(false);
       }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CardElement className="border p-2 rounded-md mb-4" />
+    <form onSubmit={handleSubmit} className="bg-gray-200 p-4 rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-4">Payment Information</h2>
+      <CardElement className="mb-4" />
+      {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+      {isSuccess && <p className="text-green-500 text-sm">Payment successful!</p>}
       <button
         type="submit"
-        disabled={!stripe || isLoading}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        disabled={isLoading || !stripe}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        {isLoading ? 'Processing...' : 'Pay'}
+        {isLoading ? 'Processing...' : 'Pay Now'}
       </button>
-      {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
-      {isSuccess && <p className="text-green-500 mt-2">Payment successful!</p>}
     </form>
   );
 };
