@@ -24,7 +24,9 @@ import { Theme } from '@mui/material/styles';
 import { Add, Delete } from '@mui/icons-material';
 import AdminSidebar from './sidebar';
 import Footer from '../Common/Footer';
-import Header from '../Common/Header';
+// import Header from '../Common/Header';
+import AdminHeader from './AdminHeader';
+
 
 const theme = createTheme({
   palette: {
@@ -203,7 +205,9 @@ const SupportTickets: React.FC = () => {
 
   return (
     <>
-      <Header />
+      <AdminHeader onToggleSidebar={function (): void {
+        throw new Error('Function not implemented.');
+      } } isSidebarCollapsed={false} />
       <Box sx={{ display: 'flex', height: '100vh' }}>
         <AdminSidebar />
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto', padding: 4 }}>
