@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import UserHeader from './UserHeader';
+
 
 const Logout: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -23,6 +25,10 @@ const Logout: React.FC = () => {
   };
 
   return (
+    <>
+    <UserHeader onToggleSidebar={function (): void {
+        throw new Error('Function not implemented.');
+      } } isSidebarCollapsed={false} />
     <div>
       <Button variant="contained" color="secondary" onClick={handleClickOpen}>
         Logout
@@ -49,6 +55,7 @@ const Logout: React.FC = () => {
         </DialogActions>
       </Dialog>
     </div>
+    </>
   );
 };
 

@@ -3,7 +3,9 @@ import { Box, Typography, Grid, Card, Button, TextField, Select, MenuItem, FormC
 import { SaveAlt as SaveAltIcon } from '@mui/icons-material';
 import AdminSidebar from './sidebar';
 import Footer from '../Common/Footer';
-import Header from '../Common/Header';
+// import Header from '../Common/Header';
+import AdminHeader from './AdminHeader';
+
 
 const Settings: React.FC = () => {
   const [siteName, setSiteName] = useState('Car Rental Management System');
@@ -16,7 +18,9 @@ const Settings: React.FC = () => {
 
   return (
     <>
-      <Header />
+      <AdminHeader onToggleSidebar={function (): void {
+        throw new Error('Function not implemented.');
+      } } isSidebarCollapsed={false} />
       <div className="flex">
         <AdminSidebar />
         <Box className="container mx-auto py-8">

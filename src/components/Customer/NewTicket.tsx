@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Footer from '../Common/Footer';
 import Sidebar from './Sidebar';
+import UserHeader from './UserHeader';
+
 
 const NewTicket: React.FC = () => {
   // State variables for form fields
@@ -74,6 +76,9 @@ const NewTicket: React.FC = () => {
 
   return (
     <>
+      <UserHeader onToggleSidebar={function (): void {
+        throw new Error('Function not implemented.');
+      } } isSidebarCollapsed={false} />
       <div className="flex">
         <Sidebar />
         <div className="flex-grow bg-gray-100 min-h-screen">
