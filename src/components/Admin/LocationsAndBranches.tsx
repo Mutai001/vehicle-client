@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminSidebar from './sidebar';
-import Header from '../Common/Header';
+// import Header from '../Common/Header';
+import AdminHeader from './AdminHeader';
 import Footer from '../Common/Footer';
 import {
   Container,
@@ -122,7 +123,9 @@ const LocationsAndBranches: React.FC = () => {
 
   return (
     <>
-      <Header />
+      <AdminHeader onToggleSidebar={function (): void {
+        throw new Error('Function not implemented.');
+      } } isSidebarCollapsed={false} />
       <div className="flex">
         <AdminSidebar />
         <div className={classes.root}>
