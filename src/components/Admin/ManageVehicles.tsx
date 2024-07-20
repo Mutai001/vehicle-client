@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AdminSidebar from '../Admin/sidebar';
-import Header from '../Common/Header';
+// import Header from '../Common/Header';
+import AdminHeader from './AdminHeader';
 import Footer from '../Common/Footer';
 import {
   Card,
@@ -166,8 +167,8 @@ const ManageVehicles: React.FC = () => {
 
   return (
     <>
-      <Header />
-      <div style={{ display: 'flex' }}>
+      <AdminHeader onToggleSidebar={() => {}} isSidebarCollapsed={false} />
+            <div style={{ display: 'flex' }}>
         <AdminSidebar />
         <div className="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen p-4" style={{ flexGrow: 1 }}>
           <Container maxWidth="lg" sx={{ mt: 4 }}>
