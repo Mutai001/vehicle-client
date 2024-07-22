@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { TextField, Button, Typography, Container, Grid, Box, InputAdornment, Link, Snackbar, Alert } from '@mui/material';
+import { TextField, Button, Typography, Container, Grid, Box, InputAdornment, Link, Snackbar, Alert, IconButton } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Lock, CheckCircleOutline } from '@mui/icons-material';
+import { Lock, CheckCircleOutline, Close } from '@mui/icons-material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
+// Validation schema
 const schema = yup.object().shape({
   username: yup.string().required('Username is required'),
   password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
@@ -17,7 +18,7 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [snackbar, setSnackbar] = useState<{ open: boolean, message: string, severity: 'success' | 'error' }>({ open: false, message: '', severity: 'success' });
 
   const onSubmit = async (data: any) => {
     try {
@@ -30,8 +31,9 @@ const Login = () => {
       });
       const result = await response.json();
       if (response.ok) {
-        setSnackbar({ open: true, message: 'Login successful!', severity: 'success' });
-        // Example navigation based on role
+        localStorage.setItem('authToken', result.token); // Store token
+        setSnackbar({ open: true, message: 'Login successful! Welcome back.', severity: 'success' });
+        // Redirect based on role
         if (result.role === 'admin') {
           navigate('/admin-dashboard');
         } else {
@@ -78,6 +80,7 @@ const Login = () => {
                       ),
                     }}
                     autoFocus
+                    autoComplete="username" // Added autocomplete
                     error={!!errors.username}
                     helperText={errors.username ? errors.username.message : ''}
                   />
@@ -104,6 +107,7 @@ const Login = () => {
                         </InputAdornment>
                       ),
                     }}
+                    autoComplete="current-password" // Added autocomplete
                     error={!!errors.password}
                     helperText={errors.password ? errors.password.message : ''}
                   />
@@ -129,11 +133,41 @@ const Login = () => {
           </Grid>
         </Box>
       </Box>
-      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity === 'success' ? 'success' : 'error'} sx={{ width: '100%' }}>
+      <Snackbar 
+        open={snackbar.open} 
+        autoHideDuration={6000} 
+        onClose={handleCloseSnackbar}
+        action={
+          <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
+            <Close fontSize="small" />
+          </IconButton>
+        }
+        sx={{ 
+          '& .MuiAlert-root': { 
+            borderRadius: '8px', 
+            boxShadow: 3 
+          } 
+        }}
+      >
+        <Alert 
+          onClose={handleCloseSnackbar} 
+          severity={snackbar.severity} 
+          sx={{ 
+            width: '100%', 
+            borderRadius: '8px',
+            boxShadow: 3,
+            fontWeight: 'bold',
+            fontSize: '16px',
+            backgroundColor: snackbar.severity === 'success' ? '#4caf50' : '#f44336',
+            color: '#fff',
+            '& .MuiAlert-icon': { 
+              color: snackbar.severity === 'success' ? '#fff' : '#fff',
+            },
+          }}
+        >
           <Grid container alignItems="center" spacing={2}>
             <Grid item>
-              <CheckCircleOutline fontSize="large" style={{ color: snackbar.severity === 'success' ? 'green' : 'red' }} />
+              <CheckCircleOutline fontSize="large" style={{ color: snackbar.severity === 'success' ? 'inherit' : 'inherit' }} />
             </Grid>
             <Grid item xs>
               {snackbar.message}

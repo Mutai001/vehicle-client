@@ -23,7 +23,7 @@ const Logout: React.FC = () => {
     // Optionally, clear user session or additional data here
 
     // Redirect to home page
-    navigate('/');
+    navigate('/login');
   };
 
   return (
