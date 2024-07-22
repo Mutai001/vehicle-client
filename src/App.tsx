@@ -21,6 +21,13 @@ import SupportTickets from './components/Admin/SupportTickets';
 import LocationsAndBranches from './components/Admin/LocationsAndBranches';
 import Dashboard from './components/Customer/Dashboard';
 import AdminOverview from './components/Admin/AdminOverview';
+import PaymentSuccess from './components/Customer/PaymentSuccess';
+import UserProfile from './components/Customer/UserProfile';
+
+// Define the type PaymentFormProps
+type PaymentFormProps = {
+  // Define the properties of PaymentFormProps here
+};
 
 const App: React.FC = () => {
   return (
@@ -33,7 +40,7 @@ const App: React.FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/user/notfound" Component={NotFound} />
-        <Route path="/user/payments" Component={PaymentPage} />
+        <Route path="/user/payments" Component={PaymentPage as React.ComponentType<PaymentFormProps>} />
         <Route path="/user/dashboard" Component={Dashboard} />
         <Route path="/user/book-vehicle" Component={BookVehicle} />
         <Route path="/user/booked-vehicles" Component={BookedVehicles} />
@@ -48,6 +55,9 @@ const App: React.FC = () => {
         <Route path="/admin/support-tickets" Component={SupportTickets} />
         <Route path="/admin/settings" Component={Settings} />
         <Route path="/admin/reports" Component={Reports} />
+        <Route path="/user/profile" Component={UserProfile} />
+         <Route path="/user/payment-success" Component={PaymentSuccess} />
+
     </Routes>
   );
 };

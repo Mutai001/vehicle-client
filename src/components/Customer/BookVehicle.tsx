@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
-// import Header from '../Common/Header';
 import UserHeader from './UserHeader';
 import Footer from '../Common/Footer';
 import { loadStripe } from '@stripe/stripe-js';
@@ -37,19 +36,8 @@ interface BookingData {
   location_id: number;
   booking_date: string;
   return_date: string;
-  amount: string;
-  booking_status: string;
-}
-
-interface PaymentData {
-  booking_id: number;
   amount: number;
-  payment_status: string;
-  payment_date: string;
-  payment_method: string;
-  transaction_id: string;
-  created_at: string;
-  updated_at: string;
+  booking_status: string;
 }
 
 const BookVehicle: React.FC = () => {
@@ -119,7 +107,7 @@ const BookVehicle: React.FC = () => {
       location_id: 1,
       booking_date: new Date().toISOString().split('T')[0],
       return_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-     amount: vehicle.rental_rate,
+      amount: parseInt(vehicle.rental_rate) * 100,
       booking_status: 'Confirmed',
     };
 
@@ -159,7 +147,7 @@ const BookVehicle: React.FC = () => {
     <>
       <UserHeader onToggleSidebar={function (): void {
         throw new Error('Function not implemented.');
-      } } isSidebarCollapsed={false} />
+      }} isSidebarCollapsed={false} />
       <div className="flex">
         <Sidebar />
         <div className="flex-grow bg-gray-100 min-h-screen">
@@ -199,7 +187,7 @@ const BookVehicle: React.FC = () => {
                       {vehicle.availability && (
                         <button
                           onClick={() => handleBooking(vehicle)}
-                          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600"
                         >
                           Book Now
                         </button>
@@ -208,20 +196,16 @@ const BookVehicle: React.FC = () => {
                   );
                 })}
               </div>
-              {selectedVehicle && (
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    Complete Booking for Vehicle ID: {selectedVehicle.vehicle_id}
-                  </h3>
-                  <Elements stripe={stripePromise}>
-                    <PaymentForm
-                      vehicle={selectedVehicle}
-                      completeBooking={completeBooking}
-                    />
-                  </Elements>
-                </div>
-              )}
             </div>
+
+            {selectedVehicle && (
+              <div className="bg-white p-6 mt-6 rounded-lg shadow-md">
+                <h2 className="text-xl font-bold mb-4">Payment Information</h2>
+                <Elements stripe={stripePromise}>
+                  <PaymentForm vehicle={selectedVehicle} completeBooking={completeBooking} />
+                </Elements>
+              </div>
+            )}
           </main>
         </div>
       </div>
@@ -232,97 +216,73 @@ const BookVehicle: React.FC = () => {
 
 interface PaymentFormProps {
   vehicle: Vehicle;
-  completeBooking: (vehicle: Vehicle) => Promise<number | undefined>;
+  completeBooking: (vehicle: Vehicle) => Promise<number | void>;
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ vehicle, completeBooking }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
       return;
     }
 
-    const cardElement = elements.getElement(CardElement);
+    setIsLoading(true);
 
-    if (cardElement) {
-      setIsLoading(true);
+    try {
+      const booking_id = await completeBooking(vehicle);
 
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
+      if (!booking_id) {
+        throw new Error('Booking failed');
+      }
+
+      // Call the payment API to create a payment intent
+      const paymentResponse = await fetch('http://localhost:8000/api/payments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount: parseInt(vehicle.rental_rate) * 100, booking_id }),
+      });
+
+      if (!paymentResponse.ok) {
+        throw new Error('Failed to create payment intent');
+      }
+
+      const paymentData = await paymentResponse.json();
+
+      // Confirm the payment with Stripe
+      const { error } = await stripe.confirmCardPayment(paymentData.clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement)!,
+        },
       });
 
       if (error) {
-        setErrorMessage(error.message || 'An error occurred');
-        setIsLoading(false);
-      } else {
-        const booking_id = await completeBooking(vehicle);
-
-        if (booking_id) {
-          const paymentData: PaymentData = {
-            booking_id: booking_id,
-            amount: parseFloat(vehicle.rental_rate),
-            payment_status: 'Completed',
-            payment_date: new Date().toISOString(),
-            payment_method: paymentMethod?.id || '',
-            transaction_id: paymentMethod?.id || '',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          };
-
-          const response = await fetch('http://localhost:8000/api/payments', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(paymentData),
-          });
-
-          const paymentIntentResponse = await response.json();
-          const { clientSecret } = paymentIntentResponse;
-
-          if (clientSecret) {
-            const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-              payment_method: {
-                card: cardElement,
-              },
-            });
-
-            if (stripeError) {
-              setErrorMessage(stripeError.message || 'An error occurred');
-            } else if (paymentIntent?.status === 'succeeded') {
-              setIsSuccess(true);
-            } else {
-              setErrorMessage('Payment failed');
-            }
-          } else {
-            setErrorMessage('Payment failed');
-          }
-        }
-        setIsLoading(false);
+        throw new Error(error.message);
       }
+
+      alert('Payment successful');
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unknown error occurred');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-200 p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Payment Information</h2>
-      <CardElement className="mb-4" />
-      {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
-      {isSuccess && <p className="text-green-500 text-sm">Payment successful!</p>}
-      <button
-        type="submit"
-        disabled={isLoading || !stripe}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        {isLoading ? 'Processing...' : 'Pay Now'}
+    <form onSubmit={handleSubmit}>
+      <CardElement />
+      <button type="submit" disabled={!stripe || isLoading} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600">
+        {isLoading ? 'Processing...' : 'Pay'}
       </button>
     </form>
   );
