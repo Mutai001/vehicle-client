@@ -47,7 +47,7 @@ const AdminOverview: React.FC = () => {
         setData({
           bookings: results[0].length,
           payments: results[1].length,
-          users: results[2].length,
+          users: results[2].length, 
           cars: results[3].length,
           locations: results[4].length,
           tickets: results[5].length,

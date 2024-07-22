@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import Sidebar from './Sidebar';
 import UserHeader from './UserHeader';
 import Footer from '../Common/Footer';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-
-const stripePromise = loadStripe('pk_test_51PbJox2KMNFPNnEGF0rcBxjD8rRZCyPhy7tOlnDDQUerAnMSstet7bBcg0mgZrXrUhprYbDSbA4Bnm37F1fIsuJn00NUmJnlOy');
 
 interface Vehicle {
   vehicle_id: number;
@@ -31,13 +28,16 @@ interface VehicleSpecification {
 }
 
 interface BookingData {
+  booking_id: number;
   user_id: number;
   vehicle_id: number;
   location_id: number;
   booking_date: string;
   return_date: string;
-  amount: number;
+  total_amount: string;
   booking_status: string;
+  created_at: string;
+  updated_at: string;
 }
 
 const BookVehicle: React.FC = () => {
@@ -46,6 +46,8 @@ const BookVehicle: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -92,23 +94,29 @@ const BookVehicle: React.FC = () => {
     fetchSpecifications();
   }, []);
 
-  const handleBooking = async (vehicle: Vehicle) => {
+  const handleBooking = (vehicle: Vehicle) => {
     if (!vehicle.availability) {
       alert(`Vehicle with ID ${vehicle.vehicle_id} is not available.`);
       return;
     }
     setSelectedVehicle(vehicle);
+    setShowConfirmModal(true);
   };
 
-  const completeBooking = async (vehicle: Vehicle) => {
+  const completeBooking = async () => {
+    if (!selectedVehicle) return;
+
     const bookingData: BookingData = {
-      user_id: 1,
-      vehicle_id: vehicle.vehicle_id,
-      location_id: 1,
+      booking_id: 0, // Placeholder, to be set by the backend
+      user_id: 1, // Adjust as necessary
+      vehicle_id: selectedVehicle.vehicle_id,
+      location_id: 1, // Adjust as necessary
       booking_date: new Date().toISOString().split('T')[0],
       return_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      amount: parseInt(vehicle.rental_rate) * 100,
-      booking_status: 'Confirmed',
+      total_amount: (parseInt(selectedVehicle.rental_rate) * 7).toFixed(2), // Assuming 7 days rental
+      booking_status: 'Pending',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
     try {
@@ -125,14 +133,24 @@ const BookVehicle: React.FC = () => {
       }
 
       const data = await response.json();
-      return data.booking_id;
+      if (data.booking_id) {
+        navigate('/user/booked-vehicles'); // Redirect to booked vehicles page
+      }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
         setError('An unknown error occurred');
       }
+    } finally {
+      setShowConfirmModal(false);
+      setSelectedVehicle(null);
     }
+  };
+
+  const closeModal = () => {
+    setShowConfirmModal(false);
+    setSelectedVehicle(null);
   };
 
   if (loading) {
@@ -145,9 +163,7 @@ const BookVehicle: React.FC = () => {
 
   return (
     <>
-      <UserHeader onToggleSidebar={function (): void {
-        throw new Error('Function not implemented.');
-      }} isSidebarCollapsed={false} />
+      <UserHeader onToggleSidebar={() => { /* implement toggle sidebar logic */ }} isSidebarCollapsed={false} />
       <div className="flex">
         <Sidebar />
         <div className="flex-grow bg-gray-100 min-h-screen">
@@ -164,7 +180,7 @@ const BookVehicle: React.FC = () => {
                       className={`bg-gray-200 p-4 rounded-lg shadow-md ${!vehicle.availability ? 'opacity-50' : ''}`}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-gray-800">{vehicle.vehicle_id}</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">{spec?.manufacturer} {spec?.model}</h3>
                         <span
                           className={`text-sm font-semibold ${vehicle.availability ? 'text-green-600' : 'text-red-600'}`}
                         >
@@ -197,94 +213,31 @@ const BookVehicle: React.FC = () => {
                 })}
               </div>
             </div>
-
-            {selectedVehicle && (
-              <div className="bg-white p-6 mt-6 rounded-lg shadow-md">
-                <h2 className="text-xl font-bold mb-4">Payment Information</h2>
-                <Elements stripe={stripePromise}>
-                  <PaymentForm vehicle={selectedVehicle} completeBooking={completeBooking} />
-                </Elements>
-              </div>
-            )}
           </main>
         </div>
       </div>
+
+      {showConfirmModal && selectedVehicle && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">Confirm Booking</h2>
+            <p className="mb-4">Are you sure you want to book this vehicle?</p>
+            <p><strong>Vehicle:</strong> {specifications.find(spec => spec.vehicle_id === selectedVehicle.vehicle_id)?.manufacturer} {specifications.find(spec => spec.vehicle_id === selectedVehicle.vehicle_id)?.model}</p>
+            <p><strong>Price per day:</strong> ${selectedVehicle.rental_rate}</p>
+            <p><strong>Total Amount:</strong> ${(parseInt(selectedVehicle.rental_rate) * 7).toFixed(2)}</p>
+            <div className="flex justify-end mt-4">
+              <button onClick={closeModal} className="bg-gray-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-gray-600">
+                Cancel
+              </button>
+              <button onClick={completeBooking} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <Footer />
     </>
-  );
-};
-
-interface PaymentFormProps {
-  vehicle: Vehicle;
-  completeBooking: (vehicle: Vehicle) => Promise<number | void>;
-}
-
-const PaymentForm: React.FC<PaymentFormProps> = ({ vehicle, completeBooking }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const booking_id = await completeBooking(vehicle);
-
-      if (!booking_id) {
-        throw new Error('Booking failed');
-      }
-
-      // Call the payment API to create a payment intent
-      const paymentResponse = await fetch('http://localhost:8000/api/payments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount: parseInt(vehicle.rental_rate) * 100, booking_id }),
-      });
-
-      if (!paymentResponse.ok) {
-        throw new Error('Failed to create payment intent');
-      }
-
-      const paymentData = await paymentResponse.json();
-
-      // Confirm the payment with Stripe
-      const { error } = await stripe.confirmCardPayment(paymentData.clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement)!,
-        },
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      alert('Payment successful');
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert('An unknown error occurred');
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <CardElement />
-      <button type="submit" disabled={!stripe || isLoading} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600">
-        {isLoading ? 'Processing...' : 'Pay'}
-      </button>
-    </form>
   );
 };
 

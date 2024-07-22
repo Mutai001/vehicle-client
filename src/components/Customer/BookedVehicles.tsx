@@ -1,39 +1,35 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import Sidebar from './Sidebar';
-// import Header from '../Common/Header';
 import UserHeader from './UserHeader';
 import Footer from '../Common/Footer';
-interface Booking {
+
+interface BookedVehicle {
   booking_id: number;
-  user_id: number;
   vehicle_id: number;
-  location_id: number;
+  vehicle_model: string;
   booking_date: string;
   return_date: string;
   total_amount: string;
   booking_status: string;
-  created_at: string;
-  updated_at: string;
-  vehicleName: string;
-  type: string;
-  price: number;
-  available: boolean;
 }
 
-const BookVehicle: React.FC = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
+const BookedVehicle: React.FC = () => {
+  const [bookedVehicles, setBookedVehicles] = useState<BookedVehicle[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate(); // Use navigate hook
 
   useEffect(() => {
-    const fetchBookings = async () => {
+    const fetchBookedVehicles = async () => {
+      setLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/api/bookings');
+        const response = await fetch('http://localhost:8000/api/bookings'); // Adjust URL as necessary
         if (!response.ok) {
-          throw new Error('Failed to fetch bookings');
+          throw new Error('Failed to fetch booked vehicles');
         }
         const data = await response.json();
-        setBookings(data);
+        setBookedVehicles(data);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -45,13 +41,31 @@ const BookVehicle: React.FC = () => {
       }
     };
 
-    fetchBookings();
+    fetchBookedVehicles();
   }, []);
 
-  // Function to handle booking of a vehicle
-  const handleBooking = (id: number) => {
-    // Implement booking logic here (e.g., update database, show confirmation, etc.)
-    alert(`Vehicle with ID ${id} has been booked.`);
+  const handleProceedToPayment = (vehicle_id: number, total_amount: string) => {
+    navigate(`/user/payments?vehicle_id=${vehicle_id}&amount=${total_amount}`);
+  };
+
+  const handleCancelBooking = async (booking_id: number) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/bookings/${booking_id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setBookedVehicles((prev) => prev.filter((booking) => booking.booking_id !== booking_id));
+      } else {
+        const data = await response.json();
+        setError(data.message || 'Failed to cancel booking.');
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || 'Failed to cancel booking.');
+      } else {
+        setError('Failed to cancel booking.');
+      }
+    }
   };
 
   if (loading) {
@@ -64,51 +78,43 @@ const BookVehicle: React.FC = () => {
 
   return (
     <>
-    <UserHeader onToggleSidebar={function (): void {
-        throw new Error('Function not implemented.');
-      } } isSidebarCollapsed={false} />
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-grow bg-gray-100 min-h-screen">
-        <main className="container mx-auto py-8 px-4">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-4">Book a Vehicle</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {bookings.map(booking => (
-                <div key={booking.booking_id} className={`bg-gray-200 p-4 rounded-lg shadow-md ${booking.booking_status !== 'Available' ? 'opacity-50' : ''}`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-semibold text-gray-800 truncate">{booking.vehicleName}</h3>
-                    <span className={`text-sm font-semibold ${booking.booking_status === 'Available' ? 'text-green-600' : 'text-red-600'}`}>
-                      {booking.booking_status}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600">Type: {booking.type}</p>
-                  <p className="text-sm text-gray-600">Price per day: ${booking.price}</p>
-                  <p className="text-sm text-gray-600">Booking Date: {booking.booking_date}</p>
-                  <p className="text-sm text-gray-600">Return Date: {booking.return_date}</p>
-                  <p className="text-sm text-gray-600">Total Amount: ${booking.total_amount}</p>
-                  <p className="text-sm text-gray-600">Created At: {new Date(booking.created_at).toLocaleString()}</p>
-                  <p className="text-sm text-gray-600">Updated At: {new Date(booking.updated_at).toLocaleString()}</p>
-                  <p className="text-sm text-gray-600">Location ID: {booking.location_id}</p>
-                  <p className="text-sm text-gray-600">User ID: {booking.user_id}</p>
-                  {booking.booking_status === 'Available' && (
+      <UserHeader onToggleSidebar={() => { /* implement toggle sidebar logic */ }} isSidebarCollapsed={false} />
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-grow bg-gray-100 min-h-screen">
+          <main className="container mx-auto py-8 px-4">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-bold mb-4">My Booked Vehicles</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {bookedVehicles.map((booking) => (
+                  <div key={booking.booking_id} className="bg-gray-200 p-4 rounded-lg shadow-md">
+                    <h3 className="text-lg font-semibold text-gray-800">{booking.vehicle_model}</h3>
+                    <p className="text-sm text-gray-600">Booking Date: {booking.booking_date}</p>
+                    <p className="text-sm text-gray-600">Return Date: {booking.return_date}</p>
+                    <p className="text-sm text-gray-600">Total Amount: ${booking.total_amount}</p>
+                    <p className="text-sm text-gray-600">Status: {booking.booking_status}</p>
                     <button
-                      onClick={() => handleBooking(booking.vehicle_id)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="bg-blue-500 text-white py-2 px-4 rounded mt-2 mr-2"
+                      onClick={() => handleProceedToPayment(booking.vehicle_id, booking.total_amount)}
                     >
-                      Book Now
+                      Proceed to Payment
                     </button>
-                  )}
-                </div>
-              ))}
+                    <button
+                      className="bg-red-500 text-white py-2 px-4 rounded mt-2"
+                      onClick={() => handleCancelBooking(booking.booking_id)}
+                    >
+                      Cancel Booking
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
-    </div>
-    <Footer />
+      <Footer />
     </>
   );
 };
 
-export default BookVehicle;
+export default BookedVehicle;
