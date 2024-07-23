@@ -36,12 +36,12 @@ const AdminOverview: React.FC = () => {
     const fetchData = async () => {
       try {
         const responses = await Promise.all([
-          fetch('http://localhost:8000/api/bookings'),
-          fetch('http://localhost:8000/api/payments'),
-          fetch('http://localhost:8000/api/users'),
-          fetch('http://localhost:8000/api/vehicles'),
-          fetch('http://localhost:8000/api/locations'),
-          fetch('http://localhost:8000/api/customer-support-tickets'),
+          fetch('https://vehicle-rental-db.azurewebsites.net//api/bookings'),
+          fetch('https://vehicle-rental-db.azurewebsites.net//api/payments'),
+          fetch('https://vehicle-rental-db.azurewebsites.net//api/users'),
+          fetch('https://vehicle-rental-db.azurewebsites.net//api/vehicles'),
+          fetch('https://vehicle-rental-db.azurewebsites.net//api/locations'),
+          fetch('https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets'),
         ]);
         const results = await Promise.all(responses.map(res => res.json()));
         setData({

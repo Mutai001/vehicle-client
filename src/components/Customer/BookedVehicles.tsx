@@ -24,7 +24,7 @@ const BookedVehicle: React.FC = () => {
     const fetchBookedVehicles = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/api/bookings'); // Adjust URL as necessary
+        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/bookings'); // Adjust URL as necessary
         if (!response.ok) {
           throw new Error('Failed to fetch booked vehicles');
         }
@@ -50,7 +50,7 @@ const BookedVehicle: React.FC = () => {
 
   const handleCancelBooking = async (booking_id: number) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/bookings/${booking_id}`, {
+      const response = await fetch(`https://vehicle-rental-db.azurewebsites.net//api/bookings/${booking_id}`, {
         method: 'DELETE',
       });
       if (response.ok) {

@@ -136,7 +136,7 @@ const SupportTickets: React.FC = () => {
 
   const fetchTickets = async () => {
     try {
-      const response = await axios.get<Ticket[]>('http://localhost:8000/api/customer-support-tickets');
+      const response = await axios.get<Ticket[]>('https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets');
       setTickets(response.data);
       setLoading(false);
     } catch (error) {
@@ -163,9 +163,9 @@ const SupportTickets: React.FC = () => {
   const handleSave = async () => {
     try {
       if (dialogType === 'create') {
-        await axios.post('http://localhost:8000/api/customer-support-tickets', currentTicket);
+        await axios.post('https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets', currentTicket);
       } else {
-        await axios.put(`http://localhost:8000/api/customer-support-tickets/${currentTicket.ticket_id}`, currentTicket);
+        await axios.put(`https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets/${currentTicket.ticket_id}`, currentTicket);
       }
       fetchTickets();
       handleCloseDialog();
@@ -176,7 +176,7 @@ const SupportTickets: React.FC = () => {
 
   const handleDelete = async (ticket_id: number) => {
     try {
-      await axios.delete(`http://localhost:8000/api/customer-support-tickets/${ticket_id}`);
+      await axios.delete(`https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets/${ticket_id}`);
       fetchTickets();
     } catch (error) {
       console.error('Error deleting ticket data:', error);

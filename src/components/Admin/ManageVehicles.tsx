@@ -65,7 +65,7 @@ const ManageVehicles: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/vehicles');
+        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/vehicles');
         if (!response.ok) {
           throw new Error('Failed to fetch vehicles');
         }
@@ -107,8 +107,8 @@ const ManageVehicles: React.FC = () => {
     try {
       const method = currentVehicle ? 'PUT' : 'POST';
       const url = currentVehicle
-        ? `http://localhost:8000/api/vehicles/${currentVehicle.vehicle_id}`
-        : 'http://localhost:8000/api/vehicles';
+        ? `https://vehicle-rental-db.azurewebsites.net//api/vehicles/${currentVehicle.vehicle_id}`
+        : 'https://vehicle-rental-db.azurewebsites.net//api/vehicles';
       const response = await fetch(url, {
         method,
         headers: {
@@ -136,7 +136,7 @@ const ManageVehicles: React.FC = () => {
 
   const handleDelete = async (vehicle_id: number) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/vehicles/${vehicle_id}`, {
+      const response = await fetch(`https://vehicle-rental-db.azurewebsites.net//api/vehicles/${vehicle_id}`, {
         method: 'DELETE',
       });
 

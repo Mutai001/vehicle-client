@@ -33,7 +33,7 @@ const NewTicket: React.FC = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/customer-support-tickets', {
+      const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

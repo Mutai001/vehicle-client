@@ -80,7 +80,7 @@ const FleetManagement: React.FC = () => {
 
   const fetchFleet = async () => {
     try {
-      const response = await axios.get<Fleet[]>('http://localhost:8000/api/fleet-management');
+      const response = await axios.get<Fleet[]>('https://vehicle-rental-db.azurewebsites.net//api/fleet-management');
       setFleet(response.data);
       setLoading(false);
     } catch (error) {
@@ -107,9 +107,9 @@ const FleetManagement: React.FC = () => {
   const handleSave = async () => {
     try {
       if (dialogType === 'create') {
-        await axios.post('http://localhost:8000/api/fleet-management', currentFleet);
+        await axios.post('https://vehicle-rental-db.azurewebsites.net//api/fleet-management', currentFleet);
       } else {
-        await axios.put(`http://localhost:8000/api/fleet-management/${currentFleet.fleet_id}`, currentFleet);
+        await axios.put(`https://vehicle-rental-db.azurewebsites.net//api/fleet-management/${currentFleet.fleet_id}`, currentFleet);
       }
       fetchFleet();
       handleCloseDialog();
@@ -120,7 +120,7 @@ const FleetManagement: React.FC = () => {
 
   const handleDelete = async (fleet_id: number) => {
     try {
-      await axios.delete(`http://localhost:8000/api/fleet-management/${fleet_id}`);
+      await axios.delete(`https://vehicle-rental-db.azurewebsites.net//api/fleet-management/${fleet_id}`);
       fetchFleet();
     } catch (error) {
       console.error('Error deleting fleet data:', error);

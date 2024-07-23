@@ -63,7 +63,7 @@ const PaymentForm: React.FC = () => {
         };
 
         try {
-          const response = await fetch('http://localhost:8000/api/payments', {
+          const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/payments', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const PaymentForm: React.FC = () => {
           if (response.ok) {
             setIsSuccess(true);
             setErrorMessage(null);
-            window.location.href = 'http://localhost:5173/user/payment-success';
+            window.location.href = 'https://vehicle-client.vercel.app/payment-success';
           } else {
             const data = await response.json();
             setErrorMessage(data.message || 'Failed to process payment.');
@@ -137,7 +137,7 @@ const PaymentHistory: React.FC = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/payments');
+        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/payments');
         if (!response.ok) {
           const data = await response.json();
           throw new Error(data.message || 'Failed to fetch payment history.');

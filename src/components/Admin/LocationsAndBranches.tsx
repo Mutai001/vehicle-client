@@ -66,7 +66,7 @@ const LocationsAndBranches: React.FC = () => {
 
   const fetchLocations = async () => {
     try {
-      const response = await axios.get<Location[]>('http://localhost:8000/api/locations');
+      const response = await axios.get<Location[]>('https://vehicle-rental-db.azurewebsites.net//api/locations');
       setLocations(response.data);
       setLoading(false);
     } catch (error) {
@@ -93,9 +93,9 @@ const LocationsAndBranches: React.FC = () => {
   const handleSave = async () => {
     try {
       if (dialogType === 'create') {
-        await axios.post('http://localhost:8000/api/locations', currentLocation);
+        await axios.post('https://vehicle-rental-db.azurewebsites.net//api/locations', currentLocation);
       } else {
-        await axios.put(`http://localhost:8000/api/locations/${currentLocation.location_id}`, currentLocation);
+        await axios.put(`https://vehicle-rental-db.azurewebsites.net//api/locations/${currentLocation.location_id}`, currentLocation);
       }
       fetchLocations();
       handleCloseDialog();
@@ -106,7 +106,7 @@ const LocationsAndBranches: React.FC = () => {
 
   const handleDelete = async (location_id: number) => {
     try {
-      await axios.delete(`http://localhost:8000/api/locations/${location_id}`);
+      await axios.delete(`https://vehicle-rental-db.azurewebsites.net//api/locations/${location_id}`);
       fetchLocations();
     } catch (error) {
       console.error('Error deleting location:', error);

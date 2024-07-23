@@ -25,15 +25,15 @@ const UserDashboard: React.FC = () => {
     const fetchData = async () => {
       try {
         // Fetch user data
-        const userResponse = await axios.get('http://localhost:8000/api/users/1');
+        const userResponse = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/users/1');
         setUserData(userResponse.data); // Ensure response data structure matches the expected JSON format
 
         // Fetch bookings data
-        const bookingsResponse = await axios.get('http://localhost:8000/api/bookings');
+        const bookingsResponse = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/bookings');
         setBookings(bookingsResponse.data);
 
         // Fetch payments data
-        const paymentsResponse = await axios.get('http://localhost:8000/api/payments');
+        const paymentsResponse = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/payments');
         setPayments(paymentsResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);

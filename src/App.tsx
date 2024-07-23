@@ -57,7 +57,6 @@ const App: React.FC = () => {
         <Route path="/admin/reports" Component={Reports} />
         <Route path="/user/profile" Component={UserProfile} />
          <Route path="/user/payment-success" Component={PaymentSuccess} />
-
     </Routes>
   );
 };

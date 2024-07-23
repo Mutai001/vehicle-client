@@ -22,7 +22,7 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/users');
+        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/users');
         if (response.ok) {
           const data = await response.json();
           setUser(data);

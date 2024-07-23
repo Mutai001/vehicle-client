@@ -53,7 +53,7 @@ const BookVehicle: React.FC = () => {
     const fetchVehicles = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/api/vehicles');
+        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/vehicles');
         if (!response.ok) {
           throw new Error('Failed to fetch vehicles');
         }
@@ -73,7 +73,7 @@ const BookVehicle: React.FC = () => {
     const fetchSpecifications = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/api/vehicle-specifications');
+        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/vehicle-specifications');
         if (!response.ok) {
           throw new Error('Failed to fetch vehicle specifications');
         }
@@ -120,7 +120,7 @@ const BookVehicle: React.FC = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/bookings', {
+      const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
