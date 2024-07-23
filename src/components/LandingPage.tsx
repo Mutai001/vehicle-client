@@ -9,7 +9,6 @@ import {
   Box,
   Grid,
   Paper,
-  TextField,
   IconButton,
   Menu,
   MenuItem,
@@ -21,9 +20,6 @@ import {
   CarRental,
   DirectionsCar,
   BookOnline,
-  SupportAgent,
-  LocationOn,
-  Email,
   ArrowDropDown,
   Menu as MenuIcon,
   ArrowUpward,
@@ -40,7 +36,6 @@ const HomePage: React.FC = () => {
 
   const featuredVehiclesRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
-  const contactUsRef = useRef<HTMLDivElement>(null);
   const getInTouchRef = useRef<HTMLDivElement>(null);
 
   const scrollToFeaturedVehicles = () => {
@@ -52,12 +47,6 @@ const HomePage: React.FC = () => {
   const scrollToServices = () => {
     if (servicesRef.current) {
       servicesRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const scrollToContactUs = () => {
-    if (contactUsRef.current) {
-      contactUsRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -102,7 +91,7 @@ const HomePage: React.FC = () => {
                 <Button color="inherit" onClick={scrollToServices}>
                   Services
                 </Button>
-                <Button color="inherit" onClick={scrollToContactUs}>
+                <Button component={Link} to="/contact" color="inherit">
                   Contact Us
                 </Button>
                 <Button color="inherit" onClick={scrollToGetInTouch}>
@@ -289,62 +278,7 @@ const HomePage: React.FC = () => {
             </Grid>
           </Grid>
 
-          <Grid container spacing={4} style={{ marginBottom: '48px' }} ref={contactUsRef}>
-            <Grid item xs={12} md={6}>
-              <Paper
-                sx={{
-                  padding: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              >
-                <Box style={{ flex: 1 }}>
-                  <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                    Customer Support
-                  </Typography>
-                  <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                    Have any questions? Get in touch with our support team.
-                  </Typography>
-                  <Button component={Link} to="/customer-support" variant="contained" color="primary">
-                    Contact Support
-                  </Button>
-                </Box>
-                <SupportAgent fontSize="large" style={{ marginLeft: '16px', color: '#FFC300' }} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Paper
-                sx={{
-                  padding: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              >
-                <LocationOn fontSize="large" style={{ marginRight: '16px', color: '#DAF7A6' }} />
-                <Box style={{ flex: 1 }}>
-                  <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                    Our Locations
-                  </Typography>
-                  <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                    Find our rental locations nearest to you.
-                  </Typography>
-                  <Button component={Link} to="/locations" variant="contained" color="primary">
-                    View Locations
-                  </Button>
-                </Box>
-              </Paper>
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={4} style={{ marginBottom: '48px' }} ref={getInTouchRef}>
+          {/* <Grid container spacing={4} style={{ marginBottom: '48px' }} ref={getInTouchRef}>
             <Grid item xs={12}>
               <Paper
                 sx={{
@@ -377,7 +311,7 @@ const HomePage: React.FC = () => {
                 />
               </Paper>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Container>
 
         {/* Footer */}
