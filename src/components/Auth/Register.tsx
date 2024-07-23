@@ -48,7 +48,7 @@ const Registration = () => {
         role: 'user', // Add role: 'user' by default
       };
 
-      const response = await fetch('http://localhost:8000/api/signup', {
+      const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

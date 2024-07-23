@@ -4,8 +4,8 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import BuildIcon from '@mui/icons-material/Build';
 import SupportIcon from '@mui/icons-material/Support';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import Header from './Common/Header';
-import Footer from './Common/Footer';
+// import Header from './Common/Header';
+// import Footer from './Common/Footer';
 
 const services = [
   {
@@ -33,7 +33,7 @@ const services = [
 const Services: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Header />
+      {/* <Header /> */}
       <Container style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <Typography variant="h4" style={{ marginBottom: '32px', textAlign: 'center' }}>
           Our Services
@@ -52,7 +52,7 @@ const Services: React.FC = () => {
           ))}
         </Grid>
       </Container>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

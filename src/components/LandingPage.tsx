@@ -29,6 +29,9 @@ import Footer from './Common/Footer';
 import HeroImage from '../assets/images/Car1.png';
 import HeroImage2 from '../assets/images/car2.png';
 import HeroImage3 from '../assets/images/car3.png';
+import Services from './Services';
+import ContactUs from './ContactUs';
+import AboutUs from './AboutUs';
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
@@ -36,7 +39,6 @@ const HomePage: React.FC = () => {
 
   const featuredVehiclesRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
-  const getInTouchRef = useRef<HTMLDivElement>(null);
 
   const scrollToFeaturedVehicles = () => {
     if (featuredVehiclesRef.current) {
@@ -47,12 +49,6 @@ const HomePage: React.FC = () => {
   const scrollToServices = () => {
     if (servicesRef.current) {
       servicesRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const scrollToGetInTouch = () => {
-    if (getInTouchRef.current) {
-      getInTouchRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -94,10 +90,6 @@ const HomePage: React.FC = () => {
                 <Button component={Link} to="/contact" color="inherit">
                   Contact Us
                 </Button>
-                <Button color="inherit" onClick={scrollToGetInTouch}>
-                  Get In Touch
-                </Button>
-
                 <Button
                   color="inherit"
                   endIcon={<ArrowDropDown />}
@@ -195,7 +187,7 @@ const HomePage: React.FC = () => {
         </Box>
 
         {/* Main Content */}
-        <Container style={{ padding: '32px 0' }}>
+        <Container maxWidth={false} style={{ padding: '32px 0', width: '100%' }}>
           <Grid container spacing={4} style={{ marginBottom: '48px' }} ref={featuredVehiclesRef}>
             <Grid item xs={12} md={6}>
               <Paper
@@ -277,41 +269,10 @@ const HomePage: React.FC = () => {
               </Paper>
             </Grid>
           </Grid>
-
-          {/* <Grid container spacing={4} style={{ marginBottom: '48px' }} ref={getInTouchRef}>
-            <Grid item xs={12}>
-              <Paper
-                sx={{
-                  padding: '16px',
-                  textAlign: 'center',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              >
-                <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                  Get In Touch
-                </Typography>
-                <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                  We'd love to hear from you! Drop us a message.
-                </Typography>
-                <TextField
-                  variant="outlined"
-                  placeholder="Your Email"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{
-                    endAdornment: (
-                      <IconButton edge="end" color="primary">
-                        <Email />
-                      </IconButton>
-                    ),
-                  }}
-                />
-              </Paper>
-            </Grid>
-          </Grid> */}
+          <Services/>
+          <AboutUs/>
+          <ContactUs/>
+          
         </Container>
 
         {/* Footer */}

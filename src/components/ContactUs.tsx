@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Typography, Box, Grid, Paper, TextField, Button } from '@mui/material';
-import Header from './Common/Header';
-import Footer from './Common/Footer';
+// import Header from './Common/Header';
+// import Footer from './Common/Footer';
 
 const ContactUs: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Header />
+      {/* <Header /> */}
       <Container style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '32px' }}>
         <Typography variant="h4" style={{ marginBottom: '16px', textAlign: 'center' }}>
           Contact Us
@@ -84,7 +84,7 @@ const ContactUs: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
