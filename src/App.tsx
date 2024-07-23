@@ -23,6 +23,7 @@ import Dashboard from './components/Customer/Dashboard';
 import AdminOverview from './components/Admin/AdminOverview';
 import PaymentSuccess from './components/Customer/PaymentSuccess';
 import UserProfile from './components/Customer/UserProfile';
+import Services from './components/Services';
 
 // Define the type PaymentFormProps
 type PaymentFormProps = {
@@ -57,6 +58,7 @@ const App: React.FC = () => {
         <Route path="/admin/reports" Component={Reports} />
         <Route path="/user/profile" Component={UserProfile} />
          <Route path="/user/payment-success" Component={PaymentSuccess} />
+         <Route path="/services" Component={Services}/>
     </Routes>
   );
 };
