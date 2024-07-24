@@ -59,7 +59,7 @@ const App: React.FC = () => {
         <Route path="/admin/settings" Component={Settings} />
         <Route path="/admin/reports" Component={Reports} />
         <Route path="/user/profile" Component={UserProfile} />
-         <Route path="/user/payment-success" Component={PaymentSuccess} />
+         <Route path="/payment-success" Component={PaymentSuccess} />
          <Route path="/services" Component={Services}/>
          <Route path="about-us" Component={AboutUs}/>
          <Route path="/contact" Component={ContactUs}/>

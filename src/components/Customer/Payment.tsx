@@ -75,7 +75,7 @@ const PaymentForm: React.FC = () => {
           if (response.ok) {
             setIsSuccess(true);
             setErrorMessage(null);
-            window.location.href = 'https://vehicle-client.vercel.app/payment-success';
+            window.location.href = '/payment-success';
           } else {
             const data = await response.json();
             setErrorMessage(data.message || 'Failed to process payment.');
