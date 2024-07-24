@@ -22,19 +22,19 @@ const Reports: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const paymentsResponse = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/payments');
+        const paymentsResponse = await axios.get('https://car-rental-backend-c5h2.onrender.com/api/payments');
         setPayments(paymentsResponse.data);
 
-        const bookingsResponse = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/bookings');
+        const bookingsResponse = await axios.get('https://car-rental-backend-c5h2.onrender.com/api/bookings');
         setBookings(bookingsResponse.data);
 
-        const usersResponse = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/users');
+        const usersResponse = await axios.get('https://car-rental-backend-c5h2.onrender.com/api/users');
         setUsers(usersResponse.data);
 
-        const locationsResponse = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/locations');
+        const locationsResponse = await axios.get('https://car-rental-backend-c5h2.onrender.com/api/locations');
         setLocations(locationsResponse.data);
 
-        const ticketsResponse = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets');
+        const ticketsResponse = await axios.get('https://car-rental-backend-c5h2.onrender.com/api/customer-support-tickets');
         setTickets(ticketsResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);

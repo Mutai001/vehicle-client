@@ -54,7 +54,7 @@ const BookVehicle: React.FC = () => {
     const fetchVehicles = async () => {
       setLoading(true);
       try {
-        const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/vehicles');
+        const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/vehicles');
         if (!response.ok) {
           throw new Error('Failed to fetch vehicles');
         }
@@ -74,7 +74,7 @@ const BookVehicle: React.FC = () => {
     const fetchSpecifications = async () => {
       setLoading(true);
       try {
-        const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/vehicle-specifications');
+        const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/vehicle-specifications');
         if (!response.ok) {
           throw new Error('Failed to fetch vehicle specifications');
         }
@@ -121,7 +121,7 @@ const BookVehicle: React.FC = () => {
     };
 
     try {
-      const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/bookings', {
+      const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ const BookVehicle: React.FC = () => {
       const data = await response.json();
       if (data.booking_id) {
         // Update the vehicle availability
-        await fetch(`https://vehicle-rental-db.azurewebsites.net/api/vehicles/${selectedVehicle.vehicle_id}`, {
+        await fetch(`https://car-rental-backend-c5h2.onrender.com/api/vehicles/${selectedVehicle.vehicle_id}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

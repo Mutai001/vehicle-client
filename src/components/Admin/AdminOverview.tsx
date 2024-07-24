@@ -36,12 +36,12 @@ const AdminOverview: React.FC = () => {
     const fetchData = async () => {
       try {
         const responses = await Promise.all([
-          fetch('https://vehicle-rental-db.azurewebsites.net//api/bookings'),
-          fetch('https://vehicle-rental-db.azurewebsites.net//api/payments'),
-          fetch('https://vehicle-rental-db.azurewebsites.net//api/users'),
-          fetch('https://vehicle-rental-db.azurewebsites.net//api/vehicles'),
-          fetch('https://vehicle-rental-db.azurewebsites.net//api/locations'),
-          fetch('https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets'),
+          fetch('https://car-rental-backend-c5h2.onrender.com/api/bookings'),
+          fetch('https://car-rental-backend-c5h2.onrender.com/api/payments'),
+          fetch('https://car-rental-backend-c5h2.onrender.com/api/users'),
+          fetch('https://car-rental-backend-c5h2.onrender.com/api/vehicles'),
+          fetch('https://car-rental-backend-c5h2.onrender.com/api/locations'),
+          fetch('https://car-rental-backend-c5h2.onrender.com/api/customer-support-tickets'),
         ]);
         const results = await Promise.all(responses.map(res => res.json()));
         setData({

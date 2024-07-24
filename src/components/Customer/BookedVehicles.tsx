@@ -50,7 +50,7 @@ const BookedVehicle: React.FC = () => {
 
   const handleCancelBooking = async (booking_id: number) => {
     try {
-      const response = await fetch(`https://vehicle-rental-db.azurewebsites.net//api/bookings/${booking_id}`, {
+      const response = await fetch(`https://vehicle-rental-db.azurewebsites.net/api/bookings/${booking_id}`, {
         method: 'DELETE',
       });
       if (response.ok) {

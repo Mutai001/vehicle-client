@@ -22,7 +22,7 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/users');
+        const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/users');
         if (response.ok) {
           const data = await response.json();
           setUser(data);
@@ -54,7 +54,7 @@ const UserProfile: React.FC = () => {
     if (!user || !updatedUser) return;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
+      const response = await fetch(`https://car-rental-backend-c5h2.onrender.com/api/users/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ const UserProfile: React.FC = () => {
     if (!user) return;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
+      const response = await fetch(`https://car-rental-backend-c5h2.onrender.com/api/users/${user.id}`, {
         method: 'DELETE',
       });
 

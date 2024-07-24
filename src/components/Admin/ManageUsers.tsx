@@ -65,7 +65,7 @@ const ManageUsers: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://vehicle-rental-db.azurewebsites.net//api/users');
+      const response = await axios.get('https://car-rental-backend-c5h2.onrender.com/api/users');
       setUsers(response.data);
       setLoading(false);
     } catch (error) {
@@ -76,7 +76,7 @@ const ManageUsers: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`https://vehicle-rental-db.azurewebsites.net//api/users/${id}`);
+      await axios.delete(`https://car-rental-backend-c5h2.onrender.com/api/users/${id}`);
       fetchUsers();
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -115,9 +115,9 @@ const ManageUsers: React.FC = () => {
       // Send the request to the server
       try {
         if (editMode) {
-          await axios.put(`http://localhost:8000/api/users/${selectedUser.user_id}`, selectedUser);
+          await axios.put(`https://car-rental-backend-c5h2.onrender.com/api/users/${selectedUser.user_id}`, selectedUser);
         } else {
-          await axios.post('http://localhost:8000/api/users', selectedUser);
+          await axios.post('https://car-rental-backend-c5h2.onrender.com/api/users', selectedUser);
         }
         fetchUsers();
         setOpen(false);

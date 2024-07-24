@@ -26,7 +26,7 @@ const MyTickets: React.FC = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/customer-support-tickets');
+        const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/customer-support-tickets');
         if (!response.ok) {
           throw new Error('Failed to fetch tickets');
         }
