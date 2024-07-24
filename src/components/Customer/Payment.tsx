@@ -1,3 +1,4 @@
+// payment.tsx
 import React, { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -63,7 +64,7 @@ const PaymentForm: React.FC = () => {
         };
 
         try {
-          const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/payments', {
+          const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/payments', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ const PaymentHistory: React.FC = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/payments');
+        const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/payments');
         if (!response.ok) {
           const data = await response.json();
           throw new Error(data.message || 'Failed to fetch payment history.');
@@ -184,7 +185,9 @@ const PaymentHistory: React.FC = () => {
                 {payments.map((payment) => (
                   <TableRow key={payment.payment_id}>
                     <TableCell sx={{ color: '#1976d2' }}>${payment.amount}</TableCell>
-                    <TableCell sx={{ color: payment.payment_status === 'Successful' ? '#4caf50' : '#f44336' }}>{payment.payment_status}</TableCell>
+                    <TableCell sx={{ color: payment.payment_status === 'Successful' ? '#4caf50' : '#f44336' }}>
+                      {payment.payment_status}
+                    </TableCell>
                     <TableCell>{new Date(payment.payment_date).toLocaleDateString()}</TableCell>
                     <TableCell>{payment.payment_method}</TableCell>
                     <TableCell>{payment.transaction_id}</TableCell>
@@ -210,7 +213,6 @@ const PaymentPage: React.FC = () => {
           <Container sx={{ py: 4 }}>
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
-                {/* Use Elements as a Provider */}
                 <Elements stripe={stripePromise}>
                   <PaymentForm />
                 </Elements>

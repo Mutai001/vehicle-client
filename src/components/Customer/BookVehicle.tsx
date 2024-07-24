@@ -47,13 +47,14 @@ const BookVehicle: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+  const [numDays, setNumDays] = useState<number>(1); // New state for number of days
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchVehicles = async () => {
       setLoading(true);
       try {
-        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/vehicles');
+        const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/vehicles');
         if (!response.ok) {
           throw new Error('Failed to fetch vehicles');
         }
@@ -73,7 +74,7 @@ const BookVehicle: React.FC = () => {
     const fetchSpecifications = async () => {
       setLoading(true);
       try {
-        const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/vehicle-specifications');
+        const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/vehicle-specifications');
         if (!response.ok) {
           throw new Error('Failed to fetch vehicle specifications');
         }
@@ -112,15 +113,15 @@ const BookVehicle: React.FC = () => {
       vehicle_id: selectedVehicle.vehicle_id,
       location_id: 1, // Adjust as necessary
       booking_date: new Date().toISOString().split('T')[0],
-      return_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      total_amount: (parseInt(selectedVehicle.rental_rate) * 7).toFixed(2), // Assuming 7 days rental
+      return_date: new Date(Date.now() + numDays * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      total_amount: (parseInt(selectedVehicle.rental_rate) * numDays).toFixed(2),
       booking_status: 'Pending',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
 
     try {
-      const response = await fetch('https://vehicle-rental-db.azurewebsites.net//api/bookings', {
+      const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,6 +135,15 @@ const BookVehicle: React.FC = () => {
 
       const data = await response.json();
       if (data.booking_id) {
+        // Update the vehicle availability
+        await fetch(`https://vehicle-rental-db.azurewebsites.net/api/vehicles/${selectedVehicle.vehicle_id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ availability: false }),
+        });
+
         navigate('/user/booked-vehicles'); // Redirect to booked vehicles page
       }
     } catch (err) {
@@ -145,12 +155,14 @@ const BookVehicle: React.FC = () => {
     } finally {
       setShowConfirmModal(false);
       setSelectedVehicle(null);
+      setNumDays(1); // Reset number of days
     }
   };
 
   const closeModal = () => {
     setShowConfirmModal(false);
     setSelectedVehicle(null);
+    setNumDays(1); // Reset number of days
   };
 
   if (loading) {
@@ -224,7 +236,18 @@ const BookVehicle: React.FC = () => {
             <p className="mb-4">Are you sure you want to book this vehicle?</p>
             <p><strong>Vehicle:</strong> {specifications.find(spec => spec.vehicle_id === selectedVehicle.vehicle_id)?.manufacturer} {specifications.find(spec => spec.vehicle_id === selectedVehicle.vehicle_id)?.model}</p>
             <p><strong>Price per day:</strong> ${selectedVehicle.rental_rate}</p>
-            <p><strong>Total Amount:</strong> ${(parseInt(selectedVehicle.rental_rate) * 7).toFixed(2)}</p>
+            <div className="mb-4">
+              <label htmlFor="numDays" className="block text-sm font-medium text-gray-700">Number of days:</label>
+              <input
+                type="number"
+                id="numDays"
+                value={numDays}
+                onChange={(e) => setNumDays(parseInt(e.target.value))}
+                min="1"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <p><strong>Total Amount:</strong> ${(parseInt(selectedVehicle.rental_rate) * numDays).toFixed(2)}</p>
             <div className="flex justify-end mt-4">
               <button onClick={closeModal} className="bg-gray-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-gray-600">
                 Cancel
@@ -242,3 +265,6 @@ const BookVehicle: React.FC = () => {
 };
 
 export default BookVehicle;
+
+
+
