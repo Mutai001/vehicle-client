@@ -25,11 +25,12 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
         <p className="text-gray-600 mb-4">{vehicle.description}</p>
         <div className="flex items-center justify-between">
           <p className="text-gray-700 font-semibold">${vehicle.price} / day</p>
-<Link to="/login">
-  <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
-    Rent Now
-  </button>
-</Link>        </div>
+          <Link to="/login">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+              Rent Now
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

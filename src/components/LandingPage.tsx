@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+// import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AppBar,
@@ -10,28 +10,49 @@ import {
   Grid,
   Paper,
   IconButton,
-  Menu,
-  MenuItem,
   useMediaQuery,
   useTheme,
   Fab,
+  TextField,
 } from '@mui/material';
 import {
   CarRental,
-  DirectionsCar,
-  BookOnline,
-  ArrowDropDown,
   Menu as MenuIcon,
   ArrowUpward,
+  LocalShipping as LocalShippingIcon,
+  Build as BuildIcon,
+  Support as SupportIcon,
+  AttachMoney as AttachMoneyIcon,
 } from '@mui/icons-material';
 import FeaturedVehicles from './FeaturedVehicles';
 import Footer from './Common/Footer';
 import HeroImage from '../assets/images/Car1.png';
 import HeroImage2 from '../assets/images/car2.png';
 import HeroImage3 from '../assets/images/car3.png';
-import Services from './Services';
-import ContactUs from './ContactUs';
-import AboutUs from './AboutUs';
+import { useRef } from 'react';
+
+const services = [
+  {
+    title: 'Vehicle Rental',
+    description: 'Wide range of vehicles for rent at competitive prices.',
+    icon: <LocalShippingIcon style={{ fontSize: 50, color: '#1976d2' }} />,
+  },
+  {
+    title: 'Maintenance Service',
+    description: 'Comprehensive vehicle maintenance services.',
+    icon: <BuildIcon style={{ fontSize: 50, color: '#1976d2' }} />,
+  },
+  {
+    title: '24/7 Support',
+    description: 'Round-the-clock customer support for your convenience.',
+    icon: <SupportIcon style={{ fontSize: 50, color: '#1976d2' }} />,
+  },
+  {
+    title: 'Affordable Prices',
+    description: 'Get the best prices for all our services.',
+    icon: <AttachMoneyIcon style={{ fontSize: 50, color: '#1976d2' }} />,
+  },
+];
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
@@ -39,6 +60,7 @@ const HomePage: React.FC = () => {
 
   const featuredVehiclesRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
 
   const scrollToFeaturedVehicles = () => {
     if (featuredVehiclesRef.current) {
@@ -52,16 +74,14 @@ const HomePage: React.FC = () => {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToContact = () => {
+    if (contactRef.current) {
+      contactRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -87,41 +107,19 @@ const HomePage: React.FC = () => {
                 <Button color="inherit" onClick={scrollToServices}>
                   Services
                 </Button>
-                <Button component={Link} to="/contact" color="inherit">
+                <Button color="inherit" onClick={scrollToContact}>
                   Contact Us
                 </Button>
-                <Button
-                  color="inherit"
-                  endIcon={<ArrowDropDown />}
-                  onClick={handleMenuClick}
-                  aria-controls="user-admin-menu"
-                  aria-haspopup="true"
-                >
-                  User & Admin
+                <Button component={Link} to="/login" color="inherit">
+                  Login
                 </Button>
-                <Menu
-                  id="user-admin-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem component={Link} to="/user" onClick={handleClose}>
-                    User
-                  </MenuItem>
-                  <MenuItem component={Link} to="/admin" onClick={handleClose}>
-                    Admin
-                  </MenuItem>
-                </Menu>
+                <Button component={Link} to="/register" color="inherit">
+                  Register
+                </Button>
               </>
             )}
             {isMobile && (
-              <IconButton
-                edge="end"
-                color="inherit"
-                aria-label="menu"
-                onClick={handleMenuClick}
-              >
+              <IconButton edge="end" color="inherit" aria-label="menu">
                 <MenuIcon />
               </IconButton>
             )}
@@ -135,21 +133,21 @@ const HomePage: React.FC = () => {
             backgroundSize: 'cover, contain, contain',
             backgroundPosition: 'center, top left, bottom right',
             backgroundRepeat: 'no-repeat',
-            height: '500px',
+            height: 'auto',
             display: 'flex',
             alignItems: 'center',
             color: 'white',
             textAlign: 'center',
             justifyContent: 'center',
             position: 'relative',
-            animation: 'fadeIn 2s',
+            padding: '50px 0',
             opacity: 0.9,
             '&:hover': {
               opacity: 1,
             },
           }}
         >
-          <Container>
+          <Container maxWidth="lg">
             <Typography
               variant="h2"
               sx={{
@@ -157,6 +155,7 @@ const HomePage: React.FC = () => {
                 marginBottom: '16px',
                 textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                 animation: 'fadeInDown 2s',
+                fontSize: { xs: '2rem', sm: '3rem', md: '4rem' }, // Adjusted font sizes
               }}
             >
               Welcome to Vehicle Rental Management System
@@ -167,6 +166,7 @@ const HomePage: React.FC = () => {
                 marginBottom: '32px',
                 textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                 animation: 'fadeInUp 2s',
+                fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2rem' }, // Adjusted font sizes
               }}
             >
               Your ultimate destination for renting vehicles
@@ -179,6 +179,7 @@ const HomePage: React.FC = () => {
               size="large"
               sx={{
                 animation: 'pulse 2s infinite',
+                fontSize: { xs: '0.875rem', sm: '1rem', md: '1.25rem' }, // Adjusted font sizes
               }}
             >
               Get Started
@@ -186,112 +187,101 @@ const HomePage: React.FC = () => {
           </Container>
         </Box>
 
-        {/* Main Content */}
-        <Container maxWidth={false} style={{ padding: '32px 0', width: '100%' }}>
-          <Grid container spacing={4} style={{ marginBottom: '48px' }} ref={featuredVehiclesRef}>
-            <Grid item xs={12} md={6}>
-              <Paper
-                sx={{
-                  padding: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              >
-                <Box style={{ flex: 1 }}>
-                  <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                    Book Your Vehicle
-                  </Typography>
-                  <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                    Find and book your desired vehicle with ease.
-                  </Typography>
-                  <Button component={Link} to="/register" variant="contained" color="primary">
-                    Get Started
-                  </Button>
-                </Box>
-                <DirectionsCar fontSize="large" style={{ marginLeft: '16px', color: '#FF5733' }} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Paper
-                sx={{
-                  padding: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              >
-                <BookOnline fontSize="large" style={{ marginRight: '16px', color: '#C70039' }} />
-                <Box style={{ flex: 1 }}>
-                  <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                    Online Booking System
-                  </Typography>
-                  <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                    Manage your bookings online from anywhere, anytime.
-                  </Typography>
-                  <Button component={Link} to="/register" variant="contained" color="primary">
-                    Learn More
-                  </Button>
-                </Box>
-              </Paper>
-            </Grid>
-          </Grid>
-
+        {/* Featured Vehicles */}
+        <Container maxWidth="lg" style={{ padding: '32px 0' }} ref={featuredVehiclesRef}>
+          <Typography variant="h4" style={{ marginBottom: '32px', textAlign: 'center', fontSize: '2rem' }}>
+            {/* Featured Vehicles */}
+          </Typography>
           <FeaturedVehicles />
-
-          <Grid container spacing={4} ref={servicesRef} style={{ marginBottom: '48px' }}>
-            <Grid item xs={12}>
-              <Paper
-                sx={{
-                  padding: '16px',
-                  textAlign: 'center',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              >
-                <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '16px' }}>
-                  Our Services
-                </Typography>
-                <Typography variant="body1" style={{ marginBottom: '16px' }}>
-                  We offer a variety of services to cater to your needs.
-                </Typography>
-                <Button component={Link} to="/services" variant="contained" color="primary">
-                  Explore Services
-                </Button>
-              </Paper>
-            </Grid>
-          </Grid>
-          <Services/>
-          <AboutUs/>
-          <ContactUs/>
-          
         </Container>
+
+        {/* Services Section */}
+        <Container maxWidth="lg" style={{ padding: '32px 0' }} ref={servicesRef}>
+          <Typography variant="h4" style={{ marginBottom: '32px', textAlign: 'center', fontSize: '2rem' }}>
+            Our Services
+          </Typography>
+          <Grid container spacing={4}>
+            {services.map((service, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Paper style={{ padding: '24px', textAlign: 'center', transition: 'transform 0.2s' }}>
+                  <Box>{service.icon}</Box>
+                  <Typography variant="h6" style={{ marginTop: '16px', fontSize: '1.5rem' }}>{service.title}</Typography>
+                  <Typography variant="body2" style={{ marginTop: '8px', fontSize: '1rem' }}>
+                    {service.description}
+                  </Typography>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+
+        {/* About Us Section */}
+        <Container maxWidth="lg" style={{ padding: '32px 0' }}>
+          <Typography variant="h4" style={{ marginBottom: '16px', textAlign: 'center', fontSize: '2rem' }}>
+            About Us
+          </Typography>
+          <Box style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <Typography variant="body1" style={{ marginBottom: '16px', fontSize: '1rem' }}>
+              Welcome to our Vehicle Rental Management System. We offer a wide range of vehicles for rent at competitive prices, ensuring your travel needs are met with convenience and affordability. Our mission is to provide top-quality rental services with a focus on customer satisfaction.
+            </Typography>
+            <Typography variant="body1" style={{ marginBottom: '16px', fontSize: '1rem' }}>
+              Our dedicated team is available 24/7 to support you with any inquiries or assistance you may need. We believe in providing comprehensive services that include maintenance and support to ensure your experience is seamless and enjoyable.
+            </Typography>
+            <Typography variant="body1" style={{ marginBottom: '16px', fontSize: '1rem' }}>
+              Thank you for choosing us as your preferred rental service provider. We look forward to serving you and exceeding your expectations.
+            </Typography>
+          </Box>
+        </Container>
+
+        {/* Contact Us Section */}
+        <Container maxWidth="lg" style={{ padding: '32px 0' }} ref={contactRef}>
+          <Typography variant="h4" style={{ marginBottom: '16px', textAlign: 'center', fontSize: '2rem' }}>
+            Contact Us
+          </Typography>
+          <Box style={{ textAlign: 'center' }}>
+            <TextField
+              label="Name"
+              variant="outlined"
+              fullWidth
+              style={{ marginBottom: '16px' }}
+            />
+            <TextField
+              label="Email"
+              variant="outlined"
+              fullWidth
+              style={{ marginBottom: '16px' }}
+            />
+            <TextField
+              label="Message"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+              style={{ marginBottom: '16px' }}
+            />
+            <Button variant="contained" color="primary" size="large">
+              Send Message
+            </Button>
+          </Box>
+        </Container>
+
+        {/* Back to Top Button */}
+        <Fab
+          color="primary"
+          aria-label="scroll back to top"
+          onClick={scrollToTop}
+          style={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+          }}
+        >
+          <ArrowUpward />
+        </Fab>
 
         {/* Footer */}
         <Footer />
       </div>
-
-      {/* Scroll to Top Button */}
-      <Fab
-        color="primary"
-        aria-label="scroll back to top"
-        onClick={scrollToTop}
-        style={{
-          position: 'fixed',
-          bottom: '2rem',
-          right: '2rem',
-        }}
-      >
-        <ArrowUpward />
-      </Fab>
     </>
   );
 };
