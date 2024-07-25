@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { TextField, Button, Typography, Container, Grid, Box, InputAdornment, Link, Snackbar, Alert, IconButton, Card, CardContent, CardMedia } from '@mui/material';
+import { TextField, Button, Typography, Container, Grid, Box, InputAdornment, Link, Snackbar, Alert, IconButton } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Lock, CheckCircleOutline, Close } from '@mui/icons-material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import LoginImage from '@mui/icons-material/DirectionsCar'; // Using Material UI icon as a static image
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 
 // Validation schema
 const schema = yup.object().shape({
@@ -14,6 +15,7 @@ const schema = yup.object().shape({
 });
 
 const Login = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -53,108 +55,100 @@ const Login = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  // Use media query to handle responsive design
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Container maxWidth="md">
-      <Grid container spacing={4} sx={{ marginTop: 8 }}>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardMedia>
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <LoginImage sx={{ fontSize: 120, color: '#007bff' }} />
-              </Box>
-            </CardMedia>
-            <CardContent>
-              <Typography variant="h5" component="div" sx={{ textAlign: 'center' }}>
-                Welcome Back!
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-                Please login to continue
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Typography component="h1" variant="h5">
-              Log In
-            </Typography>
-            <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Controller
-                    name="username"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Lock />
-                            </InputAdornment>
-                          ),
-                        }}
-                        autoFocus
-                        autoComplete="username" // Added autocomplete
-                        error={!!errors.username}
-                        helperText={errors.username ? errors.username.message : ''}
-                      />
-                    )}
+    <Container maxWidth="xs" sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1E2A38, #2D3A4C)', overflow: 'hidden' }}>
+      <Box
+        sx={{
+          background: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: 2,
+          padding: 4,
+          boxShadow: 3,
+          animation: 'fadeIn 1s ease-in-out',
+          width: isMobile ? '100%' : '400px',
+        }}
+      >
+        <Typography component="h1" variant="h4" sx={{ mb: 2, color: '#ffffff' }}>
+          Log In
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Controller
+                name="username"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Lock />
+                        </InputAdornment>
+                      ),
+                    }}
+                    autoFocus
+                    autoComplete="username" // Added autocomplete
+                    error={!!errors.username}
+                    helperText={errors.username ? errors.username.message : ''}
+                    sx={{ input: { color: '#ffffff' }, label: { color: '#ffffff' } }}
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <Controller
-                    name="password"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="password"
-                        label="Password"
-                        type="password"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Lock />
-                            </InputAdornment>
-                          ),
-                        }}
-                        autoComplete="current-password" // Added autocomplete
-                        error={!!errors.password}
-                        helperText={errors.password ? errors.password.message : ''}
-                      />
-                    )}
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="password"
+                    label="Password"
+                    type="password"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Lock />
+                        </InputAdornment>
+                      ),
+                    }}
+                    autoComplete="current-password" // Added autocomplete
+                    error={!!errors.password}
+                    helperText={errors.password ? errors.password.message : ''}
+                    sx={{ input: { color: '#ffffff' }, label: { color: '#ffffff' } }}
                   />
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                style={{ backgroundColor: '#007bff', color: '#fff' }}
-              >
-                Log In
-              </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link component={RouterLink} to="/register" variant="body2">
-                    Don't have an account? Register
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2, backgroundColor: '#FF5722', ':hover': { backgroundColor: '#E64A19' } }}
+          >
+            Log In
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link component={RouterLink} to="/register" variant="body2" sx={{ color: '#BB86FC' }}>
+                Don't have an account? Register
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
       <Snackbar 
         open={snackbar.open} 
         autoHideDuration={6000} 
