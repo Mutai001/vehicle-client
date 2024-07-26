@@ -434,7 +434,7 @@ const HomePage: React.FC = () => {
           Contact us for more information or to book a vehicle.
         </Typography>
         <Typography variant="body2" style={{ textAlign: 'center' }}>
-          Email: contact@vehiclerental.com | Phone: (123) 456-7890
+          Email:Cyrus@vehiclerental.com | Phone: (123) 456-7890
         </Typography>
         <Grid container spacing={4} justifyContent="center" style={{ marginTop: '32px' }}>
           <Grid item xs={12} sm={6} md={4}>
@@ -443,7 +443,7 @@ const HomePage: React.FC = () => {
                 Location
               </Typography>
               <Typography variant="body2" style={{ marginTop: '8px', color: '#004d40' }}>
-                1234 Main St, City, State, 12345
+                1234 Kutus St, Nairobi, State, 12345
               </Typography>
               {/* Add a map component here */}
             </Paper>
