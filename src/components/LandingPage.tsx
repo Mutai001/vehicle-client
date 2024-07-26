@@ -92,26 +92,27 @@ const services = [
 ];
 
 const featuredCompanies = [
-  { name: 'Company A', logo: 'path/to/logo1.png' },
-  { name: 'Company B', logo: 'path/to/logo2.png' },
-  { name: 'Company C', logo: 'path/to/logo3.png' },
+  { name: 'Mercedes-benz', logo: 'https://group.mercedes-benz.com/bilder/konzern/tradition/die-entstehung-des-markennamens-mercedes-benz/geschichte-des-mercedes-benz-sterns/daimler-dreizack-stern-mit-lorbeerkranz-2001dig410-w800xh0.jpg' },
+  { name: 'Toyota', logo: 'https://qph.cf2.quoracdn.net/main-qimg-8a6176a8b97e7f750eec65a56ddbb011-pjlq' },
+  { name: 'Honda', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Honda_Logo.svg/2552px-Honda_Logo.svg.png' },
+  { name: 'Bmw', logo: 'https://1000logos.net/wp-content/uploads/2018/02/BMW-Logo-1963.png' },
 ];
 
 const testimonials = [
   {
-    name: 'John Doe',
+    name: 'William Rutto',
     text: 'Great service and friendly staff!',
-    image: 'path/to/testimonial1.png',
+    image: 'https://cdn.britannica.com/27/235427-050-B9BE0EAB/William-Ruto-press-conference-kenya.jpg',
   },
   {
     name: 'Jane Smith',
     text: 'Affordable prices and a wide range of vehicles.',
-    image: 'path/to/testimonial2.png',
+    image: 'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Jane-Smith.Mr-and-Mrs-Smith.webp',
   },
   {
-    name: 'Sam Wilson',
+    name: 'Cyrus Kimutai',
     text: 'Excellent customer support, highly recommended!',
-    image: 'path/to/testimonial3.png',
+    image: 'https://s2.r29static.com/bin/entry/307/x,80/2174240/image.jpg',
   },
 ];
 
