@@ -152,7 +152,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/vehicles'); // Replace with your API endpoint
+        const response = await axios.get('https://car-rental-backend-c5h2.onrender.com/api/vehicles'); // Replace with your API endpoint
         setVehicles(response.data);
         setFeaturedVehicles(response.data.slice(0, 3)); // Example: First 3 vehicles as featured
       } catch (error) {

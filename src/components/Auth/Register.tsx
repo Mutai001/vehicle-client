@@ -53,7 +53,7 @@ const Registration = () => {
         role: 'user',
       };
 
-      const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/signup', {
+      const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -25,7 +25,7 @@ const Login = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      const response = await fetch('https://vehicle-rental-db.azurewebsites.net/api/login', {
+      const response = await fetch('https://car-rental-backend-c5h2.onrender.com/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
