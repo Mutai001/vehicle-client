@@ -491,6 +491,7 @@
 // export default HomePage;
 import Header from './Common/Header';
 import HeroSection from './landing/HeroSection';
+import FeaturedVehicles from './landing/FeaturedVehicles';
 
 function HomePage() {
   return (
@@ -505,6 +506,7 @@ function HomePage() {
         throw new Error('Function not implemented.');
       } }/>
       <HeroSection />
+      <FeaturedVehicles featuredVehicles={[]} />
     </div>
   )
 }
