@@ -493,6 +493,7 @@ import Header from './Common/Header';
 import HeroSection from './landing/HeroSection';
 import FeaturedVehicles from './landing/FeaturedVehicles';
 import ServicesSection from './landing/ServicesSection';
+import VehicleList from './landing/VehicleList';
 
 function HomePage() {
   return (
@@ -509,6 +510,7 @@ function HomePage() {
       <HeroSection />
       <FeaturedVehicles featuredVehicles={[]} />
       <ServicesSection/>
+      <VehicleList vehicles={[]} />
     </div>
   )
 }
