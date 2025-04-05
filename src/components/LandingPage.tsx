@@ -496,6 +496,8 @@ import ServicesSection from './landing/ServicesSection';
 import VehicleList from './landing/VehicleList';
 import FeaturedCompanies from './landing/FeaturedCompanies';
 import TestimonialsSection from './landing/TestimonialsSection';
+import ContactSection from './landing/ContactSection';
+import Footer from './Common/Footer';
 
 function HomePage() {
   return (
@@ -515,6 +517,8 @@ function HomePage() {
       <VehicleList vehicles={[]} />
       <FeaturedCompanies/>
       <TestimonialsSection/>
+      <ContactSection/>
+      <Footer/>
     </div>
   )
 }
