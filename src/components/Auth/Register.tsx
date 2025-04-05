@@ -9,7 +9,6 @@ import { useTheme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 
-// Define the form data interface
 interface FormData {
   fullName: string;
   email: string;
@@ -19,7 +18,6 @@ interface FormData {
   username: string;
 }
 
-// Validation schema
 const schema = yup.object().shape({
   fullName: yup.string().required('Full name is required'),
   email: yup.string().email('Invalid email format').required('Email is required'),
@@ -33,11 +31,19 @@ const schema = yup.object().shape({
   username: yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
 });
 
+interface StyledTextFieldProps {
+  name: keyof FormData;
+  label: string;
+  icon: React.ReactNode;
+  type?: string;
+}
+
 const Registration = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(schema),
+    mode: 'onChange',
     defaultValues: {
       fullName: '',
       email: '',
@@ -48,7 +54,6 @@ const Registration = () => {
     }
   });
 
-  const [currentStep, setCurrentStep] = useState<number>(0);
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
     open: false,
     message: '',
@@ -56,16 +61,10 @@ const Registration = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  // Use media query to handle responsive design
+  
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isMedium = useMediaQuery(theme.breakpoints.down('md'));
-
-  const steps = [
-    { title: "Personal Info", fields: ["fullName", "username"] },
-    { title: "Contact Details", fields: ["email", "contactPhone", "address"] },
-    { title: "Security", fields: ["password"] }
-  ];
+  const isLarge = useMediaQuery(theme.breakpoints.up('lg'));
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
@@ -110,19 +109,10 @@ const Registration = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  const nextStep = () => {
-    setCurrentStep(currentStep + 1);
-  };
-
-  const prevStep = () => {
-    setCurrentStep(currentStep - 1);
-  };
-
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // Custom animation variants
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { 
@@ -146,7 +136,6 @@ const Registration = () => {
     visible: { opacity: 1, x: 0 }
   };
 
-  // Decorative car animation
   const CarAnimation = () => {
     const [position, setPosition] = useState(0);
     
@@ -172,18 +161,92 @@ const Registration = () => {
     );
   };
 
+  const StyledTextField = ({ name, label, icon, type = "text" }: StyledTextFieldProps) => {
+    return (
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            variant="outlined"
+            required
+            fullWidth
+            id={name}
+            label={label}
+            type={type === "password" ? (showPassword ? "text" : "password") : type}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  {icon}
+                </InputAdornment>
+              ),
+              ...(type === "password" && {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleTogglePasswordVisibility}
+                      edge="end"
+                      sx={{ color: '#93c5fd' }}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }),
+              sx: { 
+                borderRadius: 2,
+                backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  boxShadow: '0 0 10px rgba(59, 130, 246, 0.3)'
+                },
+                transition: 'all 0.3s ease'
+              }
+            }}
+            error={!!errors[name]}
+            helperText={errors[name] ? errors[name]?.message : ''}
+            sx={{ 
+              '& .MuiInputBase-input': { 
+                color: '#ffffff',
+                padding: '12px 14px'
+              }, 
+              '& .MuiInputLabel-root': { 
+                color: '#93c5fd',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                },
+                '&:hover fieldset': {
+                  borderColor: 'rgba(255, 255, 255, 0.5)',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#3b82f6',
+                },
+              },
+              '& .MuiFormHelperText-root': {
+                color: errors[name] ? '#ff4444' : 'rgba(255, 255, 255, 0.6)'
+              }
+            }}
+          />
+        )}
+      />
+    );
+  };
+
   return (
     <Container maxWidth={false} sx={{ 
       minHeight: '100vh', 
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center', 
-      background: 'linear-gradient(135deg, #1E2A38, #2D3A4C)',
+      background: 'linear-gradient(135deg, #1e3a8a, #7e22ce)', 
       overflow: 'hidden',
       position: 'relative',
       p: 2
     }}>
-      {/* Animated background elements */}
+      {/* Background bubbles */}
       <Box sx={{
         position: 'absolute',
         top: 0,
@@ -201,7 +264,7 @@ const Registration = () => {
               width: `${Math.random() * 150 + 50}px`,
               height: `${Math.random() * 150 + 50}px`,
               borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.03)',
+              background: 'rgba(255, 255, 255, 0.05)',
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
               animation: `float ${Math.random() * 15 + 10}s infinite ease-in-out`,
@@ -214,485 +277,188 @@ const Registration = () => {
         ))}
       </Box>
 
+      {/* Car animation */}
       <CarAnimation />
 
+      {/* Main form container */}
       <motion.div
         initial="hidden"
         animate="visible"
         exit="exit"
         variants={containerVariants}
-        style={{ width: isMobile ? '100%' : isMedium ? '70%' : '500px', zIndex: 1 }}
+        style={{ 
+          width: isLarge ? '900px' : isMobile ? '100%' : isMedium ? '75%' : '650px', 
+          maxWidth: '95%',
+          zIndex: 1 
+        }}
       >
         <Box
           sx={{
-            background: 'rgba(255, 255, 255, 0.1)',
+            background: 'rgba(255, 255, 255, 0.15)',
             backdropFilter: 'blur(10px)',
             borderRadius: 4,
-            padding: { xs: 2, sm: 4 },
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+            padding: { xs: 3, sm: 4 },
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
             width: '100%',
             position: 'relative',
             overflow: 'hidden',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
           }}
         >
-          {/* Progress indicator */}
-          <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between' }}>
-            {steps.map((step, index) => (
-              <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '33%' }}>
-                <Box 
-                  sx={{ 
-                    width: 35, 
-                    height: 35, 
-                    borderRadius: '50%', 
-                    backgroundColor: index <= currentStep ? '#007bff' : 'rgba(255, 255, 255, 0.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.3s ease',
-                    mb: 1,
-                    boxShadow: index <= currentStep ? '0 0 10px #007bff' : 'none',
-                  }}
-                >
-                  <Typography sx={{ color: '#ffffff' }}>{index + 1}</Typography>
-                </Box>
-                <Typography 
-                  sx={{ 
-                    color: '#ffffff', 
-                    fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                    textAlign: 'center',
-                    opacity: index <= currentStep ? 1 : 0.6,
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  {step.title}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-
-          <Typography component="h1" variant="h5" sx={{ mb: 3, color: '#ffffff', textAlign: 'center', fontWeight: 'bold' }}>
+          {/* Form title */}
+          <Typography component="h1" variant="h5" sx={{ mb: 4, color: '#ffffff', textAlign: 'center', fontWeight: 'bold' }}>
             Join our Car Rental Service
           </Typography>
 
-          <motion.div
-            key={`step-${currentStep}`}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.4 }}
-          >
-            <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
-              <Grid container spacing={2}>
-                {currentStep === 0 && (
-                  <>
-                    <Grid item xs={12}>
-                      <motion.div variants={itemVariants}>
-                        <Controller
-                          name="fullName"
-                          control={control}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              variant="outlined"
-                              required
-                              fullWidth
-                              id="fullName"
-                              label="Full Name"
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <AccountCircle sx={{ color: '#ffffff' }} />
-                                  </InputAdornment>
-                                ),
-                                sx: { 
-                                  borderRadius: 2,
-                                  '&:hover': {
-                                    boxShadow: '0 0 10px rgba(0, 123, 255, 0.3)'
-                                  },
-                                  transition: 'all 0.3s ease'
-                                }
-                              }}
-                              error={!!errors.fullName}
-                              helperText={errors.fullName ? errors.fullName.message : ''}
-                              sx={{ 
-                                input: { color: '#ffffff' }, 
-                                label: { color: '#ffffff' },
-                                '& .MuiOutlinedInput-root': {
-                                  '& fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                                  },
-                                  '&:hover fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.5)',
-                                  },
-                                  '&.Mui-focused fieldset': {
-                                    borderColor: '#007bff',
-                                  },
-                                },
-                              }}
-                            />
-                          )}
+          {/* Form */}
+          <motion.div>
+            <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
+              <Grid container spacing={3}>
+                {/* Form Fields */}
+                <Grid item xs={12} md={6}>
+                  <motion.div variants={itemVariants}>
+                    <Typography variant="subtitle1" sx={{ color: '#93c5fd', mb: 2, fontWeight: 'bold' }}>
+                      Personal Information
+                    </Typography>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <StyledTextField 
+                          name="fullName" 
+                          label="Full Name" 
+                          icon={<AccountCircle sx={{ color: '#93c5fd' }} />} 
                         />
-                      </motion.div>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <motion.div variants={itemVariants}>
-                        <Controller
-                          name="username"
-                          control={control}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              variant="outlined"
-                              required
-                              fullWidth
-                              id="username"
-                              label="Username"
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <AccountCircle sx={{ color: '#ffffff' }} />
-                                  </InputAdornment>
-                                ),
-                                sx: { 
-                                  borderRadius: 2,
-                                  '&:hover': {
-                                    boxShadow: '0 0 10px rgba(0, 123, 255, 0.3)'
-                                  },
-                                  transition: 'all 0.3s ease'
-                                }
-                              }}
-                              error={!!errors.username}
-                              helperText={errors.username ? errors.username.message : ''}
-                              sx={{ 
-                                input: { color: '#ffffff' }, 
-                                label: { color: '#ffffff' },
-                                '& .MuiOutlinedInput-root': {
-                                  '& fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                                  },
-                                  '&:hover fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.5)',
-                                  },
-                                  '&.Mui-focused fieldset': {
-                                    borderColor: '#007bff',
-                                  },
-                                },
-                              }}
-                            />
-                          )}
+                      </Grid>
+                      <Grid item xs={12}>
+                        <StyledTextField 
+                          name="username" 
+                          label="Username" 
+                          icon={<AccountCircle sx={{ color: '#93c5fd' }} />} 
                         />
-                      </motion.div>
+                      </Grid>
                     </Grid>
-                  </>
-                )}
+                  </motion.div>
+                </Grid>
 
-                {currentStep === 1 && (
-                  <>
-                    <Grid item xs={12}>
-                      <motion.div variants={itemVariants}>
-                        <Controller
-                          name="email"
-                          control={control}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              variant="outlined"
-                              required
-                              fullWidth
-                              id="email"
-                              label="Email Address"
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <Email sx={{ color: '#ffffff' }} />
-                                  </InputAdornment>
-                                ),
-                                sx: { 
-                                  borderRadius: 2,
-                                  '&:hover': {
-                                    boxShadow: '0 0 10px rgba(0, 123, 255, 0.3)'
-                                  },
-                                  transition: 'all 0.3s ease'
-                                }
-                              }}
-                              error={!!errors.email}
-                              helperText={errors.email ? errors.email.message : ''}
-                              sx={{ 
-                                input: { color: '#ffffff' }, 
-                                label: { color: '#ffffff' },
-                                '& .MuiOutlinedInput-root': {
-                                  '& fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                                  },
-                                  '&:hover fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.5)',
-                                  },
-                                  '&.Mui-focused fieldset': {
-                                    borderColor: '#007bff',
-                                  },
-                                },
-                              }}
-                            />
-                          )}
+                <Grid item xs={12} md={6}>
+                  <motion.div variants={itemVariants}>
+                    <Typography variant="subtitle1" sx={{ color: '#93c5fd', mb: 2, fontWeight: 'bold' }}>
+                      Contact Details
+                    </Typography>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <StyledTextField 
+                          name="email" 
+                          label="Email Address" 
+                          icon={<Email sx={{ color: '#93c5fd' }} />} 
                         />
-                      </motion.div>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <motion.div variants={itemVariants}>
-                        <Controller
-                          name="contactPhone"
-                          control={control}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              variant="outlined"
-                              required
-                              fullWidth
-                              id="contactPhone"
-                              label="Contact Phone"
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <Phone sx={{ color: '#ffffff' }} />
-                                  </InputAdornment>
-                                ),
-                                sx: { 
-                                  borderRadius: 2,
-                                  '&:hover': {
-                                    boxShadow: '0 0 10px rgba(0, 123, 255, 0.3)'
-                                  },
-                                  transition: 'all 0.3s ease'
-                                }
-                              }}
-                              error={!!errors.contactPhone}
-                              helperText={errors.contactPhone ? errors.contactPhone.message : ''}
-                              sx={{ 
-                                input: { color: '#ffffff' }, 
-                                label: { color: '#ffffff' },
-                                '& .MuiOutlinedInput-root': {
-                                  '& fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                                  },
-                                  '&:hover fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.5)',
-                                  },
-                                  '&.Mui-focused fieldset': {
-                                    borderColor: '#007bff',
-                                  },
-                                },
-                              }}
-                            />
-                          )}
+                      </Grid>
+                      <Grid item xs={12}>
+                        <StyledTextField 
+                          name="contactPhone" 
+                          label="Contact Phone" 
+                          icon={<Phone sx={{ color: '#93c5fd' }} />} 
                         />
-                      </motion.div>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                      <motion.div variants={itemVariants}>
-                        <Controller
-                          name="address"
-                          control={control}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              variant="outlined"
-                              required
-                              fullWidth
-                              id="address"
-                              label="Address"
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <Home sx={{ color: '#ffffff' }} />
-                                  </InputAdornment>
-                                ),
-                                sx: { 
-                                  borderRadius: 2,
-                                  '&:hover': {
-                                    boxShadow: '0 0 10px rgba(0, 123, 255, 0.3)'
-                                  },
-                                  transition: 'all 0.3s ease'
-                                }
-                              }}
-                              error={!!errors.address}
-                              helperText={errors.address ? errors.address.message : ''}
-                              sx={{ 
-                                input: { color: '#ffffff' }, 
-                                label: { color: '#ffffff' },
-                                '& .MuiOutlinedInput-root': {
-                                  '& fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                                  },
-                                  '&:hover fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.5)',
-                                  },
-                                  '&.Mui-focused fieldset': {
-                                    borderColor: '#007bff',
-                                  },
-                                },
-                              }}
-                            />
-                          )}
-                        />
-                      </motion.div>
-                    </Grid>
-                  </>
-                )}
+                  </motion.div>
+                </Grid>
 
-                {currentStep === 2 && (
-                  <>
-                    <Grid item xs={12}>
-                      <motion.div variants={itemVariants}>
-                        <Controller
-                          name="password"
-                          control={control}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              variant="outlined"
-                              required
-                              fullWidth
-                              id="password"
-                              label="Password"
-                              type={showPassword ? "text" : "password"}
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <Lock sx={{ color: '#ffffff' }} />
-                                  </InputAdornment>
-                                ),
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      aria-label="toggle password visibility"
-                                      onClick={handleTogglePasswordVisibility}
-                                      edge="end"
-                                      sx={{ color: '#ffffff' }}
-                                    >
-                                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                                sx: { 
-                                  borderRadius: 2,
-                                  '&:hover': {
-                                    boxShadow: '0 0 10px rgba(0, 123, 255, 0.3)'
-                                  },
-                                  transition: 'all 0.3s ease'
-                                }
-                              }}
-                              error={!!errors.password}
-                              helperText={errors.password ? errors.password.message : ''}
-                              sx={{ 
-                                input: { color: '#ffffff' }, 
-                                label: { color: '#ffffff' },
-                                '& .MuiOutlinedInput-root': {
-                                  '& fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                                  },
-                                  '&:hover fieldset': {
-                                    borderColor: 'rgba(255, 255, 255, 0.5)',
-                                  },
-                                  '&.Mui-focused fieldset': {
-                                    borderColor: '#007bff',
-                                  },
-                                },
-                              }}
-                            />
-                          )}
+                <Grid item xs={12} md={6}>
+                  <motion.div variants={itemVariants}>
+                    <Typography variant="subtitle1" sx={{ color: '#93c5fd', mb: 2, fontWeight: 'bold' }}>
+                      Address Information
+                    </Typography>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <StyledTextField 
+                          name="address" 
+                          label="Address" 
+                          icon={<Home sx={{ color: '#93c5fd' }} />} 
                         />
-                      </motion.div>
-                      <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)', mt: 1, display: 'block' }}>
-                        Password must be at least 6 characters, include at least one uppercase letter and one number.
-                      </Typography>
+                      </Grid>
                     </Grid>
-                  </>
-                )}
+                  </motion.div>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <motion.div variants={itemVariants}>
+                    <Typography variant="subtitle1" sx={{ color: '#93c5fd', mb: 2, fontWeight: 'bold' }}>
+                      Security Information
+                    </Typography>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <StyledTextField 
+                          name="password" 
+                          label="Password" 
+                          icon={<Lock sx={{ color: '#93c5fd' }} />}
+                          type="password"
+                        />
+                        <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.8)', mt: 1, display: 'block', ml: 1 }}>
+                          Password must be at least 6 characters, include at least one uppercase letter and one number.
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </motion.div>
+                </Grid>
               </Grid>
               
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 2 }}>
-                {currentStep > 0 && (
-                  <Button
-                    variant="outlined"
-                    onClick={prevStep}
-                    sx={{ 
-                      color: '#ffffff', 
-                      borderColor: 'rgba(255, 255, 255, 0.3)',
-                      '&:hover': {
-                        borderColor: '#ffffff',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                      },
-                      borderRadius: 2,
-                      px: 3
-                    }}
-                  >
-                    Back
-                  </Button>
-                )}
-                {currentStep < 2 ? (
-                  <Button
-                    variant="contained"
-                    onClick={nextStep}
-                    sx={{ 
-                      backgroundColor: '#007bff', 
-                      '&:hover': { backgroundColor: '#0056b3' },
-                      color: '#ffffff',
-                      borderRadius: 2,
-                      px: 3,
-                      ml: currentStep === 0 ? 'auto' : 0
-                    }}
-                  >
-                    Next
-                  </Button>
-                ) : (
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    disabled={loading}
-                    sx={{ 
-                      backgroundColor: '#007bff', 
-                      '&:hover': { backgroundColor: '#0056b3' },
-                      color: '#ffffff',
-                      borderRadius: 2,
-                      px: 3,
-                      ml: currentStep === 0 ? 'auto' : 0,
-                      position: 'relative'
-                    }}
-                  >
-                    {loading ? (
-                      <CircularProgress size={24} sx={{ color: '#ffffff' }} />
-                    ) : (
-                      'Register'
-                    )}
-                  </Button>
-                )}
+              {/* Submit button */}
+              <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={loading}
+                  size="large"
+                  sx={{ 
+                    background: 'linear-gradient(to right, #3b82f6, #1d4ed8)',
+                    '&:hover': { 
+                      background: 'linear-gradient(to right, #1d4ed8, #3b82f6)',
+                      boxShadow: '0 4px 15px rgba(59, 130, 246, 0.6)'
+                    },
+                    color: '#ffffff',
+                    borderRadius: 2,
+                    px: 4,
+                    py: 1.2,
+                    position: 'relative',
+                    fontWeight: 'bold',
+                    minWidth: '200px'
+                  }}
+                >
+                  {loading ? (
+                    <CircularProgress size={24} sx={{ color: '#ffffff' }} />
+                  ) : (
+                    'Register Now'
+                  )}
+                </Button>
               </Box>
               
-              {currentStep === 2 && (
-                <Grid container justifyContent="center" sx={{ mt: 2 }}>
-                  <Grid item>
-                    <Link 
-                      component={RouterLink} 
-                      to="/login" 
-                      variant="body2" 
-                      sx={{ 
-                        color: '#ffffff',
-                        textDecoration: 'none',
-                        '&:hover': {
-                          textDecoration: 'underline'
-                        }
-                      }}
-                    >
-                      Already have an account? Log in
-                    </Link>
-                  </Grid>
+              {/* Login link */}
+              <Grid container justifyContent="center" sx={{ mt: 3 }}>
+                <Grid item>
+                  <Link 
+                    component={RouterLink} 
+                    to="/login" 
+                    variant="body2" 
+                    sx={{ 
+                      color: '#93c5fd',
+                      textDecoration: 'none',
+                      fontSize: '0.95rem',
+                      '&:hover': {
+                        textDecoration: 'underline',
+                        color: '#dbeafe'
+                      }
+                    }}
+                  >
+                    Already have an account? Log in
+                  </Link>
                 </Grid>
-              )}
+              </Grid>
             </Box>
           </motion.div>
         </Box>
       </motion.div>
 
+      {/* Snackbar notifications */}
       <Snackbar 
         open={snackbar.open} 
         autoHideDuration={6000} 
@@ -713,18 +479,6 @@ const Registration = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-
-      {/* Fix the style element to avoid jsx and global attribute errors */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-      `}</style>
     </Container>
   );
 };
