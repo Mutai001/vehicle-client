@@ -6,87 +6,63 @@ import {
   Typography,
   Button,
   IconButton,
-  Menu,
-  MenuItem,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import {
   CarRental,
-  ArrowDropDown,
   Menu as MenuIcon,
 } from '@mui/icons-material';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  scrollToTop: () => void;
+  scrollToFeaturedVehicles: () => void;
+  scrollToServices: () => void;
+  scrollToContact: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({
+  scrollToTop,
+  scrollToFeaturedVehicles,
+  scrollToServices,
+  scrollToContact,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // For dropdown menu
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
-    <AppBar position="static" style={{ backgroundColor: '#424242' }}>
+    <AppBar position="static" style={{ backgroundColor: '#00bcd4', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}>
       <Toolbar>
         <IconButton component={Link} to="/" edge="start" color="inherit" aria-label="home">
-          <CarRental fontSize="large" style={{ color: '#ffc107' }} />
+          <CarRental fontSize="large" style={{ color: '#004d40' }} />
         </IconButton>
-        <Typography variant="h6" style={{ flexGrow: 1, marginLeft: 8, color: '#ffffff' }}>
-          Vehicle Rental Management System
+        <Typography variant="h6" style={{ flexGrow: 1, marginLeft: 8, color: '#004d40' }}>
+          Vehicle Rental Services
         </Typography>
         {!isMobile && (
           <>
-            <Button color="inherit" component={Link} to="/">
+            <Button color="inherit" onClick={scrollToTop}>
               Home
             </Button>
-            <Button color="inherit" component={Link} to="/about-us">
-              About Us
+            <Button color="inherit" onClick={scrollToFeaturedVehicles}>
+              Featured Vehicles
             </Button>
-            <Button color="inherit" component={Link} to="/services">
+            <Button color="inherit" onClick={scrollToServices}>
               Services
             </Button>
-            <Button color="inherit" component={Link} to="/contact">
+            <Button color="inherit" onClick={scrollToContact}>
               Contact Us
             </Button>
-
-            {/* Combined User and Admin Menu */}
-            <Button
-              color="inherit"
-              endIcon={<ArrowDropDown />}
-              onClick={handleMenuClick}
-              aria-controls="user-admin-menu"
-              aria-haspopup="true"
-            >
-              User & Admin
+            <Button component={Link} to="/login" color="inherit">
+              Login
             </Button>
-            <Menu
-              id="user-admin-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem component={Link} to="/user" onClick={handleClose}>
-                User
-              </MenuItem>
-              <MenuItem component={Link} to="/admin" onClick={handleClose}>
-                Admin
-              </MenuItem>
-            </Menu>
+            <Button component={Link} to="/register" color="inherit">
+              Register
+            </Button>
           </>
         )}
         {isMobile && (
-          <IconButton
-            edge="end"
-            color="inherit"
-            aria-label="menu"
-            onClick={handleMenuClick}
-          >
+          <IconButton edge="end" color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
         )}
