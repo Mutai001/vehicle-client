@@ -32,7 +32,6 @@ type PaymentFormProps = {
   // Define the properties of PaymentFormProps here
 };
 
-//return code 
 const App: React.FC = () => {
   return (
     <Routes>
