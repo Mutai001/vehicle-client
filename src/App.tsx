@@ -27,7 +27,6 @@ import Services from './components/Services';
 import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs';
 
-// Define the type PaymentFormProps
 type PaymentFormProps = {
   // Define the properties of PaymentFormProps here
 };
